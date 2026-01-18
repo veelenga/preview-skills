@@ -1,0 +1,32 @@
+{
+  "name": "preview-skills",
+  "version": "1.0.0",
+  "description": "Universal preview tool for AI agents to visualize files in the browser",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint 'skills/*/templates/scripts/**/*.js' --ignore-pattern 'src/__tests__/**'",
+    "lint:fix": "eslint 'skills/*/templates/scripts/**/*.js' --ignore-pattern 'src/__tests__/**' --fix",
+    "format": "prettier --write '**/*.{js,json,md,yml}'",
+    "format:check": "prettier --check '**/*.{js,json,md,yml}'"
+  },
+  "keywords": [
+    "preview",
+    "claude",
+    "skill",
+    "visualization"
+  ],
+  "author": "veelenga",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.4.2"
+  }
+}

@@ -1,0 +1,25 @@
+graph TB
+    Start[Start] --> Input[User Input]
+    Input --> Parse[Parse Content]
+    Parse --> ValidType{Valid Type?}
+
+    ValidType -->|Yes| LoadConfig[Load Skill Config]
+    ValidType -->|No| Error[Show Error]
+
+    LoadConfig --> LoadLibs[Load Shared Libs]
+    LoadLibs --> ProcessContent[Process Content]
+
+    ProcessContent --> GenHTML[Generate HTML]
+    GenHTML --> InjectCSS[Inject Styles]
+    InjectCSS --> InjectJS[Inject Scripts]
+
+    InjectJS --> WriteFile[Write to /tmp]
+    WriteFile --> OpenBrowser[Open in Browser]
+
+    OpenBrowser --> End[End]
+    Error --> End
+
+    style Start fill:#90EE90
+    style End fill:#FFB6C1
+    style Error fill:#FF6B6B
+    style GenHTML fill:#87CEEB

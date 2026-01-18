@@ -1,0 +1,67 @@
+{
+  "project": {
+    "name": "preview-it-skill",
+    "version": "2.0.0",
+    "description": "Extensible preview system for Claude Code",
+    "architecture": {
+      "pattern": "shared libraries",
+      "benefits": ["DRY - Don't Repeat Yourself", "Easy to extend", "Consistent UX", "Maintainable"]
+    }
+  },
+  "skills": [
+    {
+      "name": "preview-markdown",
+      "type": "document",
+      "library": "marked",
+      "linesOfCode": 53,
+      "reduction": "70%"
+    },
+    {
+      "name": "preview-mermaid",
+      "type": "diagram",
+      "library": "mermaid",
+      "linesOfCode": 59,
+      "reduction": "28%"
+    },
+    {
+      "name": "preview-json",
+      "type": "interactive",
+      "library": "jsoneditor",
+      "linesOfCode": 62,
+      "new": true
+    }
+  ],
+  "sharedLibraries": {
+    "contentUtils": {
+      "path": "lib/content-utils.sh",
+      "functions": ["base64_encode_utf8", "escape_for_js", "escape_for_html", "read_with_limit"]
+    },
+    "browserUtils": {
+      "path": "lib/browser-utils.sh",
+      "functions": ["open_in_browser", "get_temp_file_path", "cleanup_old_previews"]
+    },
+    "htmlGenerator": {
+      "path": "lib/html-generator.sh",
+      "functions": ["generate_html", "merge_styles", "generate_cdn_scripts"]
+    },
+    "templateEngine": {
+      "path": "lib/template-engine.sh",
+      "functions": ["substitute_var", "substitute_vars", "render_template"]
+    }
+  },
+  "templates": {
+    "styles": {
+      "common": "templates/styles/common.css",
+      "markdown": "templates/styles/markdown.css",
+      "diagram": "templates/styles/diagram.css"
+    },
+    "scripts": {
+      "utils": "templates/scripts/utils.js"
+    }
+  },
+  "stats": {
+    "totalLinesReduced": "76%",
+    "timeToAddNewSkill": "15 minutes",
+    "sharedCodeReuse": "85%"
+  }
+}

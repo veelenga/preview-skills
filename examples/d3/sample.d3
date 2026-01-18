@@ -1,0 +1,121 @@
+// Get container dimensions
+const container = document.querySelector('#visualization');
+const rect = container.getBoundingClientRect();
+const width = rect.width;
+const height = rect.height;
+const margin = { top: 60, right: 40, bottom: 60, left: 60 };
+const innerWidth = width - margin.left - margin.right;
+const innerHeight = height - margin.top - margin.bottom;
+
+// Sample data
+const data = [
+  { category: 'A', value: 30 },
+  { category: 'B', value: 80 },
+  { category: 'C', value: 45 },
+  { category: 'D', value: 60 },
+  { category: 'E', value: 20 },
+  { category: 'F', value: 90 },
+  { category: 'G', value: 55 }
+];
+
+// Create SVG
+const svg = d3.select('#visualization')
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height);
+
+const chart = svg.append('g')
+  .attr('transform', `translate(${margin.left},${margin.top})`);
+
+// Scales
+const xScale = d3.scaleBand()
+  .domain(data.map(d => d.category))
+  .range([0, innerWidth])
+  .padding(0.2);
+
+const yScale = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.value)])
+  .nice()
+  .range([innerHeight, 0]);
+
+// Color scale
+const colorScale = d3.scaleOrdinal()
+  .domain(data.map(d => d.category))
+  .range(['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22']);
+
+// Axes
+const xAxis = d3.axisBottom(xScale);
+const yAxis = d3.axisLeft(yScale);
+
+chart.append('g')
+  .attr('transform', `translate(0,${innerHeight})`)
+  .call(xAxis)
+  .selectAll('text')
+  .style('font-size', '12px');
+
+chart.append('g')
+  .call(yAxis)
+  .selectAll('text')
+  .style('font-size', '12px');
+
+// Axis labels
+chart.append('text')
+  .attr('class', 'axis-label')
+  .attr('x', innerWidth / 2)
+  .attr('y', innerHeight + 40)
+  .attr('text-anchor', 'middle')
+  .text('Category');
+
+chart.append('text')
+  .attr('class', 'axis-label')
+  .attr('transform', 'rotate(-90)')
+  .attr('x', -innerHeight / 2)
+  .attr('y', -40)
+  .attr('text-anchor', 'middle')
+  .text('Value');
+
+// Tooltip
+const tooltip = d3.select('body')
+  .append('div')
+  .attr('class', 'd3-tooltip')
+  .style('position', 'absolute')
+  .style('opacity', 0);
+
+// Bars
+chart.selectAll('rect')
+  .data(data)
+  .join('rect')
+  .attr('class', 'bar')
+  .attr('x', d => xScale(d.category))
+  .attr('y', d => yScale(d.value))
+  .attr('width', xScale.bandwidth())
+  .attr('height', d => innerHeight - yScale(d.value))
+  .attr('fill', d => colorScale(d.category))
+  .attr('rx', 4)
+  .on('mouseover', function(event, d) {
+    d3.select(this).attr('opacity', 0.8);
+    tooltip.transition().duration(200).style('opacity', 1);
+    tooltip
+      .html(`<strong>${d.category}</strong><br/>Value: ${d.value}`)
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mousemove', function(event) {
+    tooltip
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mouseout', function() {
+    d3.select(this).attr('opacity', 1);
+    tooltip.transition().duration(200).style('opacity', 0);
+  });
+
+// Title
+chart.append('text')
+  .attr('x', innerWidth / 2)
+  .attr('y', -20)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '18px')
+  .style('font-weight', 'bold')
+  .style('fill', '#333')
+  .text('Sample Bar Chart');

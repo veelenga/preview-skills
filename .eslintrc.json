@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "globals": {
+    "d3": "readonly",
+    "THREE": "readonly",
+    "mermaid": "readonly",
+    "D3_METADATA": "readonly",
+    "D3_VISUALIZATION_CODE": "readonly",
+    "THREEJS_METADATA": "readonly",
+    "THREEJS_VISUALIZATION_CODE": "readonly",
+    "DIAGRAM_ENCODED": "readonly",
+    "MERMAID_THEME": "readonly",
+    "base64DecodeUnicode": "readonly"
+  },
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

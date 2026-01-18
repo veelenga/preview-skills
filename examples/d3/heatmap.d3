@@ -1,0 +1,165 @@
+// Get container dimensions
+const container = document.querySelector('#visualization');
+const rect = container.getBoundingClientRect();
+const width = rect.width;
+const height = rect.height;
+const margin = { top: 80, right: 40, bottom: 100, left: 80 };
+const innerWidth = width - margin.left - margin.right;
+const innerHeight = height - margin.top - margin.bottom;
+
+// Sample heatmap data
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const hours = ['12am', '3am', '6am', '9am', '12pm', '3pm', '6pm', '9pm'];
+
+const data = [];
+days.forEach(day => {
+  hours.forEach(hour => {
+    data.push({
+      day: day,
+      hour: hour,
+      value: Math.floor(Math.random() * 100)
+    });
+  });
+});
+
+// Create SVG
+const svg = d3.select('#visualization')
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height);
+
+const chart = svg.append('g')
+  .attr('transform', `translate(${margin.left},${margin.top})`);
+
+const cellWidth = innerWidth / days.length;
+const cellHeight = innerHeight / hours.length;
+
+const xScale = d3.scaleBand()
+  .domain(days)
+  .range([0, innerWidth])
+  .padding(0.05);
+
+const yScale = d3.scaleBand()
+  .domain(hours)
+  .range([0, innerHeight])
+  .padding(0.05);
+
+const colorScale = d3.scaleSequential(d3.interpolateYlOrRd)
+  .domain([0, d3.max(data, d => d.value)]);
+
+const tooltip = d3.select('body')
+  .append('div')
+  .attr('class', 'd3-tooltip')
+  .style('position', 'absolute')
+  .style('opacity', 0);
+
+chart.selectAll('rect')
+  .data(data)
+  .join('rect')
+  .attr('x', d => xScale(d.day))
+  .attr('y', d => yScale(d.hour))
+  .attr('width', xScale.bandwidth())
+  .attr('height', yScale.bandwidth())
+  .attr('fill', d => colorScale(d.value))
+  .attr('stroke', 'white')
+  .attr('stroke-width', 1)
+  .style('cursor', 'pointer')
+  .on('mouseover', function(event, d) {
+    d3.select(this)
+      .attr('stroke', '#333')
+      .attr('stroke-width', 2);
+
+    tooltip.transition().duration(200).style('opacity', 1);
+    tooltip
+      .html(`<strong>${d.day} ${d.hour}</strong><br/>Value: ${d.value}`)
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mousemove', function(event) {
+    tooltip
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 10) + 'px');
+  })
+  .on('mouseout', function() {
+    d3.select(this)
+      .attr('stroke', 'white')
+      .attr('stroke-width', 1);
+
+    tooltip.transition().duration(200).style('opacity', 0);
+  });
+
+chart.selectAll('.day-label')
+  .data(days)
+  .join('text')
+  .attr('class', 'day-label')
+  .attr('x', d => xScale(d) + xScale.bandwidth() / 2)
+  .attr('y', -10)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '14px')
+  .style('font-weight', 'bold')
+  .style('fill', '#333')
+  .text(d => d);
+
+chart.selectAll('.hour-label')
+  .data(hours)
+  .join('text')
+  .attr('class', 'hour-label')
+  .attr('x', -10)
+  .attr('y', d => yScale(d) + yScale.bandwidth() / 2)
+  .attr('dy', '0.35em')
+  .attr('text-anchor', 'end')
+  .style('font-size', '12px')
+  .style('fill', '#333')
+  .text(d => d);
+
+chart.append('text')
+  .attr('x', innerWidth / 2)
+  .attr('y', -40)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '20px')
+  .style('font-weight', 'bold')
+  .style('fill', '#333')
+  .text('Weekly Activity Heatmap');
+
+const legendWidth = 300;
+const legendHeight = 20;
+const legend = chart.append('g')
+  .attr('transform', `translate(${innerWidth - legendWidth - 20}, ${innerHeight + 50})`);
+
+const legendScale = d3.scaleLinear()
+  .domain(colorScale.domain())
+  .range([0, legendWidth]);
+
+const legendAxis = d3.axisBottom(legendScale)
+  .ticks(5)
+  .tickFormat(d3.format('.0f'));
+
+const defs = svg.append('defs');
+const linearGradient = defs.append('linearGradient')
+  .attr('id', 'heatmap-gradient');
+
+const numStops = 10;
+for (let i = 0; i <= numStops; i++) {
+  const offset = i / numStops;
+  linearGradient.append('stop')
+    .attr('offset', `${offset * 100}%`)
+    .attr('stop-color', colorScale(colorScale.domain()[0] + offset * (colorScale.domain()[1] - colorScale.domain()[0])));
+}
+
+legend.append('rect')
+  .attr('width', legendWidth)
+  .attr('height', legendHeight)
+  .style('fill', 'url(#heatmap-gradient)');
+
+legend.append('g')
+  .attr('transform', `translate(0, ${legendHeight})`)
+  .call(legendAxis);
+
+legend.append('text')
+  .attr('x', legendWidth / 2)
+  .attr('y', -5)
+  .attr('text-anchor', 'middle')
+  .style('font-size', '12px')
+  .style('font-weight', 'bold')
+  .style('fill', '#333')
+  .text('Activity Level');

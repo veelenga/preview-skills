@@ -1,0 +1,10 @@
+*.log
+.DS_Store
+*.swp
+*.swo
+
+node_modules/
+coverage/
+*.tgz
+.npm
+.eslintcache

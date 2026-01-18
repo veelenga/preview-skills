@@ -1,0 +1,13 @@
+node_modules/
+coverage/
+.git/
+*.log
+.DS_Store
+
+# Auto-generated files (synced from src/)
+skills/*/lib/
+skills/*/templates/scripts/utils.js
+skills/*/templates/scripts/common-ui.js
+skills/*/templates/styles/layout.css
+skills/*/templates/styles/common.css
+skills/*/run.sh

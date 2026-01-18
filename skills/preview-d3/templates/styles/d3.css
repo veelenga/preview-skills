@@ -1,0 +1,347 @@
+/* D3.js Visualization Styles */
+
+/* Main container */
+.preview-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: calc(100vh - 140px);
+  overflow: hidden;
+}
+
+/* Visualization container */
+.viz-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Visualization container - flexible for user-created visualizations */
+#visualization {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  overflow: visible;
+  position: relative;
+}
+
+/* SVG elements created by user code */
+#visualization svg {
+  display: block;
+  pointer-events: all; /* Allow SVG to receive mouse/wheel events even if parent has pointer-events: none */
+}
+
+/* Axis styling */
+.axis path,
+.axis line {
+  stroke: #e0e0e0;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 12px;
+  fill: #666;
+}
+
+.axis-label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  fill: #333;
+}
+
+/* Grid lines */
+.grid line {
+  stroke: #f0f0f0;
+  stroke-opacity: 0.7;
+  stroke-width: 1px;
+  stroke-dasharray: 2, 2;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+/* Chart elements */
+.bar {
+  transition: opacity 0.2s ease;
+}
+
+.bar:hover {
+  opacity: 0.8;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.area {
+  opacity: 0.3;
+}
+
+.circle {
+  transition: all 0.2s ease;
+}
+
+.circle:hover {
+  r: 6;
+  stroke-width: 2px;
+}
+
+/* Node and link styling for network diagrams */
+.node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.node:hover {
+  stroke-width: 3px;
+}
+
+.link {
+  fill: none;
+  stroke: #999;
+  stroke-opacity: 0.6;
+  stroke-width: 1.5px;
+}
+
+.link:hover {
+  stroke-opacity: 1;
+  stroke-width: 2px;
+}
+
+/* Tooltip */
+.d3-tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  pointer-events: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.d3-tooltip.visible {
+  opacity: 1;
+}
+
+.d3-tooltip strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Legend */
+.legend {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 12px;
+}
+
+.legend-item {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.legend-item:hover {
+  opacity: 0.8;
+}
+
+.legend-item text {
+  fill: #333;
+}
+
+/* Labels */
+.label {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 11px;
+  fill: #666;
+  pointer-events: none;
+}
+
+/* Zoom and pan */
+.zoom-container {
+  cursor: grab;
+}
+
+.zoom-container.panning {
+  cursor: grabbing;
+}
+
+/* Controls panel */
+.controls-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+}
+
+.control-button {
+  padding: 8px 12px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.control-button:hover {
+  background: #357abd;
+}
+
+.control-button:active {
+  background: #2a5d8e;
+}
+
+/* Code display area (for showing the D3 code) */
+.code-display {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-height: 200px;
+  background: rgba(30, 30, 30, 0.95);
+  color: #f0f0f0;
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro',
+    monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-y: auto;
+  display: none;
+  z-index: 100;
+}
+
+.code-display.visible {
+  display: block;
+}
+
+.code-display pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated {
+  animation: fadeIn 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .preview-body {
+    padding: 10px;
+  }
+
+  .controls-panel {
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+  }
+
+  .control-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .code-display {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    max-height: 150px;
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .viz-container {
+    background: #1e1e1e;
+  }
+
+  .axis text,
+  .label {
+    fill: #b0b0b0;
+  }
+
+  .axis-label {
+    fill: #e0e0e0;
+  }
+
+  .axis path,
+  .axis line {
+    stroke: #404040;
+  }
+
+  .grid line {
+    stroke: #303030;
+  }
+
+  .d3-tooltip {
+    background: rgba(30, 30, 30, 0.95);
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .d3-tooltip strong {
+    color: #ffffff;
+  }
+
+  .legend-item text {
+    fill: #e0e0e0;
+  }
+
+  .controls-panel {
+    background: rgba(30, 30, 30, 0.95);
+  }
+}

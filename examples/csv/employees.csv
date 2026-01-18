@@ -1,0 +1,31 @@
+employee_id,first_name,last_name,department,position,salary,hire_date,email
+1001,John,Smith,Engineering,Senior Developer,95000,2019-03-15,john.smith@company.com
+1002,Emma,Johnson,Marketing,Marketing Manager,87000,2020-01-20,emma.johnson@company.com
+1003,Michael,Williams,Sales,Sales Director,105000,2018-06-10,michael.williams@company.com
+1004,Sarah,Brown,Engineering,Tech Lead,110000,2017-09-01,sarah.brown@company.com
+1005,David,Jones,HR,HR Manager,78000,2020-05-12,david.jones@company.com
+1006,Lisa,Garcia,Finance,Financial Analyst,72000,2021-02-28,lisa.garcia@company.com
+1007,Robert,Miller,Engineering,Junior Developer,65000,2022-08-15,robert.miller@company.com
+1008,Jennifer,Davis,Marketing,Content Strategist,69000,2021-11-03,jennifer.davis@company.com
+1009,William,Rodriguez,Sales,Account Executive,75000,2020-07-22,william.rodriguez@company.com
+1010,Mary,Martinez,Engineering,DevOps Engineer,92000,2019-12-05,mary.martinez@company.com
+1011,James,Hernandez,Product,Product Manager,98000,2018-04-18,james.hernandez@company.com
+1012,Patricia,Lopez,Design,UX Designer,82000,2020-10-30,patricia.lopez@company.com
+1013,Christopher,Gonzalez,Engineering,Senior Developer,96000,2019-05-25,christopher.gonzalez@company.com
+1014,Linda,Wilson,Customer Success,CS Manager,84000,2021-03-14,linda.wilson@company.com
+1015,Daniel,Anderson,Engineering,Software Architect,125000,2016-11-08,daniel.anderson@company.com
+1016,Barbara,Thomas,Finance,Controller,115000,2017-01-20,barbara.thomas@company.com
+1017,Matthew,Taylor,Sales,Sales Representative,68000,2022-04-05,matthew.taylor@company.com
+1018,Elizabeth,Moore,HR,Recruiter,62000,2021-09-12,elizabeth.moore@company.com
+1019,Joseph,Jackson,Engineering,Backend Developer,88000,2020-02-17,joseph.jackson@company.com
+1020,Susan,Martin,Marketing,Social Media Manager,71000,2021-06-23,susan.martin@company.com
+1021,Thomas,Lee,Engineering,Frontend Developer,85000,2020-08-09,thomas.lee@company.com
+1022,Jessica,Perez,Product,Product Owner,93000,2019-10-11,jessica.perez@company.com
+1023,Charles,Thompson,Sales,Regional Manager,102000,2018-02-26,charles.thompson@company.com
+1024,Karen,White,Design,Senior Designer,89000,2019-07-30,karen.white@company.com
+1025,Steven,Harris,Engineering,QA Engineer,76000,2021-12-01,steven.harris@company.com
+1026,Nancy,Sanchez,Customer Success,CS Specialist,59000,2022-05-18,nancy.sanchez@company.com
+1027,Paul,Clark,Finance,Senior Accountant,81000,2020-03-22,paul.clark@company.com
+1028,Betty,Ramirez,Marketing,Brand Manager,86000,2019-11-14,betty.ramirez@company.com
+1029,Mark,Lewis,Engineering,Data Engineer,94000,2020-09-07,mark.lewis@company.com
+1030,Sandra,Robinson,HR,Benefits Coordinator,64000,2022-01-10,sandra.robinson@company.com

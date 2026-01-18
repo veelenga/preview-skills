@@ -1,0 +1,117 @@
+/* JSON Preview - Format-specific styles */
+
+#json-container {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    background: var(--color-surface-primary);
+    padding: 24px;
+    min-height: 100%;
+}
+
+.json-line {
+    padding: 2px 0;
+    transition: background 0.15s;
+}
+
+.json-line:hover {
+    background: var(--color-surface-hover);
+}
+
+.json-line.highlight {
+    background: var(--color-warning-bg);
+    animation: highlightFade 2s ease-out;
+}
+
+@keyframes highlightFade {
+    from { background: var(--color-warning); }
+    to { background: var(--color-warning-bg); }
+}
+
+.json-line.hidden {
+    display: none;
+}
+
+.json-key {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.json-string {
+    color: var(--color-success);
+}
+
+.json-number {
+    color: var(--color-info);
+    font-weight: 500;
+}
+
+.json-boolean {
+    color: var(--color-secondary);
+    font-weight: 600;
+}
+
+.json-null {
+    color: var(--color-text-tertiary);
+    font-weight: 600;
+    font-style: italic;
+}
+
+.json-bracket {
+    color: var(--color-text-primary);
+    font-weight: bold;
+}
+
+.json-comma {
+    color: var(--color-text-tertiary);
+}
+
+.json-collapsible {
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 4px;
+    transition: background 0.15s;
+}
+
+.json-collapsible:hover {
+    background: var(--color-surface-hover);
+}
+
+.json-collapsible::before {
+    content: "▼";
+    display: inline-block;
+    width: 16px;
+    color: var(--color-primary);
+    font-size: 12px;
+}
+
+.json-collapsed::before {
+    content: "▶";
+}
+
+.json-collapsed + .json-children {
+    display: none;
+}
+
+.json-children {
+    margin-left: 24px;
+    border-left: 2px solid var(--color-border-primary);
+    padding-left: 8px;
+}
+
+.no-results {
+    padding: 60px;
+    text-align: center;
+    color: var(--color-text-tertiary);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.no-results::before {
+    content: '🔍';
+    display: block;
+    font-size: 48px;
+    margin-bottom: 16px;
+}

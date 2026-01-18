@@ -1,0 +1,166 @@
+// Water molecule (H2O) visualization
+const atomColors = {
+  H: 0xffffff,  // Hydrogen - white
+  O: 0xff0000,  // Oxygen - red
+  C: 0x909090,  // Carbon - gray
+  N: 0x0000ff   // Nitrogen - blue
+};
+
+const atomSizes = {
+  H: 0.3,
+  O: 0.5,
+  C: 0.4,
+  N: 0.45
+};
+
+// Create atom function
+function createAtom(type, x, y, z) {
+  const geometry = new THREE.SphereGeometry(atomSizes[type], 32, 32);
+  const material = new THREE.MeshStandardMaterial({
+    color: atomColors[type],
+    metalness: 0.3,
+    roughness: 0.4
+  });
+  const atom = new THREE.Mesh(geometry, material);
+  atom.position.set(x, y, z);
+
+  const edgesGeometry = new THREE.EdgesGeometry(geometry);
+  const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 1 });
+  const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+  atom.add(edges);
+
+  return atom;
+}
+
+// Create bond function
+function createBond(atom1, atom2, color = 0xcccccc) {
+  const direction = new THREE.Vector3().subVectors(atom2.position, atom1.position);
+  const length = direction.length();
+  const geometry = new THREE.CylinderGeometry(0.1, 0.1, length, 8);
+  const material = new THREE.MeshStandardMaterial({
+    color: color,
+    metalness: 0.5,
+    roughness: 0.5
+  });
+  const bond = new THREE.Mesh(geometry, material);
+
+  bond.position.copy(atom1.position).add(direction.multiplyScalar(0.5));
+
+  const axis = new THREE.Vector3(0, 1, 0);
+  bond.quaternion.setFromUnitVectors(axis, direction.normalize());
+
+  return bond;
+}
+
+// Create water molecule (H2O)
+const molecule = new THREE.Group();
+
+const oxygen = createAtom('O', 0, 0, 0);
+const hydrogen1 = createAtom('H', -0.8, 0.6, 0);
+const hydrogen2 = createAtom('H', 0.8, 0.6, 0);
+
+molecule.add(oxygen);
+molecule.add(hydrogen1);
+molecule.add(hydrogen2);
+
+const bond1 = createBond(oxygen, hydrogen1);
+const bond2 = createBond(oxygen, hydrogen2);
+
+molecule.add(bond1);
+molecule.add(bond2);
+
+scene.add(molecule);
+
+// Add labels
+const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
+canvas.width = 128;
+canvas.height = 64;
+
+function createLabel(text, color) {
+  const labelCanvas = document.createElement('canvas');
+  const labelContext = labelCanvas.getContext('2d');
+  labelCanvas.width = 128;
+  labelCanvas.height = 64;
+
+  labelContext.fillStyle = color;
+  labelContext.font = 'Bold 48px Arial';
+  labelContext.textAlign = 'center';
+  labelContext.textBaseline = 'middle';
+  labelContext.fillText(text, 64, 32);
+
+  const texture = new THREE.CanvasTexture(labelCanvas);
+  const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+  const sprite = new THREE.Sprite(spriteMaterial);
+  sprite.scale.set(0.8, 0.4, 1);
+
+  return sprite;
+}
+
+const oLabel = createLabel('O', '#ff0000');
+oLabel.position.set(0, -0.8, 0);
+molecule.add(oLabel);
+
+const h1Label = createLabel('H', '#ffffff');
+h1Label.position.set(-0.8, 1.2, 0);
+molecule.add(h1Label);
+
+const h2Label = createLabel('H', '#ffffff');
+h2Label.position.set(0.8, 1.2, 0);
+molecule.add(h2Label);
+
+camera.position.set(3, 2, 5);
+camera.lookAt(0, 0, 0);
+
+scene.userData.customAnimate = function() {
+  molecule.rotation.y += 0.005;
+  molecule.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+};
+
+// Add title
+setTimeout(() => {
+  const controlsInfo = document.querySelector('.controls-info');
+  if (controlsInfo) {
+    controlsInfo.innerHTML = `
+      <h4>Water Molecule (H₂O)</h4>
+      <p>🖱️ Drag: Rotate view</p>
+      <p>🔍 Scroll: Zoom</p>
+      <p>💧 2 Hydrogen + 1 Oxygen</p>
+    `;
+  }
+}, 100);
+
+// Add more example molecules in the scene
+const methane = new THREE.Group();
+const carbon = createAtom('C', 0, 0, 0);
+methane.add(carbon);
+
+const hPositions = [
+  [1, 1, 1],
+  [-1, -1, 1],
+  [1, -1, -1],
+  [-1, 1, -1]
+];
+
+hPositions.forEach(pos => {
+  const h = createAtom('H', pos[0] * 0.7, pos[1] * 0.7, pos[2] * 0.7);
+  methane.add(h);
+  methane.add(createBond(carbon, h));
+});
+
+methane.position.set(4, 0, 0);
+methane.scale.setScalar(0.7);
+scene.add(methane);
+
+const cLabel = createLabel('CH₄', '#909090');
+cLabel.position.set(4, -1.5, 0);
+cLabel.scale.setScalar(1.2);
+scene.add(cLabel);
+
+scene.userData.customAnimate = function() {
+  molecule.rotation.y += 0.005;
+  molecule.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+
+  methane.rotation.y -= 0.003;
+  methane.rotation.z += 0.002;
+};
