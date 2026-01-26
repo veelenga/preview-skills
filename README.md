@@ -1,19 +1,17 @@
 # Preview Skills
 
-Independent, standalone preview skills for visualizing files in the browser. Each skill is self-contained and can be installed individually.
+Self-contained preview skills for visualizing files in the browser. Install what you need.
 
-## Available Skills
-
-| Skill                | Description                                                   | File Types         |
-| -------------------- | ------------------------------------------------------------- | ------------------ |
-| **preview-csv**      | Sortable tables with search, filtering, and column statistics | `.csv`             |
-| **preview-json**     | Syntax highlighting with collapsible tree structure           | `.json`            |
-| **preview-markdown** | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
-| **preview-mermaid**  | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
-| **preview-diff**     | GitHub-style diffs with side-by-side comparison               | Git diffs          |
-| **preview-d3**       | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
-| **preview-threejs**  | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
-| **preview-leaflet**  | Interactive maps with markers and routes                      | `.leaflet`         |
+| Name                                                                                                | Description                                                   | File Types         |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------ |
+| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)            | Sortable tables with search, filtering, and column statistics | `.csv`             |
+| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)             | Syntax highlighting with collapsible tree structure           | `.json`            |
+| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)     | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
+| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)       | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
+| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)            | GitHub-style diffs with side-by-side comparison               | Git diffs          |
+| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                 | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
+| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)       | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
+| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/world-cities.html) | Interactive maps with markers and routes                      | `.leaflet`         |
 
 ## Quick Start
 
@@ -74,8 +72,6 @@ Or use natural language:
 - "render this Markdown document"
 
 ## Examples
-
-Try the included examples:
 
 ```bash
 # Data files
