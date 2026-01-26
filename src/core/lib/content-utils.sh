@@ -17,7 +17,7 @@ readonly MAX_DIFF_FILE_SIZE=$((1 * 1024 * 1024)) # 1MB limit for individual file
 #   Base64 encoded content
 #######################################
 base64_encode_utf8() {
-    base64
+    base64 | tr -d '\n'
 }
 
 #######################################
