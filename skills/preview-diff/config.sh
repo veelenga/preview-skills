@@ -4,6 +4,7 @@
 TOOL_NAME="preview-diff"
 TOOL_TITLE_PREFIX="Git Diff"
 DEFAULT_FILENAME="diff"
+FILE_EXTENSIONS=(".diff" ".patch")
 
 # Layout
 LAYOUT_TYPE="full"

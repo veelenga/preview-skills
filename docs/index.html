@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview Skills - Claude Code Visualization Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --glass-shadow: rgba(0, 0, 0, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.8);
+      --accent: #60a5fa;
+      --accent-hover: #93c5fd;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d1b4e 25%, #1a1a2e 50%, #16213e 75%, #0f3460 100%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Animated background blobs */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .blob-1 {
+      width: 600px;
+      height: 600px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      top: -200px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .blob-2 {
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      top: 50%;
+      right: -150px;
+      animation-delay: -5s;
+    }
+
+    .blob-3 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      bottom: -100px;
+      left: 30%;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(30px, -30px) rotate(5deg); }
+      50% { transform: translate(-20px, 20px) rotate(-5deg); }
+      75% { transform: translate(20px, 30px) rotate(3deg); }
+    }
+
+    /* Glass effect mixin */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 32px var(--glass-shadow);
+    }
+
+    /* Header */
+    header {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+
+    /* Main container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Hero section */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Skills grid */
+    .skills-section {
+      margin-bottom: 4rem;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      padding: 2rem;
+      border-radius: 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .skill-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-card p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .file-types {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .file-type {
+      background: rgba(96, 165, 250, 0.2);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Example links */
+    .example-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .example-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .example-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .example-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* CTA buttons */
+    .cta-section {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-3px);
+    }
+
+    /* Features section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 4rem 0;
+    }
+
+    .feature {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 4rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--accent-hover);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .skill-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Installation section */
+    .install-section {
+      margin: 4rem 0;
+      padding: 2rem;
+      border-radius: 24px;
+    }
+
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+    }
+
+    .code-block code {
+      color: #e2e8f0;
+      white-space: pre;
+      display: block;
+    }
+
+    .code-comment {
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="container">
+    <section class="hero">
+      <h1>Preview Skills</h1>
+      <p>Standalone preview skills for visualizing files in the browser. Each skill is self-contained and can be installed individually for Claude Code.</p>
+      <div class="cta-buttons">
+        <a href="https://github.com/veelenga/preview-skills" class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+        <a href="#installation" class="btn btn-secondary">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Install Now
+        </a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature glass" style="border-radius: 24px;">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Zero Dependencies</h3>
+        <p>No servers, no installation complexity. Pure bash scripts that work anywhere.</p>
+      </div>
+      <div class="feature glass" style="border-radius: 24px;">
+        <div class="feature-icon">&#128230;</div>
+        <h3>Self-Contained</h3>
+        <p>Generated HTML files are completely standalone and portable.</p>
+      </div>
+      <div class="feature glass" style="border-radius: 24px;">
+        <div class="feature-icon">&#127912;</div>
+        <h3>Beautiful Output</h3>
+        <p>Modern, responsive designs with dark mode and interactive features.</p>
+      </div>
+      <div class="feature glass" style="border-radius: 24px;">
+        <div class="feature-icon">&#128295;</div>
+        <h3>Easy to Extend</h3>
+        <p>Shared libraries make adding new skills quick and consistent.</p>
+      </div>
+    </section>
+
+    <section class="skills-section">
+      <h2 class="section-title">Available Skills</h2>
+      <div class="skills-grid">
+
+        <div class="skill-card glass">
+          <h3>preview-csv</h3>
+          <p>Interactive tables with sorting, filtering, search, and column statistics.</p>
+          <div class="file-types">
+            <span class="file-type">.csv</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/csv/employees.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Employees
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-json</h3>
+          <p>Syntax highlighting with collapsible tree structure and search.</p>
+          <div class="file-types">
+            <span class="file-type">.json</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/json/sample.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Sample
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-markdown</h3>
+          <p>GitHub-flavored Markdown rendering with syntax highlighting.</p>
+          <div class="file-types">
+            <span class="file-type">.md</span>
+            <span class="file-type">.markdown</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/markdown/sample.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Sample
+            </a>
+            <a href="examples/markdown/mermaid-test.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Mermaid Test
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-mermaid</h3>
+          <p>Interactive diagrams including flowcharts, sequences, ER, and more.</p>
+          <div class="file-types">
+            <span class="file-type">.mmd</span>
+            <span class="file-type">.mermaid</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/mermaid/sample.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Flowchart
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-diff</h3>
+          <p>GitHub-style diffs with side-by-side comparison and syntax highlighting.</p>
+          <div class="file-types">
+            <span class="file-type">.diff</span>
+            <span class="file-type">.patch</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/diff/feature.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Feature Branch
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-d3</h3>
+          <p>Interactive 2D data visualizations with D3.js, zoom, and pan.</p>
+          <div class="file-types">
+            <span class="file-type">.d3</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/d3/sample.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Sample
+            </a>
+            <a href="examples/d3/pie-chart.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Pie Chart
+            </a>
+            <a href="examples/d3/network-graph.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Network
+            </a>
+            <a href="examples/d3/heatmap.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Heatmap
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-threejs</h3>
+          <p>Interactive 3D visualizations with Three.js and orbit controls.</p>
+          <div class="file-types">
+            <span class="file-type">.threejs</span>
+            <span class="file-type">.3d</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/threejs/sample.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Rubik's Cube
+            </a>
+            <a href="examples/threejs/molecule.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Molecule
+            </a>
+            <a href="examples/threejs/solar-system.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Solar System
+            </a>
+          </div>
+        </div>
+
+        <div class="skill-card glass">
+          <h3>preview-leaflet</h3>
+          <p>Interactive maps with markers, routes, and geographic data.</p>
+          <div class="file-types">
+            <span class="file-type">.leaflet</span>
+          </div>
+          <div class="example-links">
+            <a href="examples/leaflet/world-cities.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              World Cities
+            </a>
+            <a href="examples/leaflet/everest-trail.html" class="example-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              Everest Trail
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="installation" class="install-section glass">
+      <h2 class="section-title">Quick Installation</h2>
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
+        Get started in seconds with the installation script
+      </p>
+      <div class="code-block">
+        <code>
+<span class="code-comment"># Clone repository</span>
+git clone https://github.com/veelenga/preview-skills.git && cd preview-skills
+
+<span class="code-comment"># Interactive installation - select which skills to install</span>
+scripts/install.sh
+
+<span class="code-comment"># Or install all skills at once</span>
+scripts/install.sh --all
+        </code>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2 class="section-title">Ready to enhance your workflow?</h2>
+      <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto;">
+        Preview Skills integrates seamlessly with Claude Code to visualize your data instantly.
+      </p>
+      <div class="cta-buttons">
+        <a href="https://github.com/veelenga/preview-skills" class="btn btn-primary">
+          Get Started
+        </a>
+        <a href="https://github.com/veelenga/preview-skills/issues" class="btn btn-secondary">
+          Report Issue
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Made with care for the Claude Code community</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/veelenga/preview-skills">GitHub</a> &middot;
+      <a href="https://github.com/veelenga/preview-skills/blob/main/LICENSE">MIT License</a>
+    </p>
+  </footer>
+</body>
+</html>

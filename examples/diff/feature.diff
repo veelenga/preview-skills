@@ -1,0 +1,150 @@
+diff --git a/web/components/Button.jsx b/web/components/Button.jsx
+new file mode 100644
+index 0000000..a3b4c5d
+--- /dev/null
++++ b/web/components/Button.jsx
+@@ -0,0 +1,32 @@
++import React from 'react';
++import './Button.css';
++
++export function Button({
++  children,
++  variant = 'primary',
++  size = 'medium',
++  disabled = false,
++  onClick
++}) {
++  const classNames = [
++    'btn',
++    `btn--${variant}`,
++    `btn--${size}`,
++    disabled && 'btn--disabled'
++  ].filter(Boolean).join(' ');
++
++  return (
++    <button
++      className={classNames}
++      disabled={disabled}
++      onClick={onClick}
++    >
++      {children}
++    </button>
++  );
++}
++
++Button.variants = ['primary', 'secondary', 'danger'];
++Button.sizes = ['small', 'medium', 'large'];
++
++export default Button;
+
+diff --git a/web/index.html b/web/index.html
+index 1a2b3c4..5d6e7f8 100644
+--- a/web/index.html
++++ b/web/index.html
+@@ -3,15 +3,19 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <title>My App</title>
++    <title>My App - Dashboard</title>
++    <link rel="icon" href="/favicon.ico">
++    <link rel="stylesheet" href="/styles/main.css">
+ </head>
+ <body>
+-    <div id="app"></div>
+-    <script src="bundle.js"></script>
++    <div id="root"></div>
++    <script type="module" src="/src/main.jsx"></script>
+ </body>
+ </html>
+
+diff --git a/api/handlers/user.go b/api/handlers/user.go
+index 8f9a0b1..c2d3e4f 100644
+--- a/api/handlers/user.go
++++ b/api/handlers/user.go
+@@ -1,35 +1,52 @@
+ package handlers
+
+ import (
++	"context"
+ 	"encoding/json"
++	"errors"
+ 	"net/http"
++	"time"
+
+ 	"github.com/example/app/models"
++	"github.com/example/app/middleware"
+ )
+
++var ErrUserNotFound = errors.New("user not found")
++
+ type UserHandler struct {
+-	db *Database
++	db     *Database
++	cache  *Cache
++	logger *Logger
+ }
+
+-func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
+-	id := r.URL.Query().Get("id")
+-
+-	user, err := h.db.FindUser(id)
++func (h *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) error {
++	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
++	defer cancel()
++
++	userID := middleware.GetUserID(r)
++	if userID == "" {
++		return ErrUserNotFound
++	}
++
++	// Try cache first
++	if cached, ok := h.cache.Get(userID); ok {
++		return json.NewEncoder(w).Encode(cached)
++	}
++
++	user, err := h.db.FindUserWithContext(ctx, userID)
+ 	if err != nil {
+-		http.Error(w, "User not found", 404)
+-		return
++		h.logger.Error("failed to find user", "id", userID, "error", err)
++		return ErrUserNotFound
+ 	}
+-
+-	json.NewEncoder(w).Encode(user)
++
++	h.cache.Set(userID, user, 5*time.Minute)
++	return json.NewEncoder(w).Encode(user)
+ }
+
+diff --git a/web/legacy/old-utils.jsx b/web/legacy/old-utils.jsx
+deleted file mode 100644
+index 9a8b7c6..0000000
+--- a/web/legacy/old-utils.jsx
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// Legacy utilities - DO NOT USE
+-// Deprecated since v2.0
+-
+-export function formatDate(date) {
+-  return date.toString();
+-}
+-
+-export function parseQuery(str) {
+-  const params = {};
+-  str.split('&').forEach(pair => {
+-    const [key, val] = pair.split('=');
+-    params[key] = val;
+-  });
+-  return params;
+-}
+-
+-export function debounce(fn, delay) {
+-  let timer;
+-  return function(...args) {
+-    clearTimeout(timer);
+-    timer = setTimeout(() => fn.apply(this, args), delay);
+-  };
+-}
+-
+-export default { formatDate, parseQuery, debounce };

@@ -1,0 +1,89 @@
+/* eslint-disable no-unused-vars */
+// User code - executes when dynamically loaded
+// World Cities - Major cities around the globe
+// Simple example with markers and popups
+
+// Initialize map centered on the world
+const map = L.map('map').setView([20, 0], 2);
+
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors',
+  maxZoom: 18,
+}).addTo(map);
+
+// Major world cities with population data
+const cities = [
+  { name: 'Tokyo', country: 'Japan', lat: 35.6762, lng: 139.6503, pop: 37.4 },
+  { name: 'Delhi', country: 'India', lat: 28.7041, lng: 77.1025, pop: 30.3 },
+  { name: 'Shanghai', country: 'China', lat: 31.2304, lng: 121.4737, pop: 27.1 },
+  { name: 'São Paulo', country: 'Brazil', lat: -23.5505, lng: -46.6333, pop: 22.0 },
+  { name: 'Mexico City', country: 'Mexico', lat: 19.4326, lng: -99.1332, pop: 21.8 },
+  { name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, pop: 20.9 },
+  { name: 'Mumbai', country: 'India', lat: 19.0760, lng: 72.8777, pop: 20.4 },
+  { name: 'Beijing', country: 'China', lat: 39.9042, lng: 116.4074, pop: 20.4 },
+  { name: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060, pop: 18.8 },
+  { name: 'London', country: 'UK', lat: 51.5074, lng: -0.1278, pop: 9.0 },
+  { name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, pop: 10.9 },
+  { name: 'Sydney', country: 'Australia', lat: -33.8688, lng: 151.2093, pop: 5.3 },
+  { name: 'Dubai', country: 'UAE', lat: 25.2048, lng: 55.2708, pop: 3.3 },
+  { name: 'Singapore', country: 'Singapore', lat: 1.3521, lng: 103.8198, pop: 5.7 },
+];
+
+// Add markers for each city
+cities.forEach(city => {
+  // Size marker based on population
+  const radius = Math.sqrt(city.pop) * 2;
+
+  // Color based on population
+  const color = city.pop > 20 ? '#e74c3c' : city.pop > 10 ? '#f39c12' : '#3498db';
+
+  const marker = L.circleMarker([city.lat, city.lng], {
+    radius: radius,
+    fillColor: color,
+    color: 'white',
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.7,
+  }).addTo(map);
+
+  // Add popup with city details
+  marker.bindPopup(`
+    <div style="min-width: 180px;">
+      <h3 style="margin: 0 0 8px 0; color: #2c3e50;">${city.name}</h3>
+      <p style="margin: 4px 0; color: #7f8c8d;">${city.country}</p>
+      <p style="margin: 4px 0;"><strong>Population:</strong> ${city.pop}M</p>
+    </div>
+  `);
+
+  // Add tooltip
+  marker.bindTooltip(city.name, {
+    permanent: false,
+    direction: 'top',
+  });
+});
+
+// Add legend
+const legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function() {
+  const div = L.DomUtil.create('div', 'leaflet-control-legend');
+  div.innerHTML = `
+    <h4>World Cities by Population</h4>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #e74c3c; border-radius: 50%;"></div>
+      <span>> 20M</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #f39c12; border-radius: 50%;"></div>
+      <span>10M - 20M</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color" style="background: #3498db; border-radius: 50%;"></div>
+      <span>< 10M</span>
+    </div>
+  `;
+  return div;
+};
+
+legend.addTo(map);
