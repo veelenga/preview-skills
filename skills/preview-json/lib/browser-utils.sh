@@ -117,6 +117,8 @@ validate_file_path() {
 # Open file in default browser
 # Arguments:
 #   $1 - Path to file to open
+# Environment:
+#   PREVIEW_NO_BROWSER - Set to "1" to skip opening browser (useful for CI/docs generation)
 # Returns:
 #   Exit code 0 on success
 # Note: Tab reuse works automatically since we use same /tmp filename
@@ -127,6 +129,11 @@ open_in_browser() {
     if [ ! -f "$file_path" ]; then
         echo "Error: File not found: $file_path" >&2
         return 1
+    fi
+
+    # Skip browser opening if disabled (for CI, docs generation, etc.)
+    if [ "${PREVIEW_NO_BROWSER:-0}" = "1" ]; then
+        return 0
     fi
 
     if [[ "$OSTYPE" == "darwin"* ]]; then
