@@ -48,43 +48,31 @@
     .blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
-      opacity: 0.5;
-      animation: float 20s ease-in-out infinite;
+      opacity: 0.4;
     }
 
     .blob-1 {
       width: 600px;
       height: 600px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: radial-gradient(circle, rgba(102, 126, 234, 0.6) 0%, rgba(118, 75, 162, 0) 70%);
       top: -200px;
       left: -100px;
-      animation-delay: 0s;
     }
 
     .blob-2 {
       width: 500px;
       height: 500px;
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: radial-gradient(circle, rgba(240, 147, 251, 0.5) 0%, rgba(245, 87, 108, 0) 70%);
       top: 50%;
       right: -150px;
-      animation-delay: -5s;
     }
 
     .blob-3 {
       width: 400px;
       height: 400px;
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: radial-gradient(circle, rgba(79, 172, 254, 0.5) 0%, rgba(0, 242, 254, 0) 70%);
       bottom: -100px;
       left: 30%;
-      animation-delay: -10s;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate(0, 0) rotate(0deg); }
-      25% { transform: translate(30px, -30px) rotate(5deg); }
-      50% { transform: translate(-20px, 20px) rotate(-5deg); }
-      75% { transform: translate(20px, 30px) rotate(3deg); }
     }
 
     /* Glass effect mixin */
@@ -349,20 +337,134 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      .hero {
+        padding: 2rem 1rem;
+      }
+
       .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
 
       .hero p {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        padding: 2rem 0;
+      }
+
+      .feature {
+        padding: 1rem;
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .feature h3 {
+        font-size: 0.95rem;
+      }
+
+      .feature p {
+        font-size: 0.8rem;
+        display: none;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
       }
 
       .skills-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
       }
 
       .skill-card {
-        padding: 1.5rem;
+        padding: 1.25rem;
+        border-radius: 16px;
+      }
+
+      .skill-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .skill-card p {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .file-types {
+        margin-bottom: 1rem;
+      }
+
+      .file-type {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+      }
+
+      .example-link {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+        border-radius: 8px;
+      }
+
+      .example-link svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .install-section {
+        margin: 2rem -1rem;
+        padding: 1.5rem 1rem;
+        border-radius: 0;
+      }
+
+      .install-section p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem !important;
+      }
+
+      .code-block {
+        padding: 1rem;
+        font-size: 0.8rem;
+        margin: 0 -0.5rem;
+        border-radius: 8px;
+      }
+
+      .cta-section {
+        padding: 2rem 1rem;
+      }
+
+      .cta-section p {
+        font-size: 0.9rem;
+      }
+
+      footer {
+        padding: 2rem 1rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
       }
     }
 
