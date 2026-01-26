@@ -12,31 +12,35 @@ const commonUiPath = path.join(
 const commonUiCode = fs.readFileSync(commonUiPath, 'utf8');
 eval(commonUiCode);
 
-global.CSV_DATA_ENCODED = btoa('name,age\nJohn,30\nJane,25');
-
 const csvRendererPath = path.join(
   __dirname,
   '../../../skills/preview-csv/templates/scripts/csv-renderer.js'
 );
 
+// Helper to load renderer with substituted data
+function loadCsvRenderer(csvContent) {
+  const encoded = btoa(csvContent);
+  const code = fs.readFileSync(csvRendererPath, 'utf8');
+  return code.replace(/CSV_DATA_ENCODED/g, encoded);
+}
+
+const defaultCsv = 'name,age\nJohn,30';
+
 describe('csv-renderer.js', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="content"></div>';
-    global.CSV_DATA_ENCODED = btoa('name,age\nJohn,30');
   });
 
   describe('rendering', () => {
     it('should render CSV as table', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const table = document.querySelector('table');
       expect(table).not.toBeNull();
     });
 
     it('should include header', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('CSV Viewer');
@@ -44,16 +48,14 @@ describe('csv-renderer.js', () => {
     });
 
     it('should include footer', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('preview-footer');
     });
 
     it('should create table headers', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const thead = document.querySelector('thead');
       expect(thead).not.toBeNull();
@@ -62,8 +64,7 @@ describe('csv-renderer.js', () => {
     });
 
     it('should create table rows', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const tbody = document.querySelector('tbody');
       expect(tbody).not.toBeNull();
@@ -74,8 +75,7 @@ describe('csv-renderer.js', () => {
 
   describe('toolbar', () => {
     it('should include search box', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('search-input');
@@ -83,8 +83,7 @@ describe('csv-renderer.js', () => {
     });
 
     it('should include copy CSV button', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy CSV');
@@ -92,8 +91,7 @@ describe('csv-renderer.js', () => {
     });
 
     it('should include export JSON button', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Export JSON');
@@ -103,18 +101,14 @@ describe('csv-renderer.js', () => {
 
   describe('stats calculation', () => {
     it('should show row count', () => {
-      global.CSV_DATA_ENCODED = btoa('a,b\n1,2\n3,4');
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer('a,b\n1,2\n3,4'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('rows');
     });
 
     it('should show column count', () => {
-      global.CSV_DATA_ENCODED = btoa('a,b,c\n1,2,3');
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer('a,b,c\n1,2,3'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('columns');
@@ -123,16 +117,14 @@ describe('csv-renderer.js', () => {
 
   describe('table features', () => {
     it('should add row numbers', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const rowNumbers = document.querySelectorAll('.row-number');
       expect(rowNumbers.length).toBeGreaterThan(0);
     });
 
     it('should support sortable columns', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const headers = document.querySelectorAll('th:not(.row-number)');
       headers.forEach((header) => {
@@ -141,8 +133,7 @@ describe('csv-renderer.js', () => {
     });
 
     it('should add click handlers to cells', () => {
-      const csvRendererCode = fs.readFileSync(csvRendererPath, 'utf8');
-      eval(csvRendererCode);
+      eval(loadCsvRenderer(defaultCsv));
 
       const cells = document.querySelectorAll('td:not(.row-number)');
       cells.forEach((cell) => {

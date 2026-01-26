@@ -29,12 +29,19 @@ global.mermaid = {
   run: jest.fn(),
 };
 
-global.MARKDOWN_CONTENT = btoa('# Hello World\n\nThis is a test.');
-
 const markdownRendererPath = path.join(
   __dirname,
   '../../../skills/preview-markdown/templates/scripts/markdown-renderer.js'
 );
+
+// Helper to load renderer with substituted data
+function loadMarkdownRenderer(markdownContent) {
+  const encoded = btoa(markdownContent);
+  const code = fs.readFileSync(markdownRendererPath, 'utf8');
+  return code.replace(/MARKDOWN_CONTENT/g, encoded);
+}
+
+const defaultMarkdown = '# Hello World\n\nThis is a test.';
 
 describe('markdown-renderer.js', () => {
   beforeEach(() => {
@@ -44,8 +51,7 @@ describe('markdown-renderer.js', () => {
 
   describe('initialization', () => {
     it('should configure marked with correct options', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       expect(marked.setOptions).toHaveBeenCalledWith({
         breaks: true,
@@ -56,16 +62,13 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should decode markdown content', () => {
-      global.MARKDOWN_CONTENT = btoa('Test markdown');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test markdown'));
 
       expect(marked.parse).toHaveBeenCalledWith('Test markdown');
     });
 
     it('should sanitize HTML with DOMPurify', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       expect(DOMPurify.sanitize).toHaveBeenCalled();
       const callArg = DOMPurify.sanitize.mock.calls[0][1];
@@ -74,8 +77,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should allow safe HTML tags', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const callArg = DOMPurify.sanitize.mock.calls[0][1];
       expect(callArg.ALLOWED_TAGS).toContain('h1');
@@ -86,8 +88,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should allow safe attributes', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const callArg = DOMPurify.sanitize.mock.calls[0][1];
       expect(callArg.ALLOWED_ATTR).toContain('href');
@@ -97,16 +98,14 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should disallow data attributes', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const callArg = DOMPurify.sanitize.mock.calls[0][1];
       expect(callArg.ALLOW_DATA_ATTR).toBe(false);
     });
 
     it('should disallow unknown protocols', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const callArg = DOMPurify.sanitize.mock.calls[0][1];
       expect(callArg.ALLOW_UNKNOWN_PROTOCOLS).toBe(false);
@@ -115,36 +114,28 @@ describe('markdown-renderer.js', () => {
 
   describe('stats calculation', () => {
     it('should calculate lines correctly', () => {
-      global.MARKDOWN_CONTENT = btoa('Line 1\nLine 2\nLine 3');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Line 1\nLine 2\nLine 3'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('3 lines');
     });
 
     it('should calculate words correctly', () => {
-      global.MARKDOWN_CONTENT = btoa('Hello world test');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Hello world test'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('3 words');
     });
 
     it('should calculate characters correctly', () => {
-      global.MARKDOWN_CONTENT = btoa('Test');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('4 chars');
     });
 
     it('should handle empty content', () => {
-      global.MARKDOWN_CONTENT = btoa('');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(''));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('1 lines');
@@ -153,9 +144,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should handle multiple spaces', () => {
-      global.MARKDOWN_CONTENT = btoa('word1    word2     word3');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('word1    word2     word3'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('3 words');
@@ -164,8 +153,7 @@ describe('markdown-renderer.js', () => {
 
   describe('toolbar', () => {
     it('should include copy markdown button', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy Markdown');
@@ -173,8 +161,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should include copy HTML button', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy HTML');
@@ -182,8 +169,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should include icons in buttons', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('📋');
@@ -193,9 +179,7 @@ describe('markdown-renderer.js', () => {
 
   describe('copyMarkdown', () => {
     it('should copy markdown content to clipboard', async () => {
-      global.MARKDOWN_CONTENT = btoa('# Test\n\nContent');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('# Test\n\nContent'));
 
       await copyMarkdown();
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('# Test\n\nContent');
@@ -203,9 +187,7 @@ describe('markdown-renderer.js', () => {
 
     it('should show success message', async () => {
       jest.useFakeTimers();
-      global.MARKDOWN_CONTENT = btoa('Test');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test'));
 
       await copyMarkdown();
       expect(document.querySelector('.status-message').textContent).toBe(
@@ -217,12 +199,10 @@ describe('markdown-renderer.js', () => {
 
   describe('copyHTML', () => {
     it('should copy rendered HTML to clipboard', async () => {
-      global.MARKDOWN_CONTENT = btoa('Test');
       global.marked.parse.mockReturnValue('<p>Test</p>');
       global.DOMPurify.sanitize.mockReturnValue('<p>Test</p>');
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test'));
 
       await copyHTML();
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith('<p>Test</p>');
@@ -230,9 +210,7 @@ describe('markdown-renderer.js', () => {
 
     it('should show success message', async () => {
       jest.useFakeTimers();
-      global.MARKDOWN_CONTENT = btoa('Test');
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test'));
 
       await copyHTML();
       expect(document.querySelector('.status-message').textContent).toBe(
@@ -244,12 +222,10 @@ describe('markdown-renderer.js', () => {
 
   describe('rendering', () => {
     it('should render markdown content in container', () => {
-      global.MARKDOWN_CONTENT = btoa('Test content');
       global.marked.parse.mockReturnValue('<p>Test content</p>');
       global.DOMPurify.sanitize.mockReturnValue('<p>Test content</p>');
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer('Test content'));
 
       const markdownContent = document.getElementById('markdown-content');
       expect(markdownContent).not.toBeNull();
@@ -257,8 +233,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should include header', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Markdown Preview');
@@ -266,16 +241,14 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should include footer', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('preview-footer');
     });
 
     it('should wrap content in preview-body', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('preview-body');
@@ -288,8 +261,7 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should initialize Mermaid with correct options', () => {
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       expect(mermaid.initialize).toHaveBeenCalledWith({
         startOnLoad: false,
@@ -308,8 +280,7 @@ describe('markdown-renderer.js', () => {
         '<pre><code class="language-mermaid">graph TD\nA-->B</code></pre>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       expect(mermaid.run).toHaveBeenCalled();
     });
@@ -324,8 +295,7 @@ describe('markdown-renderer.js', () => {
         '<pre><code class="language-mermaid">graph TD\nA-->B</code></pre>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('markdown-content');
       expect(container.querySelector('.mermaid-container')).not.toBeNull();
@@ -343,8 +313,7 @@ describe('markdown-renderer.js', () => {
         `<pre><code class="language-mermaid">${diagramCode}</code></pre>`
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const diagramDiv = document.querySelector('.mermaid');
       expect(diagramDiv.textContent).toBe(diagramCode);
@@ -362,8 +331,7 @@ describe('markdown-renderer.js', () => {
           '<pre><code class="language-mermaid">graph LR\nX-->Y</code></pre>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const diagrams = document.querySelectorAll('.mermaid');
       expect(diagrams.length).toBe(2);
@@ -381,8 +349,7 @@ describe('markdown-renderer.js', () => {
         '<pre><code class="language-mermaid">graph TD\nA-->B</code></pre>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       expect(mermaid.run).toHaveBeenCalledWith({
         querySelector: '.mermaid',
@@ -395,8 +362,7 @@ describe('markdown-renderer.js', () => {
       global.marked.parse.mockReturnValue('<p>No diagrams here</p>');
       global.DOMPurify.sanitize.mockReturnValue('<p>No diagrams here</p>');
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       // mermaid.run should not be called when there are no diagrams
       expect(mermaid.run).not.toHaveBeenCalled();
@@ -412,8 +378,7 @@ describe('markdown-renderer.js', () => {
         '<pre><code class="language-mermaid">graph TD\nA-->B</code></pre>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.querySelector('.mermaid-container');
       expect(container.style.textAlign).toBe('center');
@@ -434,8 +399,7 @@ describe('markdown-renderer.js', () => {
           '<p>Some text</p>'
       );
 
-      const markdownRendererCode = fs.readFileSync(markdownRendererPath, 'utf8');
-      eval(markdownRendererCode);
+      eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('markdown-content');
       expect(container.querySelector('.language-javascript')).not.toBeNull();

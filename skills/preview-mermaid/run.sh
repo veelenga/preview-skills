@@ -98,15 +98,15 @@ if [ ${#RENDERER_VARS[@]} -gt 0 ]; then
         if [[ "$var" =~ _(ENCODED|DATA|CONTENT|CODE)$ ]]; then
             # Content variable - use CONTENT_ENCODED or CONTENT based on encoding
             if [ "$CONTENT_ENCODING" = "base64" ]; then
-                RENDER_SCRIPT="${RENDER_SCRIPT//$var/'$CONTENT_ENCODED'}"
+                RENDER_SCRIPT="${RENDER_SCRIPT//$var/$CONTENT_ENCODED}"
             else
-                RENDER_SCRIPT="${RENDER_SCRIPT//$var/'$CONTENT'}"
+                RENDER_SCRIPT="${RENDER_SCRIPT//$var/$CONTENT}"
             fi
         else
             # Parameter variable - check if a shell variable with this name exists
             if [ -n "${!var:-}" ]; then
                 # Use the value of the shell variable with the same name
-                RENDER_SCRIPT="${RENDER_SCRIPT//$var/'${!var}'}"
+                RENDER_SCRIPT="${RENDER_SCRIPT//$var/${!var}}"
             else
                 # No shell variable found - leave as-is or use empty string
                 echo "Warning: No value found for renderer variable: $var" >&2

@@ -20,13 +20,21 @@ global.mermaid = {
   run: jest.fn(() => Promise.resolve()),
 };
 
-global.DIAGRAM_ENCODED = btoa('graph TD\nA-->B');
-global.MERMAID_THEME = 'default';
-
 const mermaidRendererPath = path.join(
   __dirname,
   '../../../skills/preview-mermaid/templates/scripts/mermaid-renderer.js'
 );
+
+// Helper to load renderer with substituted data
+function loadMermaidRenderer(diagramCode, theme = 'default') {
+  const encoded = btoa(diagramCode);
+  let code = fs.readFileSync(mermaidRendererPath, 'utf8');
+  code = code.replace(/DIAGRAM_ENCODED/g, encoded);
+  code = code.replace(/MERMAID_THEME/g, theme);
+  return code;
+}
+
+const defaultDiagram = 'graph TD\nA-->B';
 
 describe('mermaid-renderer.js', () => {
   beforeEach(() => {
@@ -36,8 +44,7 @@ describe('mermaid-renderer.js', () => {
 
   describe('initialization', () => {
     it('should initialize mermaid with correct config', async () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -56,9 +63,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should decode diagram content', async () => {
-      global.DIAGRAM_ENCODED = btoa('sequenceDiagram\nA->>B: Hello');
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer('sequenceDiagram\nA->>B: Hello'));
 
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -67,8 +72,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should render mermaid diagram', async () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -80,18 +84,14 @@ describe('mermaid-renderer.js', () => {
 
   describe('stats calculation', () => {
     it('should calculate lines correctly', () => {
-      global.DIAGRAM_ENCODED = btoa('graph TD\nA-->B\nB-->C');
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer('graph TD\nA-->B\nB-->C'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('3 lines');
     });
 
     it('should calculate characters correctly', () => {
-      global.DIAGRAM_ENCODED = btoa('Test');
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer('Test'));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('4 chars');
@@ -100,8 +100,7 @@ describe('mermaid-renderer.js', () => {
 
   describe('toolbar', () => {
     it('should include reset view button', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Reset View');
@@ -109,8 +108,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should include copy code button', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy Code');
@@ -118,8 +116,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should include copy SVG button', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy SVG');
@@ -127,8 +124,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should include button icons', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('⊙');
@@ -139,24 +135,21 @@ describe('mermaid-renderer.js', () => {
 
   describe('diagram structure', () => {
     it('should create viewport container', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const viewport = document.querySelector('.diagram-viewport');
       expect(viewport).not.toBeNull();
     });
 
     it('should create wrapper container', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const wrapper = document.querySelector('.diagram-wrapper');
       expect(wrapper).not.toBeNull();
     });
 
     it('should create mermaid diagram container', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const diagram = document.getElementById('mermaid-diagram');
       expect(diagram).not.toBeNull();
@@ -164,8 +157,7 @@ describe('mermaid-renderer.js', () => {
     });
 
     it('should nest containers correctly', () => {
-      const mermaidRendererCode = fs.readFileSync(mermaidRendererPath, 'utf8');
-      eval(mermaidRendererCode);
+      eval(loadMermaidRenderer(defaultDiagram));
 
       const viewport = document.querySelector('.diagram-viewport');
       const wrapper = viewport.querySelector('.diagram-wrapper');

@@ -24,12 +24,19 @@ global.Diff2Html = {
   ),
 };
 
-global.DIFF_DATA = btoa('diff --git a/file.js b/file.js\n+added line\n-removed line');
-
 const diffRendererPath = path.join(
   __dirname,
   '../../../skills/preview-diff/templates/scripts/diff-renderer.js'
 );
+
+// Helper to load renderer with substituted data
+function loadDiffRenderer(diffContent) {
+  const encoded = btoa(diffContent);
+  const code = fs.readFileSync(diffRendererPath, 'utf8');
+  return code.replace(/DIFF_DATA/g, encoded);
+}
+
+const defaultDiff = 'diff --git a/file.js b/file.js\n+added line\n-removed line';
 
 describe('diff-renderer.js', () => {
   beforeEach(() => {
@@ -40,8 +47,7 @@ describe('diff-renderer.js', () => {
 
   describe('rendering', () => {
     it('should decode and parse diff data', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -52,8 +58,7 @@ describe('diff-renderer.js', () => {
     });
 
     it('should render diff HTML', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -64,8 +69,7 @@ describe('diff-renderer.js', () => {
     });
 
     it('should create header with stats', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -77,8 +81,7 @@ describe('diff-renderer.js', () => {
     });
 
     it('should display file statistics', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -94,8 +97,7 @@ describe('diff-renderer.js', () => {
 
   describe('controls', () => {
     it('should include expand/collapse button', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -107,8 +109,7 @@ describe('diff-renderer.js', () => {
     });
 
     it('should include search box', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -120,8 +121,7 @@ describe('diff-renderer.js', () => {
     });
 
     it('should include view toggle buttons', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -136,8 +136,7 @@ describe('diff-renderer.js', () => {
 
   describe('view modes', () => {
     it('should default to line-by-line view', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -151,8 +150,7 @@ describe('diff-renderer.js', () => {
     it('should use stored view mode from localStorage', (done) => {
       localStorage.setItem('diff-view-mode', 'side-by-side');
 
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 
@@ -166,10 +164,7 @@ describe('diff-renderer.js', () => {
 
   describe('empty diff handling', () => {
     it('should show no changes message for empty diff', (done) => {
-      global.DIFF_DATA = btoa('');
-
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(''));
 
       window.dispatchEvent(new Event('load'));
 
@@ -183,8 +178,7 @@ describe('diff-renderer.js', () => {
 
   describe('styling', () => {
     it('should add custom styles to document head', (done) => {
-      const diffRendererCode = fs.readFileSync(diffRendererPath, 'utf8');
-      eval(diffRendererCode);
+      eval(loadDiffRenderer(defaultDiff));
 
       window.dispatchEvent(new Event('load'));
 

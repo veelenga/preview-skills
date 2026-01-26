@@ -1,4 +1,4 @@
-const encodedDiffData = DIFF_DATA;
+const encodedDiffData = 'DIFF_DATA';
 
 const VIEW_MODES = {
   SIDE_BY_SIDE: 'side-by-side',

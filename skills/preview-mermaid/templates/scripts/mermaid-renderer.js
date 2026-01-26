@@ -1,6 +1,6 @@
 const container = document.getElementById('content');
-const diagramCode = base64DecodeUnicode(DIAGRAM_ENCODED);
-const currentTheme = MERMAID_THEME;
+const diagramCode = base64DecodeUnicode('DIAGRAM_ENCODED');
+const currentTheme = 'MERMAID_THEME';
 
 const lines = diagramCode.split('\n').length;
 const chars = diagramCode.length;

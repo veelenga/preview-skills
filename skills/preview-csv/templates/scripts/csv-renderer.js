@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // Functions in this file are called from HTML onclick handlers
 
-const csvData = base64DecodeUnicode(CSV_DATA_ENCODED);
+const csvData = base64DecodeUnicode('CSV_DATA_ENCODED');
 const container = document.getElementById('content');
 
 let sortState = {};

@@ -2,7 +2,7 @@
 // Functions in this file are called from HTML onclick handlers
 
 const container = document.getElementById('content');
-const markdownContent = base64DecodeUnicode(MARKDOWN_CONTENT);
+const markdownContent = base64DecodeUnicode('MARKDOWN_CONTENT');
 
 // Initialize Mermaid
 if (typeof mermaid !== 'undefined') {

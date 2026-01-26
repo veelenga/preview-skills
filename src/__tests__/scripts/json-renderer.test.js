@@ -12,24 +12,28 @@ const commonUiPath = path.join(
 const commonUiCode = fs.readFileSync(commonUiPath, 'utf8');
 eval(commonUiCode);
 
-global.JSON_DATA_ENCODED = btoa(JSON.stringify({ test: 'data', nested: { value: 123 } }));
-
 const jsonRendererPath = path.join(
   __dirname,
   '../../../skills/preview-json/templates/scripts/json-renderer.js'
 );
 
+// Helper to load renderer with substituted data
+function loadJsonRenderer(jsonData) {
+  const encoded = btoa(JSON.stringify(jsonData));
+  const code = fs.readFileSync(jsonRendererPath, 'utf8');
+  return code.replace(/JSON_DATA_ENCODED/g, encoded);
+}
+
+const defaultJson = { test: 'data' };
+
 describe('json-renderer.js', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="content"></div>';
-    global.JSON_DATA_ENCODED = btoa(JSON.stringify({ test: 'data' }));
   });
 
   describe('rendering', () => {
     it('should render JSON content in container', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ name: 'test', value: 42 }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ name: 'test', value: 42 }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer).not.toBeNull();
@@ -38,8 +42,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should include header', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('JSON Viewer');
@@ -47,16 +50,14 @@ describe('json-renderer.js', () => {
     });
 
     it('should include footer', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('preview-footer');
     });
 
     it('should wrap content in preview-body', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('preview-body');
@@ -65,8 +66,7 @@ describe('json-renderer.js', () => {
 
   describe('toolbar', () => {
     it('should include search box', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('search-input');
@@ -74,8 +74,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should include collapse all button', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Collapse All');
@@ -83,8 +82,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should include expand all button', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Expand All');
@@ -92,8 +90,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should include copy button', () => {
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer(defaultJson));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Copy JSON');
@@ -103,27 +100,21 @@ describe('json-renderer.js', () => {
 
   describe('stats calculation', () => {
     it('should show depth stat for objects', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ a: { b: { c: 1 } } }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ a: { b: { c: 1 } } }));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Depth');
     });
 
     it('should identify arrays', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify([1, 2, 3]));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer([1, 2, 3]));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Array');
     });
 
     it('should identify objects', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ key: 'value' }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ key: 'value' }));
 
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('Object');
@@ -132,9 +123,7 @@ describe('json-renderer.js', () => {
 
   describe('JSON formatting', () => {
     it('should format string values', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ text: 'hello' }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ text: 'hello' }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('json-string');
@@ -142,9 +131,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should format number values', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ num: 42 }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ num: 42 }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('json-number');
@@ -152,9 +139,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should format boolean values', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ flag: true }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ flag: true }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('json-boolean');
@@ -162,9 +147,7 @@ describe('json-renderer.js', () => {
     });
 
     it('should format null values', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ empty: null }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ empty: null }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('json-null');
@@ -172,18 +155,14 @@ describe('json-renderer.js', () => {
     });
 
     it('should add collapsible class to objects', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ a: 1 }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ a: 1 }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('json-collapsible');
     });
 
     it('should include data-path attributes', () => {
-      global.JSON_DATA_ENCODED = btoa(JSON.stringify({ key: 'value' }));
-      const jsonRendererCode = fs.readFileSync(jsonRendererPath, 'utf8');
-      eval(jsonRendererCode);
+      eval(loadJsonRenderer({ key: 'value' }));
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('data-path');
