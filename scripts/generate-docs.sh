@@ -57,8 +57,12 @@ generate_example() {
         local old_user_code_name
         old_user_code_name=$(basename "$user_code_file")
         cp "$user_code_file" "$output_dir/$user_code_name"
-        # Update the reference in the HTML file
-        sed -i '' "s|$old_user_code_name|$user_code_name|g" "$output_dir/$output_name"
+        # Update the reference in the HTML file (cross-platform sed)
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' "s|$old_user_code_name|$user_code_name|g" "$output_dir/$output_name"
+        else
+            sed -i "s|$old_user_code_name|$user_code_name|g" "$output_dir/$output_name"
+        fi
     fi
 
     echo "[OK]"

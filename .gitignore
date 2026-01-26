@@ -8,3 +8,6 @@ coverage/
 *.tgz
 .npm
 .eslintcache
+
+# Generated docs (built in CI)
+docs/examples/
