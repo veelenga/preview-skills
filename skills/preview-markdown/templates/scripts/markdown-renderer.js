@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
-// Functions in this file are called from HTML onclick handlers
+
+const SCROLL_PADDING = 20;
+const INITIAL_SCROLL_DELAY_MS = 100;
+const HEADER_SELECTOR =
+  '#markdown-content h1, #markdown-content h2, #markdown-content h3, #markdown-content h4, #markdown-content h5, #markdown-content h6';
 
 const container = document.getElementById('content');
 const markdownContent = base64DecodeUnicode('MARKDOWN_CONTENT');
 
-// Initialize Mermaid
 if (typeof mermaid !== 'undefined') {
   mermaid.initialize({
     startOnLoad: false,
@@ -13,11 +16,23 @@ if (typeof mermaid !== 'undefined') {
   });
 }
 
+const renderer = new marked.Renderer();
+
+renderer.heading = function (text, level, raw) {
+  const id = raw
+    .toLowerCase()
+    .replace(/<[^>]*>/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+  return `<h${level} id="${id}">${text}</h${level}>`;
+};
+
 marked.setOptions({
   breaks: true,
   gfm: true,
-  headerIds: true,
-  mangle: false,
+  renderer: renderer,
 });
 
 const rawHtml = marked.parse(markdownContent);
@@ -53,8 +68,21 @@ const renderedHtml = DOMPurify.sanitize(rawHtml, {
     'span',
     'input',
     'label',
+    'details',
+    'summary',
   ],
-  ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'class', 'id', 'type', 'checked', 'disabled'],
+  ALLOWED_ATTR: [
+    'href',
+    'src',
+    'alt',
+    'title',
+    'class',
+    'id',
+    'type',
+    'checked',
+    'disabled',
+    'open',
+  ],
   ALLOW_DATA_ATTR: false,
   ALLOW_UNKNOWN_PROTOCOLS: false,
   SAFE_FOR_JQUERY: true,
@@ -77,10 +105,13 @@ container.innerHTML =
 
 document.getElementById('markdown-content').innerHTML = renderedHtml;
 
-// Render Mermaid diagrams
 if (typeof mermaid !== 'undefined') {
   renderMermaidDiagrams();
 }
+
+addHeaderAnchors();
+setupAnchorScrolling();
+handleInitialHash();
 
 function copyMarkdown() {
   copyToClipboard(markdownContent, 'Markdown copied to clipboard!');
@@ -99,7 +130,6 @@ function renderMermaidDiagrams() {
     const diagramCode = codeBlock.textContent;
     const diagramId = `mermaid-diagram-${diagramIndex++}`;
 
-    // Create a container for the diagram
     const diagramContainer = document.createElement('div');
     diagramContainer.className = 'mermaid-container';
     diagramContainer.style.textAlign = 'center';
@@ -111,15 +141,70 @@ function renderMermaidDiagrams() {
     diagramDiv.textContent = diagramCode;
 
     diagramContainer.appendChild(diagramDiv);
-
-    // Replace the pre/code block with the diagram container
     pre.parentNode.replaceChild(diagramContainer, pre);
   });
 
-  // Render all diagrams
   if (diagramIndex > 0) {
-    mermaid.run({
-      querySelector: '.mermaid',
-    });
+    mermaid.run({ querySelector: '.mermaid' });
   }
+}
+
+function addHeaderAnchors() {
+  const headers = document.querySelectorAll(HEADER_SELECTOR);
+
+  headers.forEach((header) => {
+    if (!header.id) return;
+
+    const anchor = document.createElement('a');
+    anchor.className = 'header-anchor';
+    anchor.href = `#${header.id}`;
+    anchor.setAttribute('aria-label', `Link to ${header.textContent}`);
+    anchor.textContent = '#';
+
+    header.insertBefore(anchor, header.firstChild);
+  });
+}
+
+function setupAnchorScrolling() {
+  const previewBody = document.querySelector('.preview-body');
+  if (!previewBody) return;
+
+  function handleAnchorClick(e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+
+    const targetId = link.getAttribute('href').slice(1);
+    const targetElement = document.getElementById(targetId);
+    if (!targetElement) return;
+
+    e.preventDefault();
+    history.pushState(null, '', `#${targetId}`);
+    scrollToElement(targetElement, previewBody);
+  }
+
+  document.addEventListener('click', handleAnchorClick);
+
+  window.addEventListener('unload', function cleanup() {
+    document.removeEventListener('click', handleAnchorClick);
+    window.removeEventListener('unload', cleanup);
+  });
+}
+
+function handleInitialHash() {
+  const previewBody = document.querySelector('.preview-body');
+  if (!window.location.hash || !previewBody) return;
+
+  const targetId = window.location.hash.slice(1);
+  const targetElement = document.getElementById(targetId);
+  if (!targetElement) return;
+
+  setTimeout(() => scrollToElement(targetElement, previewBody), INITIAL_SCROLL_DELAY_MS);
+}
+
+function scrollToElement(element, container) {
+  const containerRect = container.getBoundingClientRect();
+  const elementRect = element.getBoundingClientRect();
+  const scrollTop = container.scrollTop + (elementRect.top - containerRect.top) - SCROLL_PADDING;
+
+  container.scrollTo({ top: scrollTop, behavior: 'smooth' });
 }

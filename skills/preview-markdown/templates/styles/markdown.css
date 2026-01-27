@@ -173,3 +173,102 @@
     text-decoration: line-through;
     color: var(--color-text-tertiary);
 }
+
+/* Header anchor links */
+#markdown-content h1,
+#markdown-content h2,
+#markdown-content h3,
+#markdown-content h4,
+#markdown-content h5,
+#markdown-content h6 {
+    position: relative;
+}
+
+#markdown-content .header-anchor {
+    position: absolute;
+    left: -1.5em;
+    padding-right: 0.5em;
+    font-weight: 400;
+    opacity: 0;
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+#markdown-content h1:hover .header-anchor,
+#markdown-content h2:hover .header-anchor,
+#markdown-content h3:hover .header-anchor,
+#markdown-content h4:hover .header-anchor,
+#markdown-content h5:hover .header-anchor,
+#markdown-content h6:hover .header-anchor,
+#markdown-content .header-anchor:focus {
+    opacity: 1;
+}
+
+#markdown-content .header-anchor:hover {
+    color: var(--color-primary);
+}
+
+/* Expandable sections (details/summary) */
+#markdown-content details {
+    margin-bottom: 1em;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 6px;
+    background: var(--color-surface-primary);
+}
+
+#markdown-content details[open] {
+    padding-bottom: 1em;
+}
+
+#markdown-content summary {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    background: var(--color-surface-secondary);
+    border-radius: 6px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s ease;
+}
+
+#markdown-content summary::-webkit-details-marker {
+    display: none;
+}
+
+#markdown-content summary::before {
+    content: '▶';
+    font-size: 0.75em;
+    transition: transform 0.2s ease;
+}
+
+#markdown-content details[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+#markdown-content details[open] > summary {
+    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+#markdown-content summary:hover {
+    background: var(--color-border-primary);
+}
+
+#markdown-content details > *:not(summary) {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+#markdown-content details > *:not(summary):first-of-type {
+    margin-top: 1em;
+}
+
+#markdown-content details > ul,
+#markdown-content details > ol {
+    margin-left: 16px;
+    padding-left: 2em;
+}
