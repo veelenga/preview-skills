@@ -171,6 +171,59 @@ get_temp_file_path() {
 }
 
 #######################################
+# Get output file path (custom or temp)
+# Arguments:
+#   $1 - Skill name (e.g., "markdown", "mermaid")
+#   $2 - Filename (e.g., "document", "diagram")
+#   $3 - Custom output path (optional, can be file or directory)
+# Returns:
+#   Path to output file
+#######################################
+get_output_file_path() {
+    local skill_name="$1"
+    local filename="$2"
+    local custom_output="${3:-}"
+
+    if [ -z "$custom_output" ]; then
+        get_temp_file_path "$skill_name" "$filename"
+        return
+    fi
+
+    local safe_filename
+    safe_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-100)
+    [ -z "$safe_filename" ] && safe_filename="file"
+
+    if [ -d "$custom_output" ]; then
+        echo "${custom_output%/}/${safe_filename}.html"
+        return
+    fi
+
+    if [[ "$custom_output" == */ ]]; then
+        mkdir -p "$custom_output" 2>/dev/null || {
+            echo "Error: Cannot create directory: $custom_output" >&2
+            return 1
+        }
+        echo "${custom_output%/}/${safe_filename}.html"
+        return
+    fi
+
+    local parent_dir
+    parent_dir=$(dirname "$custom_output")
+    if [ ! -d "$parent_dir" ]; then
+        mkdir -p "$parent_dir" 2>/dev/null || {
+            echo "Error: Cannot create directory: $parent_dir" >&2
+            return 1
+        }
+    fi
+
+    if [[ "$custom_output" != *.html ]]; then
+        echo "${custom_output}.html"
+    else
+        echo "$custom_output"
+    fi
+}
+
+#######################################
 # Clean up old preview files
 # Arguments:
 #   $1 - Skill name (optional, cleans all if not specified)
