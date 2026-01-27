@@ -67,6 +67,56 @@ container.innerHTML =
   '<div class="preview-body"><div id="json-container"></div></div>' +
   createFooter();
 
+function generatePreview(obj, maxLength = 80) {
+  if (Array.isArray(obj)) {
+    const items = [];
+    for (let i = 0; i < obj.length && items.join(', ').length < maxLength; i++) {
+      items.push(formatPreviewValue(obj[i]));
+    }
+    const preview = items.join(', ');
+    const suffix = obj.length > items.length ? ', …' : '';
+    return (
+      '[ ' +
+      preview +
+      suffix +
+      ' ]  <span class="json-preview-count">' +
+      obj.length +
+      ' items</span>'
+    );
+  } else if (typeof obj === 'object' && obj !== null) {
+    const keys = Object.keys(obj);
+    const items = [];
+    for (let i = 0; i < keys.length && items.join(', ').length < maxLength; i++) {
+      const key = keys[i];
+      items.push('"' + escapeHtml(key) + '": ' + formatPreviewValue(obj[key]));
+    }
+    const preview = items.join(', ');
+    const suffix = keys.length > items.length ? ', …' : '';
+    return (
+      '{ ' +
+      preview +
+      suffix +
+      ' }  <span class="json-preview-count">' +
+      keys.length +
+      ' keys</span>'
+    );
+  }
+  return '';
+}
+
+function formatPreviewValue(val) {
+  if (val === null) return '<span class="json-null">null</span>';
+  if (typeof val === 'string') {
+    const truncated = val.length > 20 ? val.substring(0, 20) + '…' : val;
+    return '<span class="json-string">"' + escapeHtml(truncated) + '"</span>';
+  }
+  if (typeof val === 'number') return '<span class="json-number">' + val + '</span>';
+  if (typeof val === 'boolean') return '<span class="json-boolean">' + val + '</span>';
+  if (Array.isArray(val)) return '<span class="json-bracket">[…]</span>';
+  if (typeof val === 'object') return '<span class="json-bracket">{…}</span>';
+  return String(val);
+}
+
 function formatJSON(obj, indent, path) {
   indent = indent || 0;
   path = path || '';
@@ -77,8 +127,9 @@ function formatJSON(obj, indent, path) {
     if (obj.length === 0) {
       return '<span class="json-bracket">[]</span>';
     }
-    html +=
-      '<span class="json-bracket json-collapsible" onclick="toggleCollapse(event)">[</span>\n';
+    const preview = generatePreview(obj);
+    html += '<span class="json-bracket json-collapsible" onclick="toggleCollapse(event)">[</span>';
+    html += '<span class="json-preview">' + preview + '</span>';
     html += '<div class="json-children">';
     obj.forEach((item, i) => {
       const itemPath = path + '[' + i + ']';
@@ -88,14 +139,15 @@ function formatJSON(obj, indent, path) {
       html += '</div>';
     });
     html += '</div>';
-    html += '<div class="json-line">' + spaces + '<span class="json-bracket">]</span></div>';
+    html += '<span class="json-bracket json-closing">]</span>';
   } else if (typeof obj === 'object' && obj !== null) {
     const keys = Object.keys(obj);
     if (keys.length === 0) {
       return '<span class="json-bracket">{}</span>';
     }
-    html +=
-      '<span class="json-bracket json-collapsible" onclick="toggleCollapse(event)">{</span>\n';
+    const preview = generatePreview(obj);
+    html += '<span class="json-bracket json-collapsible" onclick="toggleCollapse(event)">{</span>';
+    html += '<span class="json-preview">' + preview + '</span>';
     html += '<div class="json-children">';
     keys.forEach((key, i) => {
       const keyPath = path ? path + '.' + key : key;
@@ -106,7 +158,7 @@ function formatJSON(obj, indent, path) {
       html += '</div>';
     });
     html += '</div>';
-    html += '<div class="json-line">' + spaces + '<span class="json-bracket">}</span></div>';
+    html += '<span class="json-bracket json-closing">}</span>';
   } else if (typeof obj === 'string') {
     html += '<span class="json-string">"' + escapeHtml(obj) + '"</span>';
   } else if (typeof obj === 'number') {

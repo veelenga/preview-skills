@@ -89,7 +89,7 @@ detect_type() {
     case "$ext" in
         md|markdown)     echo "markdown" ;;
         mmd|mermaid)     echo "mermaid" ;;
-        json)            echo "json" ;;
+        json|jsonl)      echo "json" ;;
         csv)             echo "csv" ;;
         d3)              echo "d3" ;;
         threejs|3d)      echo "threejs" ;;

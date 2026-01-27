@@ -221,4 +221,63 @@ describe('json-renderer.js', () => {
       expect(jsonContainer.innerHTML).toContain('[');
     });
   });
+
+  describe('collapsed preview', () => {
+    it('should include preview span for objects', () => {
+      eval(loadJsonRenderer({ name: 'Alice', age: 30 }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('json-preview');
+    });
+
+    it('should include preview span for arrays', () => {
+      eval(loadJsonRenderer([1, 2, 3]));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('json-preview');
+    });
+
+    it('should show key count for objects', () => {
+      eval(loadJsonRenderer({ a: 1, b: 2, c: 3 }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('3 keys');
+    });
+
+    it('should show item count for arrays', () => {
+      eval(loadJsonRenderer([1, 2, 3, 4, 5]));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('5 items');
+    });
+
+    it('should show preview values for object keys', () => {
+      eval(loadJsonRenderer({ name: 'test', value: 42 }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('"name"');
+      expect(jsonContainer.innerHTML).toContain('test');
+    });
+
+    it('should truncate long string values in preview', () => {
+      eval(loadJsonRenderer({ text: 'this is a very long string that should be truncated' }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('…');
+    });
+
+    it('should show nested objects as {…} in preview', () => {
+      eval(loadJsonRenderer({ nested: { inner: 'value' } }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('{…}');
+    });
+
+    it('should show nested arrays as […] in preview', () => {
+      eval(loadJsonRenderer({ items: [1, 2, 3] }));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('[…]');
+    });
+  });
 });
