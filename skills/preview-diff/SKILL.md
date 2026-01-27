@@ -41,12 +41,9 @@ git diff HEAD | ~/.claude/skills/preview-diff/run.sh
 
 # Preview specific branch comparison
 git diff main..feature-branch | ~/.claude/skills/preview-diff/run.sh
-
-# Then open the result
-open /tmp/preview-skills/preview-preview-diff-diff.html
 ```
 
-The script handles all HTML generation automatically.
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
 
 ## Technology
 
