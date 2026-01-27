@@ -1,10 +1,32 @@
 #!/usr/bin/env bash
 
 # Universal Preview Tool
-# Usage: ./run.sh <file> [background]
-#    OR: cat content | ./run.sh [name] [background]
+# Usage: ./run.sh <file> [-o output]
+#    OR: cat content | ./run.sh [name] [-o output]
+#
+# Options:
+#   -o, --output  Output file path or directory (default: /tmp/preview-skills/)
 
 set -euo pipefail
+
+# Parse options
+OUTPUT_PATH=""
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -o|--output)
+            OUTPUT_PATH="$2"
+            shift 2
+            ;;
+        *)
+            POSITIONAL_ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+
+set -- "${POSITIONAL_ARGS[@]:-}"
 
 # Get directories (tools are inside skills/)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -108,7 +130,7 @@ if [ ${#RENDERER_VARS[@]} -gt 0 ]; then
 fi
 
 # Generate output file path
-OUTPUT_FILE=$(get_temp_file_path "$TOOL_NAME" "$FILENAME")
+OUTPUT_FILE=$(get_output_file_path "$TOOL_NAME" "$FILENAME" "$OUTPUT_PATH")
 
 # Load common JavaScript libraries
 UTILS_JS=$(cat "$LIB_ROOT/templates/scripts/utils.js")
