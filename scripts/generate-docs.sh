@@ -75,6 +75,7 @@ generate_example "preview-csv" "$EXAMPLES_DIR/csv/employees.csv" "$DOCS_DIR/exam
 echo ""
 echo "JSON Examples:"
 generate_example "preview-json" "$EXAMPLES_DIR/json/sample.json" "$DOCS_DIR/examples/json" "sample.html"
+generate_example "preview-json" "$EXAMPLES_DIR/json/logs.jsonl" "$DOCS_DIR/examples/json" "logs.html"
 
 echo ""
 echo "Markdown Examples:"

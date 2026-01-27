@@ -24,6 +24,13 @@ function loadJsonRenderer(jsonData) {
   return code.replace(/JSON_DATA_ENCODED/g, encoded);
 }
 
+// Helper to load renderer with raw text (for JSONL)
+function loadJsonRendererRaw(rawText) {
+  const encoded = btoa(rawText);
+  const code = fs.readFileSync(jsonRendererPath, 'utf8');
+  return code.replace(/JSON_DATA_ENCODED/g, encoded);
+}
+
 const defaultJson = { test: 'data' };
 
 describe('json-renderer.js', () => {
@@ -166,6 +173,52 @@ describe('json-renderer.js', () => {
 
       const jsonContainer = document.getElementById('json-container');
       expect(jsonContainer.innerHTML).toContain('data-path');
+    });
+  });
+
+  describe('JSONL parsing', () => {
+    it('should parse JSONL format with multiple lines', () => {
+      const jsonlData = '{"id":1,"name":"Alice"}\n{"id":2,"name":"Bob"}';
+      eval(loadJsonRendererRaw(jsonlData));
+
+      const container = document.getElementById('content');
+      expect(container.innerHTML).toContain('JSONL Viewer');
+      expect(container.innerHTML).toContain('Alice');
+      expect(container.innerHTML).toContain('Bob');
+    });
+
+    it('should show JSONL stats with line count', () => {
+      const jsonlData = '{"a":1}\n{"b":2}\n{"c":3}';
+      eval(loadJsonRendererRaw(jsonlData));
+
+      const container = document.getElementById('content');
+      expect(container.innerHTML).toContain('JSONL');
+      expect(container.innerHTML).toContain('3 lines');
+    });
+
+    it('should ignore empty lines in JSONL', () => {
+      const jsonlData = '{"id":1}\n\n{"id":2}\n';
+      eval(loadJsonRendererRaw(jsonlData));
+
+      const container = document.getElementById('content');
+      expect(container.innerHTML).toContain('2 lines');
+    });
+
+    it('should still parse valid JSON as JSON (not JSONL)', () => {
+      eval(loadJsonRenderer({ key: 'value' }));
+
+      const container = document.getElementById('content');
+      expect(container.innerHTML).toContain('JSON Viewer');
+      expect(container.innerHTML).not.toContain('JSONL');
+    });
+
+    it('should render JSONL items as array elements', () => {
+      const jsonlData = '{"name":"test1"}\n{"name":"test2"}';
+      eval(loadJsonRendererRaw(jsonlData));
+
+      const jsonContainer = document.getElementById('json-container');
+      expect(jsonContainer.innerHTML).toContain('json-bracket');
+      expect(jsonContainer.innerHTML).toContain('[');
     });
   });
 });

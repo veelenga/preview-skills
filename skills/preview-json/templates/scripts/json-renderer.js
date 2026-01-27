@@ -1,7 +1,29 @@
 /* eslint-disable no-unused-vars */
 // Functions in this file are called from HTML onclick handlers
 
-const jsonData = JSON.parse(base64DecodeUnicode('JSON_DATA_ENCODED'));
+const rawData = base64DecodeUnicode('JSON_DATA_ENCODED');
+let jsonData;
+let isJsonl = false;
+
+function parseJsonl(text) {
+  const lines = text.split('\n').filter((line) => line.trim());
+  if (lines.length === 0) return null;
+
+  const results = [];
+  for (const line of lines) {
+    results.push(JSON.parse(line));
+  }
+  return results;
+}
+
+try {
+  jsonData = JSON.parse(rawData);
+} catch (e) {
+  // Try JSONL format (one JSON object per line)
+  jsonData = parseJsonl(rawData);
+  isJsonl = true;
+}
+
 const container = document.getElementById('content');
 let searchQuery = '';
 
@@ -28,8 +50,9 @@ function analyzeJSON(obj, depth = 0) {
 }
 
 const analysis = analyzeJSON(jsonData);
-const rootType = Array.isArray(jsonData) ? 'Array' : 'Object';
-const stats = `${rootType} • Depth ${analysis.maxDepth}`;
+const rootType = isJsonl ? 'JSONL' : Array.isArray(jsonData) ? 'Array' : 'Object';
+const itemCount = isJsonl ? `${jsonData.length} lines` : '';
+const stats = `${rootType}${itemCount ? ' • ' + itemCount : ''} • Depth ${analysis.maxDepth}`;
 
 const toolbarItems = [
   createSearchBox('searchJSON(this.value)', 'clearSearch()'),
@@ -38,8 +61,9 @@ const toolbarItems = [
   createButton('Copy JSON', 'copyJSON()', '📋'),
 ];
 
+const viewerTitle = isJsonl ? 'JSONL Viewer' : 'JSON Viewer';
 container.innerHTML =
-  createHeader('JSON Viewer', stats, toolbarItems) +
+  createHeader(viewerTitle, stats, toolbarItems) +
   '<div class="preview-body"><div id="json-container"></div></div>' +
   createFooter();
 
