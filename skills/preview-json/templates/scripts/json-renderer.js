@@ -199,8 +199,8 @@ function getParentPath(path) {
   if (!path) return '';
 
   // Find the last separator (. or [)
-  let lastDot = path.lastIndexOf('.');
-  let lastBracket = path.lastIndexOf('[');
+  const lastDot = path.lastIndexOf('.');
+  const lastBracket = path.lastIndexOf('[');
 
   if (lastDot === -1 && lastBracket === -1) return '';
   if (lastDot > lastBracket) return path.substring(0, lastDot);
@@ -272,17 +272,13 @@ function searchJSON(query) {
   });
 
   // Second pass: show collected paths, highlight only actual matches
-  let visibleCount = 0;
-
   lines.forEach((line) => {
     const path = line.getAttribute('data-path') || '';
     const shouldShow = pathsToShow.has(path);
     const isDirectMatch = matchingPaths.has(path);
-    const isAncestor = ancestorPaths.has(path);
 
     if (shouldShow) {
       line.classList.remove('hidden');
-      visibleCount++;
 
       if (isDirectMatch) {
         line.classList.add('highlight');
