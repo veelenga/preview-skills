@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
 # Universal Preview Tool
-# Usage: ./run.sh <file> [-o output]
-#    OR: cat content | ./run.sh [name] [-o output]
+# Usage: ./run.sh <file> [-o output] [--no-browser]
+#    OR: cat content | ./run.sh [name] [-o output] [--no-browser]
 #
 # Options:
-#   -o, --output  Output file path or directory (default: /tmp/preview-skills/)
+#   -o, --output    Output file path or directory (default: /tmp/preview-skills/)
+#   --no-browser    Skip opening browser, just output file path
 
 set -euo pipefail
 
 # Parse options
 OUTPUT_PATH=""
+NO_BROWSER=0
 POSITIONAL_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -18,6 +20,10 @@ while [[ $# -gt 0 ]]; do
         -o|--output)
             OUTPUT_PATH="$2"
             shift 2
+            ;;
+        --no-browser)
+            NO_BROWSER=1
+            shift
             ;;
         *)
             POSITIONAL_ARGS+=("$1")
@@ -200,5 +206,7 @@ generate_html
 
 echo "Preview created: $OUTPUT_FILE"
 
-# Open in browser
-open_in_browser "$OUTPUT_FILE"
+# Open in browser (unless --no-browser flag is set)
+if [ "$NO_BROWSER" != "1" ]; then
+    open_in_browser "$OUTPUT_FILE"
+fi

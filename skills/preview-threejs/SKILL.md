@@ -27,6 +27,13 @@ echo "const cube = new THREE.Mesh(...);\nscene.add(cube);" | /preview
 
 **Best Practice:** For temporary or generated 3D scenes, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.
 
+## Options
+
+The script works with sensible defaults but supports these flags for flexibility:
+
+- `-o, --output PATH` - Custom output path
+- `--no-browser` - Skip browser, output file path only
+
 ## Features
 
 - **3D rendering** with WebGL

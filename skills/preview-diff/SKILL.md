@@ -45,6 +45,13 @@ git diff main..feature-branch | ~/.claude/skills/preview-diff/run.sh
 
 The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
 
+## Options
+
+The script works with sensible defaults but supports these flags for flexibility:
+
+- `-o, --output PATH` - Custom output path
+- `--no-browser` - Skip browser, output file path only
+
 ## Technology
 
 - **diff2html**: GitHub-style diff rendering
