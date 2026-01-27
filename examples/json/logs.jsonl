@@ -1,0 +1,8 @@
+{"timestamp":"2024-01-15T10:23:45Z","level":"INFO","service":"api-gateway","message":"Request received","requestId":"abc123","path":"/api/users","method":"GET"}
+{"timestamp":"2024-01-15T10:23:46Z","level":"DEBUG","service":"user-service","message":"Fetching user list","requestId":"abc123","query":{"limit":10,"offset":0}}
+{"timestamp":"2024-01-15T10:23:47Z","level":"INFO","service":"database","message":"Query executed","requestId":"abc123","duration":45,"rows":10}
+{"timestamp":"2024-01-15T10:23:48Z","level":"INFO","service":"api-gateway","message":"Response sent","requestId":"abc123","statusCode":200,"duration":120}
+{"timestamp":"2024-01-15T10:24:01Z","level":"WARN","service":"auth-service","message":"Token expiring soon","userId":"user456","expiresIn":300}
+{"timestamp":"2024-01-15T10:24:15Z","level":"ERROR","service":"payment-service","message":"Payment failed","orderId":"order789","error":{"code":"INSUFFICIENT_FUNDS","message":"Account balance too low"}}
+{"timestamp":"2024-01-15T10:24:30Z","level":"INFO","service":"notification-service","message":"Email sent","recipient":"user@example.com","template":"order_confirmation"}
+{"timestamp":"2024-01-15T10:25:00Z","level":"DEBUG","service":"cache-service","message":"Cache hit","key":"user:456:profile","ttl":3600}

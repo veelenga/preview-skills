@@ -91,8 +91,47 @@
     content: "▶";
 }
 
-.json-collapsed + .json-children {
+.json-collapsed + .json-preview {
+    display: inline-block;
+}
+
+.json-collapsed + .json-preview + .json-children {
     display: none;
+}
+
+
+.json-preview {
+    display: none;
+    max-width: calc(100vw - 120px);
+    overflow-x: auto;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 2px 8px;
+    margin-left: 4px;
+    background: var(--color-surface-secondary);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    scrollbar-width: thin;
+}
+
+.json-preview::-webkit-scrollbar {
+    height: 4px;
+}
+
+.json-preview::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.json-preview::-webkit-scrollbar-thumb {
+    background: var(--color-border-primary);
+    border-radius: 2px;
+}
+
+.json-preview-count {
+    color: var(--color-text-tertiary);
+    font-size: 12px;
+    font-style: italic;
 }
 
 .json-children {

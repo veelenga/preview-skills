@@ -9,7 +9,7 @@ commands:
 
 # Preview JSON Skill
 
-Interactive JSON viewer that generates HTML visualizations with syntax highlighting, collapsible tree structure, and search functionality.
+Interactive JSON/JSONL viewer that generates HTML visualizations with syntax highlighting, collapsible tree structure, and search functionality.
 
 ## Usage
 
@@ -17,9 +17,16 @@ Interactive JSON viewer that generates HTML visualizations with syntax highlight
 # Preview a JSON file
 /preview data.json
 
+# Preview a JSONL file (JSON Lines format)
+/preview logs.jsonl
+
 # Pipe JSON data (preferred for temporary content)
 cat data.json | /preview
 echo '{"name":"test","value":123}' | /preview
+
+# Pipe JSONL data
+echo '{"id":1,"name":"Alice"}
+{"id":2,"name":"Bob"}' | /preview
 
 # With custom background color
 /preview data.json --background "#1e1e1e"
@@ -48,10 +55,12 @@ echo '{"name":"test","value":123}' | /preview
 Use this skill when the user wants to:
 
 - View and explore JSON data files
+- View JSONL (JSON Lines) log files or streaming data
 - Inspect API responses
 - Debug JSON structures
 - Verify JSON formatting
 - Share formatted JSON data
+- Analyze newline-delimited JSON exports
 
 ## Examples
 
@@ -62,15 +71,18 @@ Use this skill when the user wants to:
 - "open the config.json"
 - "visualize this JSON"
 - "let me see what's in package.json"
+- "preview the logs.jsonl file"
+- "show me this JSONL export"
 
 ## Technical Details
 
 ### File Requirements
 
-- File extension: `.json`
+- File extension: `.json` or `.jsonl`
 - Maximum size: 10MB (configurable)
 - Encoding: UTF-8
-- Valid JSON format (validated with `jq` if available)
+- Valid JSON or JSONL format
+- JSONL: One valid JSON object per line
 
 ### Features in Detail
 
@@ -134,6 +146,13 @@ The file is self-contained and can be:
 - Check syntax: missing brackets, quotes, or commas
 - Ensure proper escaping of special characters
 - Use `jq` to validate: `cat file.json | jq .`
+
+### JSONL parsing issues
+
+- Ensure each line is a valid JSON object
+- Check for empty lines (they will be ignored)
+- Each line must be complete (no multi-line JSON objects)
+- Validate with: `cat file.jsonl | jq -c '.' > /dev/null`
 
 ### File too large
 

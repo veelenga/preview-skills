@@ -5,7 +5,7 @@ Self-contained preview skills for visualizing files in the browser. Install what
 | Name                                                                                                | Description                                                   | File Types         |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------ |
 | [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)            | Sortable tables with search, filtering, and column statistics | `.csv`             |
-| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)             | Syntax highlighting with collapsible tree structure           | `.json`            |
+| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)             | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`  |
 | [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)     | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
 | [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)       | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
 | [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)            | GitHub-style diffs with side-by-side comparison               | Git diffs          |
@@ -77,6 +77,7 @@ Or use natural language:
 # Data files
 /preview examples/csv/employees.csv
 /preview examples/json/sample.json
+/preview examples/json/logs.jsonl
 
 # Documentation
 /preview README.md

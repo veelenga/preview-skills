@@ -6,7 +6,7 @@
 TOOL_NAME="json"
 TOOL_TITLE_PREFIX="JSON Viewer"
 DEFAULT_FILENAME="data"
-FILE_EXTENSIONS=(".json")
+FILE_EXTENSIONS=(".json" ".jsonl")
 
 # Layout configuration
 LAYOUT_TYPE="document"
