@@ -27,6 +27,13 @@ echo "const map = L.map('map').setView([51.505, -0.09], 13);" | /preview
 
 **Best Practice:** For temporary or generated maps, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.
 
+## Options
+
+The script works with sensible defaults but supports these flags for flexibility:
+
+- `-o, --output PATH` - Custom output path
+- `--no-browser` - Skip browser, output file path only
+
 ## Features
 
 - **Interactive maps** with pan and zoom

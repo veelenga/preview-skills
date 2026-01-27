@@ -11,8 +11,7 @@ DOCS_DIR="$PROJECT_ROOT/docs"
 EXAMPLES_DIR="$PROJECT_ROOT/examples"
 SKILLS_DIR="$PROJECT_ROOT/skills"
 
-# Disable browser opening
-export PREVIEW_NO_BROWSER=1
+# Note: All skill scripts are called with --no-browser flag below
 
 # Create docs/examples directories
 mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet}
@@ -37,7 +36,7 @@ generate_example() {
 
     # Run the skill and capture output file path
     local result
-    result=$("$skill_script" "$input_file" 2>&1) || true
+    result=$("$skill_script" "$input_file" --no-browser 2>&1) || true
     local output
     output=$(echo "$result" | grep "Preview created:" | sed 's/Preview created: //')
 
