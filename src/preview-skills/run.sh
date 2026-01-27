@@ -70,7 +70,7 @@ if [ -f "${1:-}" ]; then
     # Extract filename (remove any of the configured extensions)
     FILENAME="$(basename "$SOURCE_FILE")"
     for ext in "${FILE_EXTENSIONS[@]}"; do
-        FILENAME="${FILENAME%$ext}"
+        FILENAME="${FILENAME%"$ext"}"
     done
 
     # Get additional parameters (background color, theme, etc.)
