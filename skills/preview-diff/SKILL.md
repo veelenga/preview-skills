@@ -6,7 +6,7 @@ user-invocable: true
 
 # Git Diff Preview Tool
 
-Internal tool for previewing git changes with GitHub-style formatting. Accessed via `/preview-it` command.
+Internal tool for previewing git changes with GitHub-style formatting. Accessed via `/preview-diff` command.
 
 ## Features
 
@@ -31,45 +31,22 @@ Internal tool for previewing git changes with GitHub-style formatting. Accessed 
 - View persistence across sessions
 - Shows all changes: tracked, staged, and untracked files
 
-## Usage (via /preview-it)
+## Agent Usage
 
-**All uncommitted changes:**
-
-```bash
-/preview-it
-```
-
-**Specific file:**
+When the user asks to preview a diff, **DO NOT** build HTML manually. Simply pipe the diff to the skill's run.sh script:
 
 ```bash
-/preview-it src/components/Button.tsx
+# Preview current changes
+git diff HEAD | ~/.claude/skills/preview-diff/run.sh
+
+# Preview specific branch comparison
+git diff main..feature-branch | ~/.claude/skills/preview-diff/run.sh
+
+# Then open the result
+open /tmp/preview-skills/preview-preview-diff-diff.html
 ```
 
-**Pipe from git diff (preferred for custom diffs):**
-
-```bash
-git diff main..feature-branch | /preview-it
-git diff HEAD~3..HEAD | /preview-it
-git show abc123 | /preview-it
-```
-
-**Best Practice:** For comparing branches, commits, or custom diff output, prefer piping git commands directly. This gives you more control and avoids creating temporary patch files.
-
-## What It Shows
-
-- Modified tracked files
-- Staged new files (after `git add`)
-- Untracked files (not yet added to git)
-- Deleted files
-- Renamed/moved files
-- Line-by-line changes with context
-
-No need to `git add` files to see them in the preview.
-
-## Requirements
-
-- Git repository
-- Internet connection for diff2html library from CDN
+The script handles all HTML generation automatically.
 
 ## Technology
 
