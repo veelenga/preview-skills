@@ -194,30 +194,110 @@ function toggleAll(expand) {
   });
 }
 
+function getParentPath(path) {
+  // Get the parent path (e.g., "a.b.c" -> "a.b", "[0].name" -> "[0]")
+  if (!path) return '';
+
+  // Find the last separator (. or [)
+  const lastDot = path.lastIndexOf('.');
+  const lastBracket = path.lastIndexOf('[');
+
+  if (lastDot === -1 && lastBracket === -1) return '';
+  if (lastDot > lastBracket) return path.substring(0, lastDot);
+  return path.substring(0, lastBracket);
+}
+
+function getAncestorPaths(path) {
+  // Get all ancestor paths including self
+  const ancestors = [path];
+  let current = path;
+  while (current) {
+    current = getParentPath(current);
+    if (current) ancestors.push(current);
+  }
+  return ancestors;
+}
+
 function searchJSON(query) {
   searchQuery = query.toLowerCase();
   const lines = document.querySelectorAll('.json-line[data-path]');
-  let visibleCount = 0;
 
   if (!searchQuery) {
     lines.forEach((line) => line.classList.remove('hidden', 'highlight'));
     return;
   }
 
+  // First pass: find matching lines and their parent paths
+  const matchingPaths = new Set();
+  const parentPaths = new Set();
+
   lines.forEach((line) => {
-    const text = line.textContent.toLowerCase();
-    const path = (line.getAttribute('data-path') || '').toLowerCase();
+    // Get only direct text content, excluding nested .json-children and .json-preview
+    const clone = line.cloneNode(true);
+    const children = clone.querySelector('.json-children');
+    const preview = clone.querySelector('.json-preview');
+    if (children) children.remove();
+    if (preview) preview.remove();
+    const text = clone.textContent.toLowerCase();
 
-    if (text.includes(searchQuery) || path.includes(searchQuery)) {
+    const path = line.getAttribute('data-path') || '';
+    const pathLower = path.toLowerCase();
+
+    if (text.includes(searchQuery) || pathLower.includes(searchQuery)) {
+      matchingPaths.add(path);
+      // Add the parent path (to show siblings)
+      const parent = getParentPath(path);
+      if (parent) parentPaths.add(parent);
+    }
+  });
+
+  // Collect all paths to show:
+  // - ancestors of matches (for navigation)
+  // - all children of parent paths (siblings of matches)
+  const pathsToShow = new Set();
+  const ancestorPaths = new Set();
+
+  matchingPaths.forEach((path) => {
+    getAncestorPaths(path).forEach((p) => ancestorPaths.add(p));
+  });
+
+  lines.forEach((line) => {
+    const path = line.getAttribute('data-path') || '';
+    const parent = getParentPath(path);
+
+    // Show if: it's an ancestor, OR its parent is in parentPaths (sibling of match)
+    if (ancestorPaths.has(path) || parentPaths.has(parent)) {
+      pathsToShow.add(path);
+    }
+  });
+
+  // Second pass: show collected paths, highlight only actual matches
+  lines.forEach((line) => {
+    const path = line.getAttribute('data-path') || '';
+    const shouldShow = pathsToShow.has(path);
+    const isDirectMatch = matchingPaths.has(path);
+
+    if (shouldShow) {
       line.classList.remove('hidden');
-      line.classList.add('highlight');
-      visibleCount++;
 
+      if (isDirectMatch) {
+        line.classList.add('highlight');
+      } else {
+        line.classList.remove('highlight');
+      }
+
+      // Expand all visible items when searching
+      const collapsible = line.querySelector(':scope > .json-collapsible');
+      if (collapsible) {
+        collapsible.classList.remove('json-collapsed');
+      }
+
+      // Expand all parent containers
       let parent = line.closest('.json-children');
       while (parent) {
-        const collapsible = parent.previousElementSibling;
-        if (collapsible && collapsible.classList.contains('json-collapsible')) {
-          collapsible.classList.remove('json-collapsed');
+        const parentCollapsible = parent.previousElementSibling;
+        if (parentCollapsible && parentCollapsible.classList.contains('json-collapsible')) {
+          parentCollapsible.classList.remove('json-collapsed');
         }
         parent = parent.parentElement.closest('.json-children');
       }
@@ -228,9 +308,18 @@ function searchJSON(query) {
   });
 
   const jsonContainer = document.getElementById('json-container');
+
+  // Expand root-level collapsible when there are matches
+  if (matchingPaths.size > 0) {
+    const rootCollapsible = jsonContainer.querySelector(':scope > .json-collapsible');
+    if (rootCollapsible) {
+      rootCollapsible.classList.remove('json-collapsed');
+    }
+  }
+
   let noResults = jsonContainer.querySelector('.no-results');
 
-  if (visibleCount === 0 && searchQuery) {
+  if (matchingPaths.size === 0 && searchQuery) {
     if (!noResults) {
       noResults = document.createElement('div');
       noResults.className = 'no-results';

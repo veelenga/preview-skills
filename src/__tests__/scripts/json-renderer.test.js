@@ -280,4 +280,126 @@ describe('json-renderer.js', () => {
       expect(jsonContainer.innerHTML).toContain('[…]');
     });
   });
+
+  describe('search functionality', () => {
+    describe('getParentPath', () => {
+      it('should return empty string for root-level keys', () => {
+        eval(loadJsonRenderer({ key: 'value' }));
+
+        expect(getParentPath('key')).toBe('');
+      });
+
+      it('should return parent for nested object paths', () => {
+        eval(loadJsonRenderer({ a: { b: 1 } }));
+
+        expect(getParentPath('a.b')).toBe('a');
+        expect(getParentPath('a.b.c')).toBe('a.b');
+      });
+
+      it('should return parent for array paths', () => {
+        eval(loadJsonRenderer([{ name: 'test' }]));
+
+        expect(getParentPath('[0]')).toBe('');
+        expect(getParentPath('[0].name')).toBe('[0]');
+      });
+
+      it('should handle mixed object and array paths', () => {
+        eval(loadJsonRenderer({ items: [{ id: 1 }] }));
+
+        expect(getParentPath('items[0]')).toBe('items');
+        expect(getParentPath('items[0].id')).toBe('items[0]');
+      });
+    });
+
+    describe('getAncestorPaths', () => {
+      it('should return path and all ancestors', () => {
+        eval(loadJsonRenderer({ a: { b: { c: 1 } } }));
+
+        const ancestors = getAncestorPaths('a.b.c');
+        expect(ancestors).toContain('a.b.c');
+        expect(ancestors).toContain('a.b');
+        expect(ancestors).toContain('a');
+      });
+
+      it('should return just the path for root-level keys', () => {
+        eval(loadJsonRenderer({ key: 'value' }));
+
+        const ancestors = getAncestorPaths('key');
+        expect(ancestors).toEqual(['key']);
+      });
+    });
+
+    describe('searchJSON', () => {
+      it('should highlight matching lines', () => {
+        eval(loadJsonRenderer({ name: 'alice', age: 30 }));
+
+        searchJSON('alice');
+
+        const lines = document.querySelectorAll('.json-line');
+        const highlighted = document.querySelectorAll('.json-line.highlight');
+        expect(highlighted.length).toBe(1);
+        expect(highlighted[0].textContent).toContain('alice');
+      });
+
+      it('should show siblings of matching lines', () => {
+        eval(loadJsonRenderer({ user: { name: 'alice', age: 30 } }));
+
+        searchJSON('alice');
+
+        const visibleLines = document.querySelectorAll('.json-line:not(.hidden)');
+        const paths = Array.from(visibleLines).map((l) => l.getAttribute('data-path'));
+        expect(paths).toContain('user');
+        expect(paths).toContain('user.name');
+        expect(paths).toContain('user.age');
+      });
+
+      it('should hide non-matching branches', () => {
+        eval(loadJsonRenderer({ a: { x: 1 }, b: { y: 2 } }));
+
+        searchJSON('x');
+
+        const bLine = document.querySelector('[data-path="b"]');
+        expect(bLine.classList.contains('hidden')).toBe(true);
+      });
+
+      it('should show no results message when nothing matches', () => {
+        eval(loadJsonRenderer({ key: 'value' }));
+
+        searchJSON('notfound');
+
+        const noResults = document.querySelector('.no-results');
+        expect(noResults).not.toBeNull();
+        expect(noResults.textContent).toContain('No matches found');
+      });
+
+      it('should clear highlighting when search is cleared', () => {
+        eval(loadJsonRenderer({ name: 'alice' }));
+
+        searchJSON('alice');
+        expect(document.querySelectorAll('.highlight').length).toBe(1);
+
+        searchJSON('');
+        expect(document.querySelectorAll('.highlight').length).toBe(0);
+        expect(document.querySelectorAll('.hidden').length).toBe(0);
+      });
+
+      it('should match on path names', () => {
+        eval(loadJsonRenderer({ userName: 'test' }));
+
+        searchJSON('username');
+
+        const highlighted = document.querySelectorAll('.json-line.highlight');
+        expect(highlighted.length).toBe(1);
+      });
+
+      it('should be case insensitive', () => {
+        eval(loadJsonRenderer({ Name: 'Alice' }));
+
+        searchJSON('alice');
+
+        const highlighted = document.querySelectorAll('.json-line.highlight');
+        expect(highlighted.length).toBe(1);
+      });
+    });
+  });
 });
