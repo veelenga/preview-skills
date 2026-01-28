@@ -119,6 +119,12 @@ Each skill has a `config.sh` file with well-documented configuration options:
 - Dependencies (CDN scripts, CSS files)
 - Processing options (content encoding)
 - Renderer configuration
-- Size limits
 
-See `src/core/templates/config.template.sh` for the full configuration reference.
+See `skills/preview-csv/config.sh` for a working example.
+
+## See Also
+
+If you like this project, you might also be interested in
+
+- [claude-mermaid](https://github.com/veelenga/claude-mermaid) — MCP Server to previewing mermaid diagrams
+
