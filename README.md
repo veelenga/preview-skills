@@ -2,16 +2,16 @@
 
 Self-contained preview skills for visualizing files in the browser. Install what you need.
 
-| Name                                                                                                | Description                                                   | File Types         |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------ |
-| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)            | Sortable tables with search, filtering, and column statistics | `.csv`             |
-| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)             | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`  |
-| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)     | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
-| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)       | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
-| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)            | GitHub-style diffs with side-by-side comparison               | Git diffs          |
-| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                 | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
-| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)       | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
-| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/world-cities.html) | Interactive maps with markers and routes                      | `.leaflet`         |
+| Name                                                                                                  | Description                                                   | File Types         |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------ |
+| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)              | Sortable tables with search, filtering, and column statistics | `.csv`             |
+| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`  |
+| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
+| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)         | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
+| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison               | Git diffs          |
+| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
+| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
+| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`         |
 
 ## Quick Start
 
@@ -88,7 +88,7 @@ Or use natural language:
 
 # 3D and maps
 /preview examples/threejs/sample.threejs
-/preview examples/leaflet/world-cities.leaflet
+/preview examples/leaflet/longest-trails.leaflet
 ```
 
 ### Running Tests
@@ -127,4 +127,3 @@ See `skills/preview-csv/config.sh` for a working example.
 If you like this project, you might also be interested in
 
 - [claude-mermaid](https://github.com/veelenga/claude-mermaid) — MCP Server to previewing mermaid diagrams
-

@@ -106,6 +106,7 @@ echo ""
 echo "Leaflet Examples:"
 generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/world-cities.leaflet" "$DOCS_DIR/examples/leaflet" "world-cities.html"
 generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/everest-trail.leaflet" "$DOCS_DIR/examples/leaflet" "everest-trail.html"
+generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/longest-trails.leaflet" "$DOCS_DIR/examples/leaflet" "longest-trails.html"
 
 echo ""
 echo "Documentation examples generated successfully!"
