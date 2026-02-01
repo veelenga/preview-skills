@@ -312,7 +312,7 @@ generate_html() {
     touch "$output"
     chmod 644 "$output" 2>/dev/null || true
 
-    # Generate HTML
+    # Write HTML header
     cat > "$output" <<EOF
 <!DOCTYPE html>
 <html lang="en">
@@ -337,9 +337,14 @@ ${combined_styles}
 ${content}
     </div>
     <script>
-${common_js}
+EOF
 
-${custom_js}
+    # Write JavaScript content separately (can be very large)
+    printf '%s\n\n' "$common_js" >> "$output"
+    printf '%s\n' "$custom_js" >> "$output"
+
+    # Write HTML footer
+    cat >> "$output" <<'EOF'
     </script>
 </body>
 </html>
