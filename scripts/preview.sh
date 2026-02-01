@@ -17,6 +17,8 @@ SKILLS_DIR="$REPO_ROOT/skills"
 # Parse arguments
 EXPLICIT_TYPE=""
 FILE_PATH=""
+NO_BROWSER=0
+EXTRA_ARGS=()
 HAS_STDIN=false
 STDIN_TEMP=""
 
@@ -46,6 +48,14 @@ while [[ $# -gt 0 ]]; do
             EXPLICIT_TYPE="$2"
             shift 2
             ;;
+        --no-browser)
+            NO_BROWSER=1
+            shift
+            ;;
+        -o|--output)
+            EXTRA_ARGS+=("$1" "$2")
+            shift 2
+            ;;
         --help|-h)
             cat << EOF
 Usage: preview.sh [OPTIONS] [FILE]
@@ -54,6 +64,8 @@ Automatically preview files in browser with the appropriate skill.
 
 OPTIONS:
   --type, -t TYPE    Explicitly specify preview type
+  --no-browser       Generate file but don't open browser
+  -o, --output PATH  Specify output file path
   --help, -h         Show this help
 
 TYPES:
@@ -147,13 +159,30 @@ if [[ ! -f "$SKILL_SCRIPT" ]]; then
     exit 1
 fi
 
+# Build skill arguments
+SKILL_ARGS=()
+if [ "$NO_BROWSER" = "1" ]; then
+    SKILL_ARGS+=("--no-browser")
+fi
+if [ ${#EXTRA_ARGS[@]} -gt 0 ]; then
+    SKILL_ARGS+=("${EXTRA_ARGS[@]}")
+fi
+
 # Execute skill
 if [ "$HAS_STDIN" = "true" ]; then
     # Pass stdin to skill
-    cat "$STDIN_TEMP" | "$SKILL_SCRIPT"
+    if [ ${#SKILL_ARGS[@]} -gt 0 ]; then
+        cat "$STDIN_TEMP" | "$SKILL_SCRIPT" "${SKILL_ARGS[@]}"
+    else
+        cat "$STDIN_TEMP" | "$SKILL_SCRIPT"
+    fi
 elif [ -n "$FILE_PATH" ]; then
     # Pass file to skill
-    "$SKILL_SCRIPT" "$FILE_PATH"
+    if [ ${#SKILL_ARGS[@]} -gt 0 ]; then
+        "$SKILL_SCRIPT" "$FILE_PATH" "${SKILL_ARGS[@]}"
+    else
+        "$SKILL_SCRIPT" "$FILE_PATH"
+    fi
 else
     echo "Error: No input provided" >&2
     exit 1

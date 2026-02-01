@@ -1,13 +1,25 @@
 /* CSV Preview - Format-specific styles */
 
+/* Virtual scrolling requires fixed row height */
+:root {
+    --csv-row-height: 40px;
+}
+
 .preview-body {
     padding-left: 0;
     padding-right: 0;
+    /* Make preview-body a flex container so #csv-container can use flex: 1 */
+    display: flex;
+    flex-direction: column;
+    /* Disable scrolling on preview-body, let #csv-container handle it */
+    overflow: hidden;
 }
 
 #csv-container {
     overflow: auto;
     flex: 1;
+    /* Ensure container has a minimum height for virtual scrolling calculations */
+    min-height: 0;
     background: var(--color-bg-alt);
     scroll-behavior: smooth;
 }
@@ -128,6 +140,23 @@ th.sort-desc::after {
     font-weight: var(--font-weight-bold);
 }
 
+/* Data Rows - Fixed height for virtual scrolling */
+tbody tr {
+    height: var(--csv-row-height);
+}
+
+/* Virtual scroll spacer rows */
+tr.virtual-spacer {
+    background: transparent !important;
+    pointer-events: none;
+}
+
+tr.virtual-spacer td {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
 /* Data Cells */
 td {
     padding: var(--spacing-md) var(--spacing-lg);
@@ -138,10 +167,12 @@ td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    transition: all var(--transition-fast);
+    transition: background var(--transition-fast);
     cursor: pointer;
     position: relative;
     color: var(--color-text-primary);
+    height: var(--csv-row-height);
+    box-sizing: border-box;
 }
 
 td:last-child {
