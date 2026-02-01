@@ -52,9 +52,6 @@ source "$LIB_ROOT/lib/content-utils.sh"
 source "$LIB_ROOT/lib/browser-utils.sh"
 source "$LIB_ROOT/lib/html-generator.sh"
 
-# Load tool configuration
-source "$SCRIPT_DIR/config.sh"
-
 # Default functions (can be overridden in config.sh)
 validate_content() {
     return 0  # No validation by default
@@ -67,6 +64,13 @@ preprocess_content() {
 get_additional_params() {
     echo ""  # No additional params by default
 }
+
+generate_metadata() {
+    echo "{}"  # Empty metadata by default
+}
+
+# Load tool configuration (may override default functions above)
+source "$SCRIPT_DIR/config.sh"
 
 # Check if first argument is a file
 if [ -f "${1:-}" ]; then
@@ -187,8 +191,8 @@ USERCODE
     # Get filename for script src attribute
     USER_CODE_FILENAME=$(basename "$USER_CODE_FILE")
 
-    # Generate metadata (empty by default, can be overridden in config)
-    METADATA_JSON="${METADATA_JSON:-{}}"
+    # Generate metadata (calls generate_metadata from config, defaults to empty)
+    METADATA_JSON=$(generate_metadata "$CONTENT")
 
     # Validate METADATA_JSON is valid JSON and escape for template safety
     # Prevent envsubst injection by ensuring no unescaped $ characters in values

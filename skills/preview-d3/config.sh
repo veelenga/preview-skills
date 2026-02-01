@@ -33,8 +33,8 @@ NEEDS_USER_CODE_TEMPLATE=1
 RENDERER_FILE="templates/scripts/d3-renderer.js"
 RENDERER_VARS=()
 
-# Detect visualization type from D3 code
-preprocess_content() {
+# Generate metadata for the renderer
+generate_metadata() {
     local code="$1"
 
     # Detect viz type
@@ -57,6 +57,12 @@ preprocess_content() {
         viz_type="Tree"
     fi
 
-    # Just return the code - metadata detection can be added later if needed
-    echo "$code"
+    # Calculate stats
+    local lines
+    local chars
+    lines=$(echo "$code" | wc -l | tr -d ' ')
+    chars=$(echo "$code" | wc -c | tr -d ' ')
+
+    # Output metadata JSON
+    printf '{"lines":%d,"chars":%d,"type":"%s"}' "$lines" "$chars" "$viz_type"
 }

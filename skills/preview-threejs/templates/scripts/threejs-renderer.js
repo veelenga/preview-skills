@@ -10,7 +10,10 @@ const __threejsPreviewContainer = document.getElementById('content');
 // Load metadata from script tag
 const threeJSMetadata = JSON.parse(document.getElementById('threejs-metadata').textContent);
 
-const stats = `${threeJSMetadata.lines} lines • ${threeJSMetadata.chars} chars • 3D`;
+// Stats for the header (handle missing metadata gracefully)
+const stats = threeJSMetadata.lines
+  ? `${threeJSMetadata.lines} lines • ${threeJSMetadata.chars} chars • 3D`
+  : '3D';
 
 const toolbarItems = [createButton('Reset View', 'resetView()', '⊙')];
 
