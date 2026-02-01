@@ -32,5 +32,19 @@ CONTENT_ENCODING="raw"
 RENDERER_FILE="templates/scripts/leaflet-renderer.js"
 RENDERER_VARS=()
 
-# Needs user code template for interactive maps  
+# Needs user code template for interactive maps
 NEEDS_USER_CODE_TEMPLATE=1
+
+# Generate metadata for the renderer
+generate_metadata() {
+    local code="$1"
+
+    # Calculate stats
+    local lines
+    local chars
+    lines=$(echo "$code" | wc -l | tr -d ' ')
+    chars=$(echo "$code" | wc -c | tr -d ' ')
+
+    # Output metadata JSON
+    printf '{"lines":%d,"chars":%d,"type":"Map"}' "$lines" "$chars"
+}

@@ -10,8 +10,10 @@ const __leafletPreviewContainer = document.getElementById('content');
 // Load metadata from script tag
 const leafletCodeMetadata = JSON.parse(document.getElementById('leaflet-metadata').textContent);
 
-// Stats for the header
-const stats = `${leafletCodeMetadata.lines} lines • ${leafletCodeMetadata.chars} chars • ${leafletCodeMetadata.type}`;
+// Stats for the header (handle missing metadata gracefully)
+const stats = leafletCodeMetadata.lines
+  ? `${leafletCodeMetadata.lines} lines • ${leafletCodeMetadata.chars} chars • ${leafletCodeMetadata.type}`
+  : 'Map';
 
 // Toolbar items
 const toolbarItems = [createButton('Reset View', 'resetView()', '⊙')];

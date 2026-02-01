@@ -25,3 +25,17 @@ RENDERER_VARS=()
 
 # Needs user code template for interactive 3D
 NEEDS_USER_CODE_TEMPLATE=1
+
+# Generate metadata for the renderer
+generate_metadata() {
+    local code="$1"
+
+    # Calculate stats
+    local lines
+    local chars
+    lines=$(echo "$code" | wc -l | tr -d ' ')
+    chars=$(echo "$code" | wc -c | tr -d ' ')
+
+    # Output metadata JSON
+    printf '{"lines":%d,"chars":%d,"type":"3D"}' "$lines" "$chars"
+}

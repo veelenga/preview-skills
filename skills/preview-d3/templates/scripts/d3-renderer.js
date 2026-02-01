@@ -11,8 +11,10 @@ const __d3PreviewContainer = document.getElementById('content');
 // Load metadata from script tag
 const d3CodeMetadata = JSON.parse(document.getElementById('d3-metadata').textContent);
 
-// Stats for the header
-const stats = `${d3CodeMetadata.lines} lines • ${d3CodeMetadata.chars} chars • ${d3CodeMetadata.type}`;
+// Stats for the header (handle missing metadata gracefully)
+const stats = d3CodeMetadata.lines
+  ? `${d3CodeMetadata.lines} lines • ${d3CodeMetadata.chars} chars • ${d3CodeMetadata.type}`
+  : 'D3.js';
 
 // Toolbar items
 const toolbarItems = [
@@ -98,8 +100,9 @@ function createIdContainer(parent, id) {
   }
 }
 
-// Setup containers based on user code
-setupDynamicContainers(d3CodeMetadata.code);
+// Setup containers based on user code (if available in metadata)
+// Code might not be in metadata to avoid duplication - it's loaded from -user.js file
+setupDynamicContainers(d3CodeMetadata.code || '');
 
 // Initialize D3 visualization
 try {
