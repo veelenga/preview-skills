@@ -8,10 +8,10 @@ Self-contained preview skills for visualizing files in the browser. Install what
 | [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`  |
 | [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
 | [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)         | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
-| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison               | Git diffs          |
+| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison               | `.diff`, `.patch`  |
 | [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
 | [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
-| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`         |
+| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map` |
 
 ## Quick Start
 
@@ -55,13 +55,13 @@ Each skill can be invoked directly:
 
 ```bash
 # Preview CSV file
-/preview data.csv
+/preview-csv data.csv
 
 # Preview JSON file
-/preview config.json
+/preview-json config.json
 
 # Preview Markdown file
-/preview README.md
+/preview-markdown README.md
 ```
 
 Or use natural language:
@@ -75,20 +75,23 @@ Or use natural language:
 
 ```bash
 # Data files
-/preview examples/csv/employees.csv
-/preview examples/json/sample.json
-/preview examples/json/logs.jsonl
+/preview-csv examples/csv/employees.csv
+/preview-json examples/json/sample.json
+/preview-json examples/json/logs.jsonl
 
 # Documentation
-/preview README.md
+/preview-markdown README.md
+
+# Diffs
+/preview-diff examples/diff/feature.diff
 
 # Diagrams
-/preview examples/mermaid/sample.mmd
-/preview examples/d3/network-graph.d3
+/preview-mermaid examples/mermaid/sample.mmd
+/preview-d3 examples/d3/network-graph.d3
 
 # 3D and maps
-/preview examples/threejs/sample.threejs
-/preview examples/leaflet/longest-trails.leaflet
+/preview-threejs examples/threejs/sample.threejs
+/preview-leaflet examples/leaflet/longest-trails.leaflet
 ```
 
 ### Running Tests
