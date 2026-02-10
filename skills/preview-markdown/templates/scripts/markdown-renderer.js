@@ -96,6 +96,7 @@ const stats = `${lines} lines • ${words} words • ${chars} chars`;
 const toolbarItems = [
   createButton('Copy Markdown', 'copyMarkdown()', '📋'),
   createButton('Copy HTML', 'copyHTML()', '📄'),
+  createButton('Export PDF', 'window.print()', '🖨'),
 ];
 
 container.innerHTML =
