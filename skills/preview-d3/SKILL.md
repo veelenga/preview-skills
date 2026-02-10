@@ -3,7 +3,6 @@ name: preview-d3
 description: Create interactive 2D data visualizations using D3.js with zoom, pan, and custom rendering
 user-invocable: true
 commands:
-  - preview
   - preview-d3
 ---
 
@@ -11,15 +10,29 @@ commands:
 
 Interactive D3.js visualization viewer that renders custom data visualizations with built-in zoom, pan, and export capabilities.
 
+## Agent Usage
+
+When the user asks to create a D3 visualization, write the D3 code and pipe it to the script. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Pipe D3 code
+cat visualization.js | ./run.sh
+
+# Or from a file
+./run.sh chart.d3
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a D3 visualization file
-/preview network-graph.d3
+/preview-d3 network-graph.d3
 
 # Pipe D3 code (preferred for temporary content)
-cat visualization.js | /preview
-echo "const svg = d3.select('#visualization').append('svg')..." | /preview
+cat visualization.js | /preview-d3
+echo "const svg = d3.select('#visualization').append('svg')..." | /preview-d3
 ```
 
 **Best Practice:** For temporary or generated visualizations, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

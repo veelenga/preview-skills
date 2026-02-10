@@ -3,7 +3,6 @@ name: preview-threejs
 description: Create interactive 3D visualizations using Three.js with orbit controls, lighting, and animation
 user-invocable: true
 commands:
-  - preview
   - preview-threejs
 ---
 
@@ -11,18 +10,32 @@ commands:
 
 Interactive Three.js 3D visualization viewer with pre-configured scene, camera, lighting, and orbit controls.
 
+## Agent Usage
+
+When the user asks to create a 3D visualization, write the Three.js code and pipe it to the script. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Pipe Three.js code
+cat scene.js | ./run.sh
+
+# Or from a file
+./run.sh model.threejs
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a Three.js visualization file
-/preview solar-system.threejs
+/preview-threejs solar-system.threejs
 
 # Or use .3d extension
-/preview model.3d
+/preview-threejs model.3d
 
 # Pipe Three.js code (preferred for temporary content)
-cat visualization.js | /preview
-echo "const cube = new THREE.Mesh(...);\nscene.add(cube);" | /preview
+cat visualization.js | /preview-threejs
+echo "const cube = new THREE.Mesh(...);\nscene.add(cube);" | /preview-threejs
 ```
 
 **Best Practice:** For temporary or generated 3D scenes, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

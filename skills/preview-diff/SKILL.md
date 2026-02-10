@@ -33,14 +33,14 @@ Internal tool for previewing git changes with GitHub-style formatting. Accessed 
 
 ## Agent Usage
 
-When the user asks to preview a diff, **DO NOT** build HTML manually. Simply pipe the diff to the skill's run.sh script:
+When the user asks to preview a diff, **DO NOT** build HTML manually. Use the Bash tool to execute this skill's `run.sh` script:
 
 ```bash
 # Preview current changes
-git diff HEAD | ~/.claude/skills/preview-diff/run.sh
+git diff HEAD | ./run.sh
 
 # Preview specific branch comparison
-git diff main..feature-branch | ~/.claude/skills/preview-diff/run.sh
+git diff main..feature-branch | ./run.sh
 ```
 
 The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.

@@ -3,7 +3,6 @@ name: preview-json
 description: Render and preview JSON files in browser with syntax highlighting, collapsible tree view, and search
 user-invocable: true
 commands:
-  - preview
   - preview-json
 ---
 
@@ -11,25 +10,42 @@ commands:
 
 Interactive JSON/JSONL viewer that generates HTML visualizations with syntax highlighting, collapsible tree structure, and search functionality.
 
+## Agent Usage
+
+When the user asks to preview a JSON or JSONL file, **DO NOT** build HTML manually. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Preview a JSON file
+./run.sh data.json
+
+# Preview a JSONL file
+./run.sh logs.jsonl
+
+# Pipe content
+cat data.json | ./run.sh
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a JSON file
-/preview data.json
+/preview-json data.json
 
 # Preview a JSONL file (JSON Lines format)
-/preview logs.jsonl
+/preview-json logs.jsonl
 
 # Pipe JSON data (preferred for temporary content)
-cat data.json | /preview
-echo '{"name":"test","value":123}' | /preview
+cat data.json | /preview-json
+echo '{"name":"test","value":123}' | /preview-json
 
 # Pipe JSONL data
 echo '{"id":1,"name":"Alice"}
-{"id":2,"name":"Bob"}' | /preview
+{"id":2,"name":"Bob"}' | /preview-json
 
 # With custom background color
-/preview data.json --background "#1e1e1e"
+/preview-json data.json --background "#1e1e1e"
 ```
 
 **Best Practice:** For temporary or generated content, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

@@ -3,7 +3,6 @@ name: preview-leaflet
 description: Create interactive maps with markers, routes, and geographic data using Leaflet
 user-invocable: true
 commands:
-  - preview
   - preview-leaflet
 ---
 
@@ -11,18 +10,32 @@ commands:
 
 Interactive map visualization viewer using Leaflet library for geographic data, markers, routes, and custom overlays.
 
+## Agent Usage
+
+When the user asks to create a map visualization, write the Leaflet code and pipe it to the script. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Pipe Leaflet code
+cat route.js | ./run.sh
+
+# Or from a file
+./run.sh city-map.leaflet
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a Leaflet map file
-/preview city-map.leaflet
+/preview-leaflet city-map.leaflet
 
 # Or use .map extension
-/preview route.map
+/preview-leaflet route.map
 
 # Pipe Leaflet code (preferred for temporary content)
-cat route.js | /preview
-echo "const map = L.map('map').setView([51.505, -0.09], 13);" | /preview
+cat route.js | /preview-leaflet
+echo "const map = L.map('map').setView([51.505, -0.09], 13);" | /preview-leaflet
 ```
 
 **Best Practice:** For temporary or generated maps, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

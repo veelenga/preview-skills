@@ -3,7 +3,6 @@ name: preview-csv
 description: Render and preview CSV files in browser with interactive sorting, filtering, and column statistics
 user-invocable: true
 commands:
-  - preview
   - preview-csv
 ---
 
@@ -11,18 +10,32 @@ commands:
 
 Interactive CSV file viewer that generates HTML visualizations with sorting, filtering, and statistical analysis.
 
+## Agent Usage
+
+When the user asks to preview a CSV file, **DO NOT** build HTML manually. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Preview a file
+./run.sh data.csv
+
+# Pipe content
+cat data.csv | ./run.sh
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a CSV file
-/preview data.csv
+/preview-csv data.csv
 
 # Pipe CSV data (preferred for temporary content)
-cat data.csv | /preview
-echo "name,age\nAlice,30\nBob,25" | /preview
+cat data.csv | /preview-csv
+echo "name,age\nAlice,30\nBob,25" | /preview-csv
 
 # With custom background color
-/preview data.csv --background "#1e1e1e"
+/preview-csv data.csv --background "#1e1e1e"
 ```
 
 **Best Practice:** For temporary or generated content, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

@@ -3,7 +3,6 @@ name: preview-markdown
 description: Render and preview Markdown files in browser with GitHub-flavored formatting and syntax highlighting
 user-invocable: true
 commands:
-  - preview
   - preview-markdown
 ---
 
@@ -11,18 +10,32 @@ commands:
 
 GitHub-flavored Markdown viewer that generates beautiful HTML with syntax highlighting and automatic table of contents.
 
+## Agent Usage
+
+When the user asks to preview a Markdown file, **DO NOT** build HTML manually. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Preview a file
+./run.sh README.md
+
+# Pipe content
+cat docs.md | ./run.sh
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a Markdown file
-/preview README.md
+/preview-markdown README.md
 
 # Pipe Markdown content (preferred for temporary content)
-cat docs.md | /preview
-echo "# Hello\n\nThis is **markdown**" | /preview
+cat docs.md | /preview-markdown
+echo "# Hello\n\nThis is **markdown**" | /preview-markdown
 
 # With custom background color
-/preview article.md --background "#ffffff"
+/preview-markdown article.md --background "#ffffff"
 ```
 
 **Best Practice:** For temporary or generated content, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.

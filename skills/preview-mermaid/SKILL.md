@@ -3,7 +3,6 @@ name: preview-mermaid
 description: Render and preview Mermaid diagrams in browser with support for flowcharts, sequence diagrams, class diagrams, and more
 user-invocable: true
 commands:
-  - preview
   - preview-mermaid
 ---
 
@@ -11,18 +10,33 @@ commands:
 
 Interactive Mermaid diagram viewer that renders flowcharts, sequence diagrams, class diagrams, ER diagrams, state diagrams, Gantt charts, pie charts, and more.
 
+## Agent Usage
+
+When the user asks to preview a Mermaid diagram, **DO NOT** build HTML manually. Use the Bash tool to execute this skill's `run.sh` script:
+
+```bash
+# Preview a file
+./run.sh diagram.mmd
+
+# Pipe content
+echo "graph TD
+  A-->B" | ./run.sh
+```
+
+The script handles all HTML generation and **automatically opens the result in the browser**. Do NOT open the file manually to avoid duplicate tabs.
+
 ## Usage
 
 ```bash
 # Preview a Mermaid diagram file
-/preview diagram.mmd
+/preview-mermaid diagram.mmd
 
 # Pipe Mermaid content (preferred for temporary content)
-cat flowchart.mermaid | /preview
-echo "graph TD\n  A-->B" | /preview
+cat flowchart.mermaid | /preview-mermaid
+echo "graph TD\n  A-->B" | /preview-mermaid
 
 # With custom background color
-/preview sequence.mmd --background "#ffffff"
+/preview-mermaid sequence.mmd --background "#ffffff"
 ```
 
 **Best Practice:** For temporary or generated content, prefer piping over creating temporary files. This avoids cluttering your filesystem and the content is automatically cleaned up.
