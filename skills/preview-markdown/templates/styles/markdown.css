@@ -272,3 +272,50 @@
     margin-left: 16px;
     padding-left: 2em;
 }
+
+/* Print styles for PDF export */
+@media print {
+    html, body {
+        height: auto;
+        overflow: visible;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .preview-header,
+    .preview-footer {
+        display: none !important;
+    }
+
+    #content {
+        height: auto;
+    }
+
+    .preview-body {
+        overflow: visible;
+        padding-left: var(--spacing-2xl);
+        padding-right: var(--spacing-2xl);
+        background: transparent;
+    }
+
+    #markdown-content {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px;
+        background: var(--color-surface-primary);
+    }
+
+    #markdown-content table {
+        display: table;
+        overflow: visible;
+    }
+
+    #markdown-content pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    #markdown-content .header-anchor {
+        display: none;
+    }
+}
