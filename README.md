@@ -4,7 +4,7 @@ Self-contained preview skills for visualizing files in the browser. Install what
 
 | Name                                                                                                  | Description                                                   | File Types          |
 | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |
-| [**preview-plan**](https://veelenga.github.io/preview-skills/examples/plan/sample.html)               | Navigable plans with sidebar TOC and collapsible sections     | `.plan.md`, `.plan` |
+| [**preview-plan**](https://veelenga.github.io/preview-skills/examples/plan/sample.html)               | Navigable plans with sidebar TOC and progress tracking        | `.plan.md`, `.plan` |
 | [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)              | Sortable tables with search, filtering, and column statistics | `.csv`              |
 | [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`   |
 | [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown`  |
@@ -13,6 +13,8 @@ Self-contained preview skills for visualizing files in the browser. Install what
 | [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`               |
 | [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`   |
 | [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map`  |
+
+![Demo](docs/demo.gif)
 
 ## Quick Start
 
