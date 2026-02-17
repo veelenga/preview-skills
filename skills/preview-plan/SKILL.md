@@ -1,6 +1,6 @@
 ---
 name: preview-plan
-description: Render implementation plans as navigable HTML with sidebar TOC, collapsible sections, and progress tracking. Activate automatically when producing or previewing implementation plans, design docs, architecture proposals, migration plans, or any long-form structured plan.
+description: Render implementation plans as navigable HTML with sidebar TOC and progress tracking. Activate automatically when producing or previewing implementation plans, design docs, architecture proposals, migration plans, or any long-form structured plan.
 user-invocable: true
 commands:
   - preview-plan
@@ -8,7 +8,7 @@ commands:
 
 # Preview Plan Skill
 
-Plans are hard to review in raw markdown. This skill renders them as navigable HTML with a sidebar TOC, collapsible sections, and reading progress — so the reviewer can quickly orient, jump between sections, and focus on what matters.
+Plans are hard to review in raw markdown. This skill renders them as navigable HTML with a sidebar TOC and reading progress — so the reviewer can quickly orient, jump between sections, and focus on what matters.
 
 You don't need to wait for the user to ask for preview. If you're writing a plan, pipe it directly.
 
@@ -34,7 +34,7 @@ The script **automatically opens the result in the browser**. Do NOT open the fi
 Structure your plan markdown to take full advantage of the viewer:
 
 - **Use `# Title` for the plan name** — displayed in the sidebar header
-- **Use `## Sections` for major phases/sections** — each becomes a collapsible section with a TOC entry
+- **Use `## Sections` for major phases/sections** — each becomes a TOC entry
 - **Use `### Subsections` and `#### Details`** — nested TOC entries with indentation
 - **Use task lists** (`- [ ]` / `- [x]`) — the viewer counts completed/total tasks in the sidebar
 - **Use tables** for comparisons, risk matrices, field specs

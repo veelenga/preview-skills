@@ -317,54 +317,6 @@ describe('plan-renderer.js', () => {
     });
   });
 
-  describe('collapsible sections', () => {
-    it('should wrap h2 sections with plan-section divs', () => {
-      const html = '<h2 id="s1">Section 1</h2><p>Content</p>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer('## Section 1\n\nContent'));
-
-      const sections = document.querySelectorAll('.plan-section');
-      expect(sections.length).toBe(1);
-    });
-
-    it('should add chevron to section toggles', () => {
-      const html = '<h2 id="s1">Section 1</h2><p>Content</p>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer('## Section 1\n\nContent'));
-
-      const chevron = document.querySelector('.section-chevron');
-      expect(chevron).not.toBeNull();
-    });
-
-    it('should wrap content after h2 in section-content div', () => {
-      const html = '<h2 id="s1">Section 1</h2><p>Paragraph</p><ul><li>Item</li></ul>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer(''));
-
-      const sectionContent = document.querySelector('.section-content');
-      expect(sectionContent).not.toBeNull();
-      expect(sectionContent.querySelector('p')).not.toBeNull();
-      expect(sectionContent.querySelector('ul')).not.toBeNull();
-    });
-
-    it('should handle multiple sections', () => {
-      const html = '<h2 id="s1">S1</h2><p>C1</p><h2 id="s2">S2</h2><p>C2</p>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer(''));
-
-      const sections = document.querySelectorAll('.plan-section');
-      expect(sections.length).toBe(2);
-    });
-  });
-
   describe('diff highlighting', () => {
     it('should highlight added lines in diff blocks', () => {
       const html = '<pre><code class="language-diff">+added line\n normal line</code></pre>';
@@ -442,7 +394,7 @@ describe('plan-renderer.js', () => {
       expect(anchor.getAttribute('href')).toBe('#title');
     });
 
-    it('should skip h2 headers (they have chevron toggles)', () => {
+    it('should add anchors to h2 headers', () => {
       const html = '<h2 id="section">Section</h2><p>Content</p>';
       global.marked.parse.mockReturnValue(html);
       global.DOMPurify.sanitize.mockReturnValue(html);
@@ -450,7 +402,8 @@ describe('plan-renderer.js', () => {
       eval(loadPlanRenderer('## Section\n\nContent'));
 
       const anchor = document.querySelector('#plan-content h2 .header-anchor');
-      expect(anchor).toBeNull();
+      expect(anchor).not.toBeNull();
+      expect(anchor.getAttribute('href')).toBe('#section');
     });
 
     it('should add anchors to h3-h6 headers', () => {

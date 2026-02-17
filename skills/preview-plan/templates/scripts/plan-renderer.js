@@ -196,31 +196,10 @@ function generateTOC() {
       const target = document.getElementById(header.id);
       if (!target) return;
 
-      // Find the section that contains or owns this heading
-      const section = target.closest('.plan-section');
-      let needsExpand = false;
-
-      if (section) {
-        const content = section.querySelector('.section-content');
-        const chevron = section.querySelector('.section-chevron');
-        if (content && content.classList.contains('collapsed')) {
-          content.classList.remove('collapsed');
-          content.style.maxHeight = content.scrollHeight + 'px';
-          if (chevron) chevron.classList.remove('collapsed');
-          needsExpand = true;
-        }
-      }
-
       history.pushState(null, '', `#${header.id}`);
       const planMain = document.getElementById('plan-main');
-
-      // Delay scroll if section was just expanded, so layout settles
-      const delay = needsExpand ? 350 : 0;
-      setTimeout(() => {
-        scrollToElement(target, planMain);
-        // Update progress after programmatic scroll
-        setTimeout(updateProgress, 100);
-      }, delay);
+      scrollToElement(target, planMain);
+      setTimeout(updateProgress, 100);
 
       closeSidebar();
     });
@@ -313,78 +292,6 @@ function initReadingProgress() {
 }
 
 // ============================================================
-// Collapsible Sections (wrap content between h2 headings)
-// ============================================================
-
-function initCollapsibleSections() {
-  const planContentEl = document.getElementById('plan-content');
-  const h2Elements = planContentEl.querySelectorAll('h2');
-
-  h2Elements.forEach((h2) => {
-    // Create wrapper for the section
-    const section = document.createElement('div');
-    section.className = 'plan-section';
-
-    // Wrap h2 in toggle
-    const toggle = document.createElement('div');
-    toggle.className = 'section-toggle';
-
-    const chevron = document.createElement('span');
-    chevron.className = 'section-chevron';
-    chevron.textContent = '\u25BC';
-
-    // Insert section wrapper before h2
-    h2.parentNode.insertBefore(section, h2);
-
-    // Move h2 into toggle
-    toggle.appendChild(chevron);
-    toggle.appendChild(h2);
-    section.appendChild(toggle);
-
-    // Collect all siblings until next h2 or end
-    const content = document.createElement('div');
-    content.className = 'section-content';
-
-    let next = section.nextSibling;
-    while (next) {
-      const current = next;
-      next = next.nextSibling;
-
-      // Stop at next h2 or section wrapper
-      if (current.nodeType === 1) {
-        if (current.tagName === 'H2') break;
-        if (current.classList && current.classList.contains('plan-section')) break;
-      }
-
-      content.appendChild(current);
-    }
-
-    section.appendChild(content);
-
-    // Set initial max-height for animation
-    requestAnimationFrame(() => {
-      content.style.maxHeight = content.scrollHeight + 'px';
-    });
-
-    // Toggle click handler
-    toggle.addEventListener('click', function () {
-      const isCollapsed = content.classList.contains('collapsed');
-      if (isCollapsed) {
-        content.classList.remove('collapsed');
-        content.style.maxHeight = content.scrollHeight + 'px';
-        chevron.classList.remove('collapsed');
-      } else {
-        content.style.maxHeight = content.scrollHeight + 'px';
-        requestAnimationFrame(() => {
-          content.classList.add('collapsed');
-          chevron.classList.add('collapsed');
-        });
-      }
-    });
-  });
-}
-
-// ============================================================
 // Diff Highlighting
 // ============================================================
 
@@ -451,9 +358,6 @@ function addHeaderAnchors() {
   headers.forEach((header) => {
     if (!header.id) return;
 
-    // Skip h2s - they have the chevron toggle already
-    if (header.tagName === 'H2') return;
-
     const anchor = document.createElement('a');
     anchor.className = 'header-anchor';
     anchor.href = `#${header.id}`;
@@ -473,21 +377,6 @@ function scrollToElement(element, scrollContainer) {
   scrollContainer.scrollTo({ top: scrollTop, behavior: 'smooth' });
 }
 
-function expandSectionFor(target) {
-  const section = target.closest('.plan-section');
-  if (!section) return false;
-
-  const content = section.querySelector('.section-content');
-  const chevron = section.querySelector('.section-chevron');
-  if (content && content.classList.contains('collapsed')) {
-    content.classList.remove('collapsed');
-    content.style.maxHeight = content.scrollHeight + 'px';
-    if (chevron) chevron.classList.remove('collapsed');
-    return true;
-  }
-  return false;
-}
-
 function setupAnchorScrolling() {
   const planMain = document.getElementById('plan-main');
   if (!planMain) return;
@@ -502,14 +391,8 @@ function setupAnchorScrolling() {
 
     e.preventDefault();
     history.pushState(null, '', `#${targetId}`);
-
-    const needsExpand = expandSectionFor(targetElement);
-    const delay = needsExpand ? 350 : 0;
-
-    setTimeout(() => {
-      scrollToElement(targetElement, planMain);
-      setTimeout(updateProgress, 100);
-    }, delay);
+    scrollToElement(targetElement, planMain);
+    setTimeout(updateProgress, 100);
   });
 }
 
@@ -559,7 +442,6 @@ if (typeof mermaid !== 'undefined') {
 }
 
 highlightDiffBlocks();
-initCollapsibleSections();
 generateTOC();
 addHeaderAnchors();
 initScrollSpy();

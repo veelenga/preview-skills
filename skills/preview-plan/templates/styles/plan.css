@@ -450,53 +450,6 @@
 }
 
 /* ============================================================
-   Collapsible Sections
-   ============================================================ */
-
-.plan-section {
-    margin-bottom: 0;
-}
-
-.section-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    cursor: pointer;
-    user-select: none;
-    width: 100%;
-}
-
-.section-toggle:hover {
-    opacity: 0.8;
-}
-
-.section-chevron {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    font-size: 10px;
-    color: var(--color-text-tertiary);
-    transition: transform var(--transition-base) ease;
-    flex-shrink: 0;
-}
-
-.section-chevron.collapsed {
-    transform: rotate(-90deg);
-}
-
-.section-content {
-    overflow: hidden;
-    transition: max-height var(--transition-slow) ease, opacity var(--transition-base) ease;
-}
-
-.section-content.collapsed {
-    max-height: 0 !important;
-    opacity: 0;
-}
-
-/* ============================================================
    Header Anchor Links
    ============================================================ */
 
@@ -600,15 +553,46 @@
     }
 
     #plan-content {
-        padding: 24px 20px;
+        padding: 20px 16px;
     }
 
     #plan-content h1 {
-        font-size: 1.75em;
+        font-size: 1.6em;
     }
 
     #plan-content h2 {
-        font-size: 1.35em;
+        font-size: 1.3em;
+        margin-top: 1.5em;
+    }
+
+    #plan-content h3 {
+        font-size: 1.15em;
+    }
+
+    #plan-content pre {
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+
+    #plan-content blockquote {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    #plan-content table {
+        font-size: 0.85em;
+    }
+
+    #plan-content th,
+    #plan-content td {
+        padding: 6px 8px;
+    }
+
+    #plan-content .header-anchor {
+        display: none;
+    }
+
+    .preview-footer {
+        display: none;
     }
 }
 
@@ -661,12 +645,4 @@
         display: none;
     }
 
-    .section-content.collapsed {
-        max-height: none !important;
-        opacity: 1 !important;
-    }
-
-    .section-chevron {
-        display: none;
-    }
 }
