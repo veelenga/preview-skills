@@ -2,16 +2,17 @@
 
 Self-contained preview skills for visualizing files in the browser. Install what you need.
 
-| Name                                                                                                  | Description                                                   | File Types         |
-| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------ |
-| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)              | Sortable tables with search, filtering, and column statistics | `.csv`             |
-| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`  |
-| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown` |
-| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)         | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid` |
-| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison               | `.diff`, `.patch`  |
-| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`              |
-| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`  |
-| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map` |
+| Name                                                                                                  | Description                                                   | File Types          |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |
+| [**preview-plan**](https://veelenga.github.io/preview-skills/examples/plan/sample.html)               | Navigable plans with sidebar TOC and collapsible sections     | `.plan.md`, `.plan` |
+| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)              | Sortable tables with search, filtering, and column statistics | `.csv`              |
+| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure           | `.json`, `.jsonl`   |
+| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting            | `.md`, `.markdown`  |
+| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)         | Interactive diagrams (flowcharts, sequences, ER, etc.)        | `.mmd`, `.mermaid`  |
+| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison               | `.diff`, `.patch`   |
+| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`               |
+| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`   |
+| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map`  |
 
 ## Quick Start
 
@@ -74,6 +75,9 @@ Or use natural language:
 ## Examples
 
 ```bash
+# Plans
+/preview-plan examples/plan/sample.plan.md
+
 # Data files
 /preview-csv examples/csv/employees.csv
 /preview-json examples/json/sample.json
