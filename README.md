@@ -14,7 +14,7 @@ Self-contained preview skills for visualizing files in the browser. Install what
 | [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`   |
 | [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map`  |
 
-![Demo](docs/demo.gif)
+[Watch demo](docs/demo.mp4)
 
 ## Quick Start
 
