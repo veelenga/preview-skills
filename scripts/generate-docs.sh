@@ -14,7 +14,7 @@ SKILLS_DIR="$PROJECT_ROOT/skills"
 # Note: All skill scripts are called with --no-browser flag below
 
 # Create docs/examples directories
-mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet}
+mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet,plan}
 
 echo "Generating documentation examples..."
 
@@ -101,6 +101,10 @@ echo "Three.js Examples:"
 generate_example "preview-threejs" "$EXAMPLES_DIR/threejs/sample.threejs" "$DOCS_DIR/examples/threejs" "sample.html"
 generate_example "preview-threejs" "$EXAMPLES_DIR/threejs/molecule.threejs" "$DOCS_DIR/examples/threejs" "molecule.html"
 generate_example "preview-threejs" "$EXAMPLES_DIR/threejs/solar-system.threejs" "$DOCS_DIR/examples/threejs" "solar-system.html"
+
+echo ""
+echo "Plan Examples:"
+generate_example "preview-plan" "$EXAMPLES_DIR/plan/sample.plan.md" "$DOCS_DIR/examples/plan" "sample.html"
 
 echo ""
 echo "Leaflet Examples:"

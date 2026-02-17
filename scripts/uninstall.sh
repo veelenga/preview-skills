@@ -21,6 +21,7 @@ NC='\033[0m'
 
 # Available skills
 AVAILABLE_SKILLS=(
+    "preview-plan"
     "preview-csv"
     "preview-json"
     "preview-markdown"
@@ -59,6 +60,7 @@ OPTIONS:
   -h, --help         Show this help message
 
 SKILLS:
+  preview-plan       Preview implementation plans
   preview-csv        Preview CSV files
   preview-json       Preview JSON files
   preview-markdown   Preview Markdown files
