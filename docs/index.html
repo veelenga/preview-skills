@@ -311,6 +311,27 @@
     }
 
     /* Features section */
+    /* Demo Section */
+    .demo-section {
+      padding: 3rem 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .demo-container {
+      max-width: 900px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .demo-video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -361,6 +382,14 @@
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
+      }
+
+      .demo-section {
+        padding: 2rem 1rem;
+      }
+
+      .demo-container {
+        border-radius: 12px;
       }
 
       .hero {
@@ -544,6 +573,15 @@
           </svg>
           Install Now
         </a>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="demo-container glass">
+        <video autoplay loop muted playsinline class="demo-video">
+          <source src="demo.mp4" type="video/mp4">
+          Your browser doesn't support video playback.
+        </video>
       </div>
     </section>
 

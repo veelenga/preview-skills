@@ -2,6 +2,12 @@
 
 Self-contained preview skills for visualizing files in the browser. Install what you need.
 
+![Demo](docs/demo.gif)
+
+[🌐 Visit Website](https://veelenga.github.io/preview-skills/) • [📚 Live Examples](https://veelenga.github.io/preview-skills/examples/plan/sample.html)
+
+## Skills
+
 | Name                                                                                                  | Description                                                   | File Types          |
 | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |
 | [**preview-plan**](https://veelenga.github.io/preview-skills/examples/plan/sample.html)               | Navigable plans with sidebar TOC and progress tracking        | `.plan.md`, `.plan` |
