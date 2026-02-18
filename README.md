@@ -2,10 +2,6 @@
 
 Self-contained preview skills for visualizing files in the browser. Install what you need.
 
-![Demo](docs/demo.gif)
-
-[🌐 Visit Website](https://veelenga.github.io/preview-skills/) • [📚 Live Examples](https://veelenga.github.io/preview-skills/examples/plan/sample.html)
-
 ## Skills
 
 | Name                                                                                                  | Description                                                   | File Types          |
@@ -19,6 +15,10 @@ Self-contained preview skills for visualizing files in the browser. Install what
 | [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan          | `.d3`               |
 | [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls             | `.threejs`, `.3d`   |
 | [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                      | `.leaflet`, `.map`  |
+
+![Demo](docs/demo.gif)
+
+[🌐 Visit Website](https://veelenga.github.io/preview-skills/) • [📚 Live Examples](https://veelenga.github.io/preview-skills/examples/plan/sample.html)
 
 ## Quick Start
 
