@@ -133,13 +133,8 @@ container.innerHTML =
   '  <aside class="plan-sidebar" id="plan-sidebar">' +
   '    <div class="sidebar-header">' +
   '      <div class="sidebar-title">Contents</div>' +
-  '      <div class="plan-meta" id="plan-meta"></div>' +
   '    </div>' +
   '    <nav class="toc-container" id="toc-container"><ul class="toc-list" id="toc-list"></ul></nav>' +
-  '    <div class="sidebar-footer">' +
-  '      <div class="sidebar-progress-bar"><div class="sidebar-progress-fill" id="sidebar-progress-fill"></div></div>' +
-  '      <span id="progress-text">0%</span>' +
-  '    </div>' +
   '  </aside>' +
   '  <main class="plan-main" id="plan-main">' +
   '    <div id="plan-content"></div>' +
@@ -150,25 +145,6 @@ container.innerHTML =
   createFooter();
 
 document.getElementById('plan-content').innerHTML = renderedHtml;
-
-// ============================================================
-// Plan Metadata Badges
-// ============================================================
-
-const metaContainer = document.getElementById('plan-meta');
-const metaItems = [];
-
-if (phaseCount > 0) {
-  metaItems.push(`\uD83D\uDCC1 ${phaseCount} sections`);
-}
-if (totalTasks > 0) {
-  metaItems.push(`\u2611 ${completedTasks}/${totalTasks} tasks`);
-}
-metaItems.push(`\u23F1 ${readingTime} min`);
-
-metaContainer.innerHTML = metaItems
-  .map((item) => `<span class="meta-badge">${item}</span>`)
-  .join('');
 
 // ============================================================
 // Table of Contents Generation
@@ -259,8 +235,6 @@ function initScrollSpy() {
 function updateProgress() {
   const planMain = document.getElementById('plan-main');
   const progressFill = document.getElementById('progress-fill');
-  const sidebarProgressFill = document.getElementById('sidebar-progress-fill');
-  const progressText = document.getElementById('progress-text');
 
   if (!planMain) return;
 
@@ -270,8 +244,6 @@ function updateProgress() {
   const rounded = Math.round(progress);
 
   if (progressFill) progressFill.style.width = rounded + '%';
-  if (sidebarProgressFill) sidebarProgressFill.style.width = rounded + '%';
-  if (progressText) progressText.textContent = rounded + '%';
 }
 
 function initReadingProgress() {
