@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Preview Skills - File Visualization Tools for AI Agents</title>
+  <title>Preview Skills - Reduce Cognitive Load with AI Agents</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Self-contained preview skills for visualizing CSV, JSON, Markdown, Mermaid diagrams, diffs, D3, Three.js, and Leaflet maps in the browser. Works with any AI coding agent.">
-  <meta name="keywords" content="preview, visualization, CSV, JSON, Markdown, Mermaid, D3, Three.js, Leaflet, AI, coding agent, Claude">
+  <meta name="description" content="Reduce cognitive load when reviewing AI agent work. Transform plans, diffs, and data into navigable previews.">
+  <meta name="keywords" content="AI agent, cognitive load, code review, preview, visualization, CSV, JSON, Markdown, diff, plan, Claude, coding assistant">
   <meta name="author" content="veelenga">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://veelenga.github.io/preview-skills/">
-  <meta property="og:title" content="Preview Skills - File Visualization Tools for AI Agents">
-  <meta property="og:description" content="Self-contained preview skills for visualizing CSV, JSON, Markdown, Mermaid, D3, Three.js, and Leaflet maps. Works with any AI coding agent.">
+  <meta property="og:title" content="Preview Skills - Reduce Cognitive Load with AI Agents">
+  <meta property="og:description" content="Transform plans, diffs, and data into navigable previews. Built for humans collaborating with AI coding agents.">
   <meta property="og:image" content="https://veelenga.github.io/preview-skills/images/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -22,8 +22,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://veelenga.github.io/preview-skills/">
-  <meta name="twitter:title" content="Preview Skills - File Visualization Tools for AI Agents">
-  <meta name="twitter:description" content="Self-contained preview skills for visualizing CSV, JSON, Markdown, Mermaid, D3, Three.js, and Leaflet maps. Works with any AI coding agent.">
+  <meta name="twitter:title" content="Preview Skills - Reduce Cognitive Load with AI Agents">
+  <meta name="twitter:description" content="Transform plans, diffs, and data into navigable previews. Built for humans collaborating with AI coding agents.">
   <meta name="twitter:image" content="https://veelenga.github.io/preview-skills/images/og-image.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -311,6 +311,27 @@
     }
 
     /* Features section */
+    /* Demo Section */
+    .demo-section {
+      padding: 3rem 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .demo-container {
+      max-width: 900px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .demo-video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -361,6 +382,14 @@
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
+      }
+
+      .demo-section {
+        padding: 2rem 1rem;
+      }
+
+      .demo-container {
+        border-radius: 12px;
       }
 
       .hero {
@@ -527,8 +556,8 @@
 
   <div class="container">
     <section class="hero">
-      <h1>Preview Skills</h1>
-      <p>Standalone preview skills for visualizing files in the browser. Each skill is self-contained and works with any AI coding agent.</p>
+      <h1>Reduce Cognitive Load When Reviewing AI Agent Work</h1>
+      <p>Transform plans, diffs, and data into navigable previews. Built for humans collaborating with AI coding agents.</p>
       <div class="cta-buttons">
         <a href="https://github.com/veelenga/preview-skills" class="btn btn-primary">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -544,6 +573,15 @@
           </svg>
           Install Now
         </a>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <div class="demo-container glass">
+        <video autoplay loop muted playsinline class="demo-video">
+          <source src="demo.mp4" type="video/mp4">
+          Your browser doesn't support video playback.
+        </video>
       </div>
     </section>
 
