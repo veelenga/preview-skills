@@ -1,8 +1,6 @@
 # Preview Skills
 
-Self-contained preview skills for visualizing files in the browser. Install what you need.
-
-## Skills
+**Reduce cognitive load when reviewing AI agent work.** Transform plans, diffs, and data into navigable previews with TOC, progress tracking, and interactive features. Built for humans collaborating with AI coding agents.
 
 | Name                                                                                                  | Description                                                   | File Types          |
 | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | ------------------- |

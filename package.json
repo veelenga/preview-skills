@@ -1,7 +1,7 @@
 {
   "name": "preview-skills",
   "version": "1.0.0",
-  "description": "Universal preview tool for AI agents to visualize files in the browser",
+  "description": "Reduce cognitive load when reviewing AI agent work with navigable previews, TOC, and progress tracking",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
