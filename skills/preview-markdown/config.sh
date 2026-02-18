@@ -9,7 +9,7 @@ DEFAULT_FILENAME="document"
 FILE_EXTENSIONS=(".md" ".markdown")
 
 # Layout configuration
-LAYOUT_TYPE="document"  # document, centered, or full
+LAYOUT_TYPE="full"  # document, centered, or full
 BACKGROUND_COLOR="#f5f5f5"
 
 # CDN Libraries with SRI hashes

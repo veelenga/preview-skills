@@ -476,7 +476,6 @@
 
 @media (max-width: 768px) {
     .plan-layout {
-        display: block;
         overflow-x: hidden;
     }
 
