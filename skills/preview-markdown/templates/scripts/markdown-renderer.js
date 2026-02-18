@@ -93,11 +93,7 @@ const words = markdownContent.split(/\s+/).filter((w) => w.length > 0).length;
 const chars = markdownContent.length;
 const stats = `${lines} lines • ${words} words • ${chars} chars`;
 
-const toolbarItems = [
-  createButton('Copy Markdown', 'copyMarkdown()', '📋'),
-  createButton('Copy HTML', 'copyHTML()', '📄'),
-  createButton('Export PDF', 'window.print()', '🖨'),
-];
+const toolbarItems = [];
 
 container.innerHTML =
   createHeader('Markdown Preview', stats, toolbarItems) +
@@ -113,14 +109,6 @@ if (typeof mermaid !== 'undefined') {
 addHeaderAnchors();
 setupAnchorScrolling();
 handleInitialHash();
-
-function copyMarkdown() {
-  copyToClipboard(markdownContent, 'Markdown copied to clipboard!');
-}
-
-function copyHTML() {
-  copyToClipboard(renderedHtml, 'HTML copied to clipboard!');
-}
 
 function renderMermaidDiagrams() {
   const codeBlocks = document.querySelectorAll('code.language-mermaid');

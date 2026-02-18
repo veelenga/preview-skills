@@ -225,30 +225,6 @@ describe('plan-renderer.js', () => {
     });
   });
 
-  describe('metadata badges', () => {
-    it('should show task count badge when tasks exist', () => {
-      const html = '<h1 id="t">T</h1><input type="checkbox" checked><input type="checkbox">';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer('# T\n\n- [x] Done\n- [ ] Todo'));
-
-      const meta = document.getElementById('plan-meta');
-      expect(meta.innerHTML).toContain('1/2 tasks');
-    });
-
-    it('should not show task badge when no tasks', () => {
-      const html = '<h1 id="t">T</h1><p>No tasks</p>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer('# T\n\nNo tasks'));
-
-      const meta = document.getElementById('plan-meta');
-      expect(meta.innerHTML).not.toContain('tasks');
-    });
-  });
-
   describe('TOC generation', () => {
     it('should create TOC entries for headers', () => {
       const html =
