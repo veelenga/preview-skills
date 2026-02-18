@@ -226,17 +226,6 @@ describe('plan-renderer.js', () => {
   });
 
   describe('metadata badges', () => {
-    it('should show section count badge', () => {
-      const html = '<h1 id="t">T</h1><h2 id="a">A</h2><h2 id="b">B</h2>';
-      global.marked.parse.mockReturnValue(html);
-      global.DOMPurify.sanitize.mockReturnValue(html);
-
-      eval(loadPlanRenderer('# T\n\n## A\n\n## B'));
-
-      const meta = document.getElementById('plan-meta');
-      expect(meta.innerHTML).toContain('2 sections');
-    });
-
     it('should show task count badge when tasks exist', () => {
       const html = '<h1 id="t">T</h1><input type="checkbox" checked><input type="checkbox">';
       global.marked.parse.mockReturnValue(html);
@@ -257,13 +246,6 @@ describe('plan-renderer.js', () => {
 
       const meta = document.getElementById('plan-meta');
       expect(meta.innerHTML).not.toContain('tasks');
-    });
-
-    it('should show reading time badge', () => {
-      eval(loadPlanRenderer('some words here'));
-
-      const meta = document.getElementById('plan-meta');
-      expect(meta.innerHTML).toContain('min');
     });
   });
 
@@ -493,18 +475,10 @@ describe('plan-renderer.js', () => {
   });
 
   describe('reading progress', () => {
-    it('should initialize progress at 0%', () => {
-      eval(loadPlanRenderer(defaultPlan));
-
-      const progressText = document.getElementById('progress-text');
-      expect(progressText.textContent).toBe('0%');
-    });
-
-    it('should have progress fill elements', () => {
+    it('should have progress fill element', () => {
       eval(loadPlanRenderer(defaultPlan));
 
       expect(document.getElementById('progress-fill')).not.toBeNull();
-      expect(document.getElementById('sidebar-progress-fill')).not.toBeNull();
     });
   });
 

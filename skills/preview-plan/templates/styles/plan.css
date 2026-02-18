@@ -42,24 +42,6 @@
     margin-bottom: var(--spacing-sm);
 }
 
-.plan-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-}
-
-.meta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--spacing-xs);
-    padding: 2px var(--spacing-sm);
-    background: var(--color-surface-tertiary);
-    border-radius: var(--radius-full);
-    font-size: 11px;
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-secondary);
-}
-
 /* TOC */
 .toc-container {
     flex: 1;
@@ -132,34 +114,6 @@
     padding-left: calc(var(--spacing-xl) + var(--spacing-2xl));
     font-size: var(--font-size-xs);
     color: var(--color-text-tertiary);
-}
-
-/* Sidebar footer with reading progress */
-.sidebar-footer {
-    padding: var(--spacing-md) var(--spacing-xl);
-    border-top: 1px solid var(--color-border-primary);
-    font-size: 11px;
-    color: var(--color-text-tertiary);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
-
-.sidebar-progress-bar {
-    flex: 1;
-    height: 3px;
-    background: var(--color-surface-tertiary);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.sidebar-progress-fill {
-    height: 100%;
-    width: 0%;
-    background: var(--color-primary);
-    border-radius: 2px;
-    transition: width 0.15s ease;
 }
 
 /* ============================================================
