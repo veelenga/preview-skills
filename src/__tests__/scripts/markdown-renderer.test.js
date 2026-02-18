@@ -50,6 +50,13 @@ describe('markdown-renderer.js', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="content"></div>';
     jest.clearAllMocks();
+
+    // Mock IntersectionObserver
+    global.IntersectionObserver = jest.fn().mockImplementation((callback) => ({
+      observe: jest.fn(),
+      unobserve: jest.fn(),
+      disconnect: jest.fn(),
+    }));
   });
 
   describe('initialization', () => {
@@ -150,11 +157,11 @@ describe('markdown-renderer.js', () => {
       expect(container.innerHTML).toContain('3 words');
     });
 
-    it('should calculate characters correctly', () => {
+    it('should calculate reading time', () => {
       eval(loadMarkdownRenderer('Test'));
 
       const container = document.getElementById('content');
-      expect(container.innerHTML).toContain('4 chars');
+      expect(container.innerHTML).toContain('min read');
     });
 
     it('should handle empty content', () => {
@@ -163,7 +170,7 @@ describe('markdown-renderer.js', () => {
       const container = document.getElementById('content');
       expect(container.innerHTML).toContain('1 lines');
       expect(container.innerHTML).toContain('0 words');
-      expect(container.innerHTML).toContain('0 chars');
+      expect(container.innerHTML).toContain('min read');
     });
 
     it('should handle multiple spaces', () => {
@@ -201,11 +208,13 @@ describe('markdown-renderer.js', () => {
       expect(container.innerHTML).toContain('preview-footer');
     });
 
-    it('should wrap content in preview-body', () => {
+    it('should wrap content in markdown layout with sidebar', () => {
       eval(loadMarkdownRenderer(defaultMarkdown));
 
       const container = document.getElementById('content');
-      expect(container.innerHTML).toContain('preview-body');
+      expect(container.innerHTML).toContain('markdown-layout');
+      expect(container.innerHTML).toContain('markdown-sidebar');
+      expect(container.innerHTML).toContain('markdown-main');
     });
   });
 
@@ -516,7 +525,7 @@ describe('markdown-renderer.js', () => {
       eval(loadMarkdownRenderer('## Section\n\nContent'));
 
       const anchor = document.querySelector('.header-anchor');
-      const previewBody = document.querySelector('.preview-body');
+      const previewBody = document.getElementById('markdown-main');
       const clickEvent = new MouseEvent('click', { bubbles: true });
       anchor.dispatchEvent(clickEvent);
 
@@ -551,7 +560,7 @@ describe('markdown-renderer.js', () => {
       eval(loadMarkdownRenderer(''));
 
       const tocLink = document.querySelector('a[href="#features"]');
-      const previewBody = document.querySelector('.preview-body');
+      const previewBody = document.getElementById('markdown-main');
 
       const clickEvent = new MouseEvent('click', { bubbles: true });
       tocLink.dispatchEvent(clickEvent);
@@ -567,7 +576,7 @@ describe('markdown-renderer.js', () => {
       eval(loadMarkdownRenderer(''));
 
       const externalLink = document.querySelector('a[href="https://example.com"]');
-      const previewBody = document.querySelector('.preview-body');
+      const previewBody = document.getElementById('markdown-main');
 
       const clickEvent = new MouseEvent('click', { bubbles: true });
       externalLink.dispatchEvent(clickEvent);
@@ -588,7 +597,7 @@ describe('markdown-renderer.js', () => {
       eval(loadMarkdownRenderer('## Section'));
       jest.advanceTimersByTime(150);
 
-      const previewBody = document.querySelector('.preview-body');
+      const previewBody = document.getElementById('markdown-main');
       expect(previewBody.scrollTo).toHaveBeenCalled();
 
       jest.useRealTimers();
