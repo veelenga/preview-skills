@@ -3,6 +3,7 @@
 const SCROLL_PADDING = 20;
 const INITIAL_SCROLL_DELAY_MS = 100;
 const READING_SPEED_WPM = 200;
+const SCROLL_SPY_OFFSET = 120; // Offset to account for header/padding/progress bar
 const HEADER_SELECTOR =
   '#markdown-content h1, #markdown-content h2, #markdown-content h3, #markdown-content h4, #markdown-content h5, #markdown-content h6';
 
@@ -200,7 +201,7 @@ function initScrollSpy() {
   if (headers.length === 0 || !markdownMain) return;
 
   function updateActiveSection() {
-    const scrollPos = markdownMain.scrollTop + 200; // Account for header/padding/progress bar
+    const scrollPos = markdownMain.scrollTop + SCROLL_SPY_OFFSET;
 
     // Find the current section (last header above scroll position)
     let currentHeader = headers[0];

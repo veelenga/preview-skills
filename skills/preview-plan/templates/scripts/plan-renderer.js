@@ -3,6 +3,7 @@
 const SCROLL_PADDING = 20;
 const INITIAL_SCROLL_DELAY_MS = 100;
 const READING_SPEED_WPM = 200;
+const SCROLL_SPY_OFFSET = 120; // Offset to account for header/padding/progress bar
 const HEADER_SELECTOR =
   '#plan-content h1, #plan-content h2, #plan-content h3, #plan-content h4, #plan-content h5, #plan-content h6';
 
@@ -197,7 +198,7 @@ function initScrollSpy() {
   if (headers.length === 0 || !planMain) return;
 
   function updateActiveSection() {
-    const scrollPos = planMain.scrollTop + 200; // Account for header/padding/progress bar
+    const scrollPos = planMain.scrollTop + SCROLL_SPY_OFFSET;
 
     // Find the current section (last header above scroll position)
     let currentHeader = headers[0];
