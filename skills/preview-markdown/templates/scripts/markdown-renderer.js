@@ -194,40 +194,32 @@ function generateTOC() {
 
 function initScrollSpy() {
   const tocLinks = document.querySelectorAll('.toc-link');
-  const headers = document.querySelectorAll(HEADER_SELECTOR);
+  const headers = Array.from(document.querySelectorAll(HEADER_SELECTOR));
   const markdownMain = document.getElementById('markdown-main');
 
   if (headers.length === 0 || !markdownMain) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          tocLinks.forEach((link) => {
-            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-          });
+  function updateActiveSection() {
+    const scrollPos = markdownMain.scrollTop + 200; // Account for header/padding/progress bar
 
-          const activeLink = document.querySelector('.toc-link.active');
-          if (activeLink) {
-            const tocContainer = document.getElementById('toc-container');
-            const linkRect = activeLink.getBoundingClientRect();
-            const containerRect = tocContainer.getBoundingClientRect();
-            if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
-              activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            }
-          }
-        }
-      });
-    },
-    {
-      root: markdownMain,
-      rootMargin: '-10% 0px -80% 0px',
-      threshold: 0,
+    // Find the current section (last header above scroll position)
+    let currentHeader = headers[0];
+    for (const header of headers) {
+      if (header.offsetTop <= scrollPos) {
+        currentHeader = header;
+      } else {
+        break;
+      }
     }
-  );
 
-  headers.forEach((header) => observer.observe(header));
+    // Update active link
+    tocLinks.forEach((link) => {
+      link.classList.toggle('active', link.getAttribute('href') === `#${currentHeader.id}`);
+    });
+  }
+
+  markdownMain.addEventListener('scroll', updateActiveSection);
+  updateActiveSection(); // Initial update
 }
 
 function updateProgress() {
