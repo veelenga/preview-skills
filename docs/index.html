@@ -385,79 +385,88 @@
       }
 
       .demo-section {
-        padding: 2rem 1rem;
+        padding: 2rem 0;
       }
 
       .demo-container {
-        border-radius: 12px;
+        border-radius: 8px;
+        margin: 0 1rem;
       }
 
       .hero {
-        padding: 2rem 1rem;
+        padding: 3rem 1rem 2rem;
       }
 
       .hero h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
       }
 
       .hero p {
-        font-size: 0.95rem;
-        margin-bottom: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
       }
 
       .cta-buttons {
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
+        width: 100%;
       }
 
       .btn {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
         width: 100%;
         justify-content: center;
       }
 
       .features {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
+        grid-template-columns: 1fr;
+        gap: 1rem;
         padding: 2rem 0;
       }
 
       .feature {
-        padding: 1rem;
+        padding: 1.5rem;
       }
 
       .feature-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
+        margin-bottom: 0.75rem;
       }
 
       .feature h3 {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
       }
 
       .feature p {
-        font-size: 0.8rem;
-        display: none;
+        font-size: 0.9rem;
+        line-height: 1.5;
       }
 
       .section-title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        padding: 0 0.5rem;
       }
 
       .skills-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1.25rem;
+        padding: 0;
       }
 
       .skill-card {
-        padding: 1.25rem;
-        border-radius: 16px;
+        padding: 1.5rem;
+        border-radius: 12px;
       }
 
       .skill-card h3 {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
         margin-bottom: 0.25rem;
       }
 
@@ -544,6 +553,35 @@
 
     .code-comment {
       color: #6b7280;
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.5rem;
+        line-height: 1.25;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .demo-container {
+        margin: 0 0.5rem;
+      }
+
+      .btn {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+      }
+
+      .feature {
+        padding: 1.25rem;
+      }
+
+      .skill-card {
+        padding: 1.25rem;
+      }
     }
   </style>
 </head>
