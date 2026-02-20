@@ -16,11 +16,11 @@
 
 ![Demo](docs/demo.gif)
 
-[🌐 Visit Website](https://veelenga.github.io/preview-skills/) • [📚 Live Examples](https://veelenga.github.io/preview-skills/examples/plan/sample.html)
+[🌐 Visit website](https://veelenga.github.io/preview-skills/) • [📚 Live examples](https://veelenga.github.io/preview-skills/examples/plan/sample.html)
 
-## Quick Start
+## Quick start
 
-### Installation Script (Recommended)
+### Installation script (recommended)
 
 The easiest way to install skills using symlinks:
 
@@ -102,7 +102,7 @@ Or use natural language:
 /preview-leaflet examples/leaflet/longest-trails.leaflet
 ```
 
-### Running Tests
+### Running tests
 
 ```bash
 npm test              # Run all tests
@@ -110,7 +110,7 @@ npm run test:watch    # Watch mode
 npm run lint          # ESLint
 ```
 
-## How It Works
+## How it works
 
 No servers, no dependencies, no installation complexity. Each skill is a bash script that:
 
@@ -133,7 +133,7 @@ Each skill has a `config.sh` file with well-documented configuration options:
 
 See `skills/preview-csv/config.sh` for a working example.
 
-## See Also
+## See also
 
 If you like this project, you might also be interested in
 
