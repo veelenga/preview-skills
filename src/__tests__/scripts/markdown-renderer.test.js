@@ -585,10 +585,9 @@ describe('markdown-renderer.js', () => {
     });
 
     it('should handle initial hash on page load', () => {
-      Object.defineProperty(window, 'location', {
-        value: { hash: '#section' },
-        writable: true,
-      });
+      const originalLocation = window.location;
+      delete window.location;
+      window.location = { hash: '#section' };
 
       global.marked.parse.mockReturnValue('<h2 id="section">Section</h2>');
       global.DOMPurify.sanitize.mockReturnValue('<h2 id="section">Section</h2>');
@@ -601,10 +600,7 @@ describe('markdown-renderer.js', () => {
       expect(previewBody.scrollTo).toHaveBeenCalled();
 
       jest.useRealTimers();
-      Object.defineProperty(window, 'location', {
-        value: { hash: '' },
-        writable: true,
-      });
+      window.location = originalLocation;
     });
   });
 
