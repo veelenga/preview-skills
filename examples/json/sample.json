@@ -38,7 +38,7 @@
     },
     "browserUtils": {
       "path": "lib/browser-utils.sh",
-      "functions": ["open_in_browser", "get_temp_file_path", "cleanup_old_previews"]
+      "functions": ["open_in_browser", "get_preview_file_path", "cleanup_old_previews"]
     },
     "htmlGenerator": {
       "path": "lib/html-generator.sh",

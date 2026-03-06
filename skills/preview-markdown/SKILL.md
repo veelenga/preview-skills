@@ -145,7 +145,7 @@ Full support for:
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-markdown-{filename}.html
+.preview-skills/markdown/{filename}.html
 ```
 
 The file is self-contained and can be:

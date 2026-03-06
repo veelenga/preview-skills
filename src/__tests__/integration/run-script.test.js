@@ -1,5 +1,6 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 const SKILLS_DIR = path.join(__dirname, '../../../skills');
@@ -19,10 +20,10 @@ describe('run.sh integration tests', () => {
       expect(result).toContain('Preview created:');
       expect(result).toContain('.html');
 
-      // Extract output file path and verify it exists
+      // Extract output file path and verify it exists (path is relative to skillDir)
       const match = result.match(/Preview created: (.+\.html)/);
       expect(match).not.toBeNull();
-      const outputFile = match[1].trim();
+      const outputFile = path.resolve(skillDir, match[1].trim());
       expect(fs.existsSync(outputFile)).toBe(true);
     });
 
@@ -39,7 +40,7 @@ describe('run.sh integration tests', () => {
 
       const match = result.match(/Preview created: (.+\.html)/);
       expect(match).not.toBeNull();
-      const outputFile = match[1].trim();
+      const outputFile = path.resolve(skillDir, match[1].trim());
       expect(fs.existsSync(outputFile)).toBe(true);
     });
 
@@ -56,7 +57,7 @@ describe('run.sh integration tests', () => {
 
       const match = result.match(/Preview created: (.+\.html)/);
       expect(match).not.toBeNull();
-      const outputFile = match[1].trim();
+      const outputFile = path.resolve(skillDir, match[1].trim());
       expect(fs.existsSync(outputFile)).toBe(true);
     });
 
@@ -77,7 +78,7 @@ describe('run.sh integration tests', () => {
     it('should output to custom path', () => {
       const skillDir = path.join(SKILLS_DIR, 'preview-json');
       const inputFile = path.join(EXAMPLES_DIR, 'json/sample.json');
-      const outputFile = '/tmp/preview-skills-test/custom-output.html';
+      const outputFile = path.join(os.tmpdir(), 'preview-skills-test', 'custom-output.html');
 
       // Ensure directory exists
       fs.mkdirSync(path.dirname(outputFile), { recursive: true });

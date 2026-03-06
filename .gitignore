@@ -9,5 +9,8 @@ coverage/
 .npm
 .eslintcache
 
+# Preview output (sandbox fallback)
+.preview-skills/
+
 # Generated docs (built in CI)
 docs/examples/
