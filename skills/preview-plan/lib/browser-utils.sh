@@ -9,7 +9,7 @@
 
 
 # Browser Utilities Library
-# Functions for opening browsers and managing temp files
+# Functions for opening browsers and managing preview files
 
 # Preview output directory (project-local)
 readonly PREVIEW_DIR=".preview-skills"
@@ -117,6 +117,27 @@ open_in_browser() {
 }
 
 #######################################
+# Sanitize a string for use in file/directory names
+# Arguments:
+#   $1 - String to sanitize
+#   $2 - Max length (default: 100)
+#   $3 - Fallback if empty (default: "file")
+# Returns:
+#   Sanitized string safe for filenames
+#######################################
+sanitize_name() {
+    local input="$1"
+    local max_length="${2:-100}"
+    local fallback="${3:-file}"
+
+    local safe
+    safe=$(echo "$input" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-"$max_length")
+    [ -z "$safe" ] && safe="$fallback"
+
+    echo "$safe"
+}
+
+#######################################
 # Generate preview file path
 # Arguments:
 #   $1 - Skill name (e.g., "markdown", "mermaid")
@@ -128,15 +149,10 @@ get_preview_file_path() {
     local skill_name="$1"
     local filename="$2"
 
-    # Sanitize skill name and filename (remove special chars, keep alphanumeric, dashes, underscores)
     local safe_skill
     local safe_filename
-    safe_skill=$(echo "$skill_name" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-50)
-    safe_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-100)
-
-    # Ensure we don't have empty names
-    [ -z "$safe_skill" ] && safe_skill="unknown"
-    [ -z "$safe_filename" ] && safe_filename="file"
+    safe_skill=$(sanitize_name "$skill_name" 50 "unknown")
+    safe_filename=$(sanitize_name "$filename" 100 "file")
 
     local output_dir="${PREVIEW_DIR}/${safe_skill}"
     mkdir -p "$output_dir" 2>/dev/null || {
@@ -148,7 +164,7 @@ get_preview_file_path() {
 }
 
 #######################################
-# Get output file path (custom or temp)
+# Get output file path (custom or default)
 # Arguments:
 #   $1 - Skill name (e.g., "markdown", "mermaid")
 #   $2 - Filename (e.g., "document", "diagram")
@@ -167,8 +183,7 @@ get_output_file_path() {
     fi
 
     local safe_filename
-    safe_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-100)
-    [ -z "$safe_filename" ] && safe_filename="file"
+    safe_filename=$(sanitize_name "$filename" 100 "file")
 
     if [ -d "$custom_output" ]; then
         echo "${custom_output%/}/${safe_filename}.html"
