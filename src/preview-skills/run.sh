@@ -96,6 +96,18 @@ else
     CONTENT=$(read_with_limit "$MAX_CONTENT_SIZE") || exit 1
 fi
 
+# Set base href for relative path resolution (images, links, etc.)
+# Skip for interactive tools (D3, ThreeJS, Leaflet) that load user code via relative script src
+if [ -n "${SOURCE_FILE:-}" ] && [ "${NEEDS_USER_CODE_TEMPLATE:-0}" != "1" ]; then
+    SOURCE_DIR_ABS="$(cd "$(dirname "$SOURCE_FILE")" && pwd)"
+    # Encode URL-unsafe characters for file:// URI
+    SOURCE_DIR_URL="${SOURCE_DIR_ABS//%/%25}"
+    SOURCE_DIR_URL="${SOURCE_DIR_URL// /%20}"
+    SOURCE_DIR_URL="${SOURCE_DIR_URL//#/%23}"
+    SOURCE_DIR_URL="${SOURCE_DIR_URL//\?/%3F}"
+    export HTML_BASE_HREF="file://${SOURCE_DIR_URL}/"
+fi
+
 # Validate content (tool-specific)
 validate_content "$CONTENT" || exit 1
 

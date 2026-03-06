@@ -303,15 +303,23 @@ generate_html() {
     # Content wrapper
     local content="${HTML_CONTENT:-<div id=\"content\"></div>}"
 
+    # Determine if base href is set (for relative path resolution)
+    local base_tag=""
+    local file_scheme=""
+    if [ -n "${HTML_BASE_HREF:-}" ]; then
+        base_tag="    <base href=\"${HTML_BASE_HREF}\">"
+        file_scheme=" file:"
+    fi
+
     # Generate CSP header
     local csp_header="default-src 'self'; "
     csp_header+="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; "
     csp_header+="style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://fonts.googleapis.com; "
     csp_header+="font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; "
-    csp_header+="img-src 'self' data: https:; "
+    csp_header+="img-src 'self' data: https:${file_scheme}; "
     csp_header+="connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com; "
     csp_header+="object-src 'none'; "
-    csp_header+="base-uri 'self'; "
+    csp_header+="base-uri 'self'${file_scheme}; "
     csp_header+="form-action 'self'; "
     csp_header+="frame-ancestors 'none';"
 
@@ -327,6 +335,7 @@ generate_html() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+${base_tag}
     <meta http-equiv="Content-Security-Policy" content="${csp_header}">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">

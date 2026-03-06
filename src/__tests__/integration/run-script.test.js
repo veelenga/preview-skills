@@ -74,6 +74,45 @@ describe('run.sh integration tests', () => {
     });
   });
 
+  describe('base href for relative paths', () => {
+    it('should include base href when previewing a source file', () => {
+      const skillDir = path.join(SKILLS_DIR, 'preview-markdown');
+      const inputFile = path.join(EXAMPLES_DIR, 'markdown/sample.md');
+      const outputFile = path.join(os.tmpdir(), 'preview-skills-test', 'base-href-test.html');
+
+      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+
+      execSync(`./run.sh "${inputFile}" -o "${outputFile}" --no-browser`, {
+        cwd: skillDir,
+        encoding: 'utf-8',
+      });
+
+      const html = fs.readFileSync(outputFile, 'utf-8');
+      const sourceDir = path.dirname(path.resolve(inputFile));
+      expect(html).toContain(`<base href="file://${sourceDir}/">`);
+
+      fs.unlinkSync(outputFile);
+    });
+
+    it('should not include base href when using piped stdin', () => {
+      const skillDir = path.join(SKILLS_DIR, 'preview-json');
+      const outputFile = path.join(os.tmpdir(), 'preview-skills-test', 'base-href-stdin-test.html');
+
+      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+
+      execSync(`echo '{"test": "value"}' | ./run.sh -o "${outputFile}" --no-browser`, {
+        cwd: skillDir,
+        encoding: 'utf-8',
+        shell: '/bin/bash',
+      });
+
+      const html = fs.readFileSync(outputFile, 'utf-8');
+      expect(html).not.toContain('<base href=');
+
+      fs.unlinkSync(outputFile);
+    });
+  });
+
   describe('-o/--output flag', () => {
     it('should output to custom path', () => {
       const skillDir = path.join(SKILLS_DIR, 'preview-json');
