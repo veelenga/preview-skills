@@ -169,7 +169,7 @@ stateDiagram-v2
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-mermaid-{filename}.html
+.preview-skills/mermaid/{filename}.html
 ```
 
 The file is self-contained and can be:

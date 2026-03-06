@@ -127,7 +127,7 @@ Use this skill when the user wants to:
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-csv-{filename}.html
+.preview-skills/csv/{filename}.html
 ```
 
 The file is self-contained and can be:

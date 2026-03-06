@@ -397,7 +397,7 @@ Leaflet uses `[latitude, longitude]` format:
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-leaflet-{filename}.html
+.preview-skills/leaflet/{filename}.html
 ```
 
 ## Development

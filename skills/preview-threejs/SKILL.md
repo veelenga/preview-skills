@@ -330,7 +330,7 @@ scene.userData.customAnimate = function () {
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-threejs-{filename}.html
+.preview-skills/threejs/{filename}.html
 ```
 
 ## Development

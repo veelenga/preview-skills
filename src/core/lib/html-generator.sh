@@ -244,7 +244,7 @@ generate_html() {
     local title="${HTML_TITLE:-Preview}"
     local layout="${HTML_LAYOUT:-document}"
     local background="${HTML_BACKGROUND:-#f5f5f5}"
-    local output="${HTML_OUTPUT:-/tmp/preview.html}"
+    local output="${HTML_OUTPUT:-.preview-skills/preview.html}"
 
     # Generate CDN script tags
     local cdn_scripts=""

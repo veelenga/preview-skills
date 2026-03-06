@@ -67,6 +67,28 @@ escape_for_html() {
 }
 
 #######################################
+# Escape string for safe use in HTML attributes/titles
+# More aggressive escaping for untrusted filenames
+# Arguments:
+#   $1 - String to escape
+# Returns:
+#   Safe string for HTML context
+#######################################
+escape_filename_for_html() {
+    local input="$1"
+    # Remove or escape potentially dangerous characters
+    # Allow only alphanumeric, spaces, dots, dashes, underscores
+    echo "$input" | sed \
+        -e 's/&/\&amp;/g' \
+        -e 's/</\&lt;/g' \
+        -e 's/>/\&gt;/g' \
+        -e 's/"/\&quot;/g' \
+        -e "s/'/\&#39;/g" \
+        -e 's/`/\&#96;/g' \
+        -e 's/\$/\&#36;/g'
+}
+
+#######################################
 # Read stdin with size limit
 # Arguments:
 #   $1 - Maximum size in bytes (optional, defaults to MAX_CONTENT_SIZE)

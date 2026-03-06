@@ -1,37 +1,10 @@
 #!/usr/bin/env bash
 
 # Browser Utilities Library
-# Functions for opening browsers and managing temp files
+# Functions for opening browsers and managing preview files
 
-# Constants
-readonly TEMP_DIR="/tmp/preview-skills"
-readonly TEMP_FILE_PREFIX="preview"
-
-#######################################
-# Initialize secure temp directory
-# Creates /tmp/preview-skills with proper permissions
-# Returns:
-#   Exit code 0 on success, 1 on failure
-#######################################
-init_temp_dir() {
-    # Create temp directory if it doesn't exist
-    if [ ! -d "$TEMP_DIR" ]; then
-        if ! mkdir -p "$TEMP_DIR" 2>/dev/null; then
-            echo "Error: Failed to create temp directory: $TEMP_DIR" >&2
-            return 1
-        fi
-        # Set restrictive permissions (owner only)
-        chmod 700 "$TEMP_DIR" 2>/dev/null || true
-    fi
-
-    # Verify directory is secure
-    if [ ! -d "$TEMP_DIR" ] || [ ! -w "$TEMP_DIR" ]; then
-        echo "Error: Temp directory not accessible: $TEMP_DIR" >&2
-        return 1
-    fi
-
-    return 0
-}
+# Preview output directory (project-local)
+readonly PREVIEW_DIR=".preview-skills"
 
 #######################################
 # Validate file path for security
@@ -40,7 +13,7 @@ init_temp_dir() {
 #   $1 - File path to validate
 #   $2 - Optional base directory (defaults to current directory)
 # Environment:
-#   PREVIEW_ALLOW_EXTERNAL_FILES - Set to "1" to allow files outside base dir (default: 0)
+#   PREVIEW_ALLOW_EXTERNAL_FILES - Set to "1" to allow files outside base dir (default: 1)
 #   PREVIEW_ALLOW_SYMLINKS - Set to "1" to allow symlinks (default: 0)
 # Returns:
 #   Exit code 0 if valid, 1 if invalid
@@ -48,7 +21,7 @@ init_temp_dir() {
 validate_file_path() {
     local file_path="$1"
     local base_dir="${2:-.}"
-    local allow_external="${PREVIEW_ALLOW_EXTERNAL_FILES:-0}"
+    local allow_external="${PREVIEW_ALLOW_EXTERNAL_FILES:-1}"
     local allow_symlinks="${PREVIEW_ALLOW_SYMLINKS:-0}"
 
     # Check if file exists
@@ -84,8 +57,20 @@ validate_file_path() {
                 echo "Allowed base: $abs_base" >&2
                 echo "Set PREVIEW_ALLOW_EXTERNAL_FILES=1 to override this restriction." >&2
                 return 1
-            else
-                echo "Warning: Accessing file outside base directory: $file_path" >&2
+            fi
+            # No warning when external files are explicitly allowed
+        fi
+    else
+        # Fallback: check for path traversal patterns when realpath is unavailable
+        # This is a basic check that catches common traversal attempts
+        if [[ "$file_path" == *".."* ]]; then
+            echo "Error: Path contains '..' which may indicate path traversal: $file_path" >&2
+            return 1
+        fi
+        # Check for absolute paths outside base when external files not allowed
+        if [ "$allow_external" != "1" ]; then
+            if [[ "$file_path" == /* ]] && [[ "$file_path" != "$base_dir"* ]]; then
+                echo "Warning: Cannot fully validate path without realpath command" >&2
             fi
         fi
     fi
@@ -99,7 +84,7 @@ validate_file_path() {
 #   $1 - Path to file to open
 # Returns:
 #   Exit code 0 on success
-# Note: Tab reuse works automatically since we use same /tmp filename
+# Note: Tab reuse works automatically since we use same filename
 #######################################
 open_in_browser() {
     local file_path="$1"
@@ -124,31 +109,102 @@ open_in_browser() {
 }
 
 #######################################
-# Generate temp file path for preview
+# Sanitize a string for use in file/directory names
+# Arguments:
+#   $1 - String to sanitize
+#   $2 - Max length (default: 100)
+#   $3 - Fallback if empty (default: "file")
+# Returns:
+#   Sanitized string safe for filenames
+#######################################
+sanitize_name() {
+    local input="$1"
+    local max_length="${2:-100}"
+    local fallback="${3:-file}"
+
+    local safe
+    safe=$(echo "$input" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-"$max_length")
+    [ -z "$safe" ] && safe="$fallback"
+
+    echo "$safe"
+}
+
+#######################################
+# Generate preview file path
 # Arguments:
 #   $1 - Skill name (e.g., "markdown", "mermaid")
 #   $2 - Filename (e.g., "document", "diagram")
 # Returns:
-#   Path to temp file (e.g., "/tmp/preview-skills/preview-markdown-document.html")
+#   Path to preview file (e.g., ".preview-skills/markdown/document.html")
 #######################################
-get_temp_file_path() {
+get_preview_file_path() {
     local skill_name="$1"
     local filename="$2"
 
-    # Initialize temp directory
-    init_temp_dir || return 1
-
-    # Sanitize skill name and filename (remove special chars, keep alphanumeric, dashes, underscores)
     local safe_skill
     local safe_filename
-    safe_skill=$(echo "$skill_name" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-50)
-    safe_filename=$(echo "$filename" | sed 's/[^a-zA-Z0-9_-]/-/g' | cut -c1-100)
+    safe_skill=$(sanitize_name "$skill_name" 50 "unknown")
+    safe_filename=$(sanitize_name "$filename" 100 "file")
 
-    # Ensure we don't have empty names
-    [ -z "$safe_skill" ] && safe_skill="unknown"
-    [ -z "$safe_filename" ] && safe_filename="file"
+    local output_dir="${PREVIEW_DIR}/${safe_skill}"
+    mkdir -p "$output_dir" 2>/dev/null || {
+        echo "Error: Failed to create preview directory: $output_dir" >&2
+        return 1
+    }
 
-    echo "${TEMP_DIR}/${TEMP_FILE_PREFIX}-${safe_skill}-${safe_filename}.html"
+    echo "${output_dir}/${safe_filename}.html"
+}
+
+#######################################
+# Get output file path (custom or default)
+# Arguments:
+#   $1 - Skill name (e.g., "markdown", "mermaid")
+#   $2 - Filename (e.g., "document", "diagram")
+#   $3 - Custom output path (optional, can be file or directory)
+# Returns:
+#   Path to output file
+#######################################
+get_output_file_path() {
+    local skill_name="$1"
+    local filename="$2"
+    local custom_output="${3:-}"
+
+    if [ -z "$custom_output" ]; then
+        get_preview_file_path "$skill_name" "$filename"
+        return
+    fi
+
+    local safe_filename
+    safe_filename=$(sanitize_name "$filename" 100 "file")
+
+    if [ -d "$custom_output" ]; then
+        echo "${custom_output%/}/${safe_filename}.html"
+        return
+    fi
+
+    if [[ "$custom_output" == */ ]]; then
+        mkdir -p "$custom_output" 2>/dev/null || {
+            echo "Error: Cannot create directory: $custom_output" >&2
+            return 1
+        }
+        echo "${custom_output%/}/${safe_filename}.html"
+        return
+    fi
+
+    local parent_dir
+    parent_dir=$(dirname "$custom_output")
+    if [ ! -d "$parent_dir" ]; then
+        mkdir -p "$parent_dir" 2>/dev/null || {
+            echo "Error: Cannot create directory: $parent_dir" >&2
+            return 1
+        }
+    fi
+
+    if [[ "$custom_output" != *.html ]]; then
+        echo "${custom_output}.html"
+    else
+        echo "$custom_output"
+    fi
 }
 
 #######################################
@@ -160,18 +216,21 @@ get_temp_file_path() {
 #   Number of files removed
 #######################################
 cleanup_old_previews() {
-    local skill_name="${1:-*}"
+    local skill_name="${1:-}"
     local age_minutes="${2:-60}"
-    local pattern="${TEMP_DIR}/${TEMP_FILE_PREFIX}-${skill_name}-*.html"
+    local search_dir="${PREVIEW_DIR}"
     local count=0
 
+    if [ -n "$skill_name" ] && [ -d "${PREVIEW_DIR}/${skill_name}" ]; then
+        search_dir="${PREVIEW_DIR}/${skill_name}"
+    fi
+
     # Find and remove files older than specified age
-    if command -v find >/dev/null 2>&1; then
-        # Use find command if available (more precise)
+    if [ -d "$search_dir" ] && command -v find >/dev/null 2>&1; then
         while IFS= read -r file; do
             rm -f "$file"
             ((count++))
-        done < <(find "$TEMP_DIR" -name "${TEMP_FILE_PREFIX}-${skill_name}-*.html" -type f -mmin "+${age_minutes}" 2>/dev/null)
+        done < <(find "$search_dir" -name "*.html" -type f -mmin "+${age_minutes}" 2>/dev/null)
     fi
 
     echo "$count"
@@ -185,12 +244,15 @@ cleanup_old_previews() {
 #   List of preview file paths
 #######################################
 list_preview_files() {
-    local skill_name="${1:-*}"
-    local pattern="${TEMP_DIR}/${TEMP_FILE_PREFIX}-${skill_name}-*.html"
+    local skill_name="${1:-}"
+    local search_dir="${PREVIEW_DIR}"
+
+    if [ -n "$skill_name" ] && [ -d "${PREVIEW_DIR}/${skill_name}" ]; then
+        search_dir="${PREVIEW_DIR}/${skill_name}"
+    fi
 
     # List matching files
-    # shellcheck disable=SC2086
-    ls -t $pattern 2>/dev/null || true
+    find "$search_dir" -name "*.html" -type f 2>/dev/null | sort || true
 }
 
 #######################################

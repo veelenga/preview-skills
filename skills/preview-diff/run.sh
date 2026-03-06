@@ -13,7 +13,7 @@
 #    OR: cat content | ./run.sh [name] [-o output] [--no-browser]
 #
 # Options:
-#   -o, --output    Output file path or directory (default: /tmp/preview-skills/)
+#   -o, --output    Output file path or directory (default: .preview-skills/)
 #   --no-browser    Skip opening browser, just output file path
 
 set -euo pipefail

@@ -301,7 +301,7 @@ Your code runs with:
 The skill generates a standalone HTML file at:
 
 ```
-/tmp/preview-skills/preview-d3-{filename}.html
+.preview-skills/d3/{filename}.html
 ```
 
 ## Development
