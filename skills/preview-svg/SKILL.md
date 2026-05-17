@@ -174,6 +174,96 @@ Chain animations with `begin="otherAnim.end + 0.2s"` for state machines.
 
 Default: **CSS for what it can reach, SMIL for the rest.**
 
+## Layout & Composition — Avoid Overlap Bugs
+
+The most common authoring failures aren't animation bugs — they're layout
+collisions: an icon on top of text, a label that runs into the next column,
+a decorative badge floating disconnected from its row. Follow these rules
+to ship clean SVGs the first time.
+
+### 1. Declare a grid before placing anything
+
+At the top of the SVG (in a comment or in `<defs>`), declare your row Y
+positions and column X positions as named coordinates. Place every element
+via `<g transform="translate(X,Y)">` referencing those names. Never
+free-position.
+
+```xml
+<!--
+  Lanes:  CLIENT_X=160   SERVER_X=720
+  Rows:   ROW1=60   ROW2=160   ROW3=260   ROW4=360
+  Gaps:   row gap 100, gutter 24, icon-to-text 12
+-->
+<g transform="translate(160, 60)">
+  <!-- ClientHello row content, anchored at (0,0) -->
+</g>
+```
+
+### 2. Reserve horizontal space for icons
+
+A 24×24 icon next to a text label needs **at least 12px gap** between them.
+A 14px-font text label is roughly `chars × 7px` wide. Compute the icon's
+position from the text's center, not from the row's center.
+
+**Wrong**: icon `cx=400`, text centered at `x=400` → icon sits on top of text.
+**Right**: text centered at `x=400`, icon at `cx = 400 - (charCount * 3.5) - 24`.
+
+### 3. Don't put emojis inside `<text>`
+
+Emoji rendering differs across OS/browser — sizing, baseline, and color
+are unpredictable. They break alignment and animation timing. Use proper
+SVG shapes for icons (paths, circles, gradients) or, if you must, give
+the emoji its **own** `<text>` with explicit position so it doesn't shift
+the surrounding label.
+
+```xml
+<!-- BAD: emoji shifts the rest of the text unpredictably -->
+<text>shared session key 🔑</text>
+
+<!-- OK: emoji is its own element with explicit position -->
+<text x="100">shared session key</text>
+<text x="280" font-size="18">🔑</text>
+
+<!-- BEST: real SVG icon, fully controlled -->
+<text x="100">shared session key</text>
+<g transform="translate(280, -10)"><!-- key icon path --></g>
+```
+
+### 4. One element, one row
+
+Decorations belong to one row only. Don't float a badge for row 2 next to
+row 3's content — readers can't tell which row owns it. If a step needs
+its own icon, build a self-contained `<g>` for that step with the icon
+inside its bounds.
+
+### 5. Leave breathing room at the edges
+
+The renderer fills the stage at 100%; nothing crops to the viewport.
+Inset content by **at least 5% of viewBox width** on each side so labels
+don't kiss the edge.
+
+### 6. Use a consistent text-anchor strategy per column
+
+Pick one of:
+
+- All labels in a column use `text-anchor="middle"` with `x` at the column center.
+- All labels in a column use `text-anchor="start"` with `x` at the column left.
+
+Mixing them within a column causes misalignment that compounds across rows.
+
+### Authoring checklist
+
+Before finalizing the SVG, mentally walk through:
+
+- [ ] Every text and icon position is declared via a `<g transform>` or
+      named coordinate (no magic numbers scattered through the file).
+- [ ] No `<text>` contains an emoji adjacent to other characters.
+- [ ] Every decoration is inside the `<g>` of the row it describes.
+- [ ] All labels in the same column share one `text-anchor` strategy.
+- [ ] Inset from viewBox edges is ≥ 5% on each side.
+- [ ] No two elements with `fill` or `stroke` overlap unless intentionally
+      layered (background → mid → foreground).
+
 ## Animation Theory — Quick Reference
 
 - **Easing**: `ease-in` = slow start (anticipation), `ease-out` = soft landing
