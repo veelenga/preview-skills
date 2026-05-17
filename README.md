@@ -2,18 +2,18 @@
 
 **Reduce cognitive load when reviewing AI agent work.** Transform plans, diffs, and data into navigable previews.
 
-| Name                                                                                                  | Description                                                     | File Types          |
-| ----------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------- |
-| [**preview-plan**](https://veelenga.github.io/preview-skills/examples/plan/sample.html)               | Navigable plans with sidebar TOC and progress tracking          | `.plan.md`, `.plan` |
-| [**preview-csv**](https://veelenga.github.io/preview-skills/examples/csv/employees.html)              | Sortable tables with search, filtering, and column statistics   | `.csv`              |
-| [**preview-json**](https://veelenga.github.io/preview-skills/examples/json/sample.html)               | Syntax highlighting with collapsible tree structure             | `.json`, `.jsonl`   |
-| [**preview-markdown**](https://veelenga.github.io/preview-skills/examples/markdown/sample.html)       | GitHub-flavored rendering with syntax highlighting              | `.md`, `.markdown`  |
-| [**preview-mermaid**](https://veelenga.github.io/preview-skills/examples/mermaid/sample.html)         | Interactive diagrams (flowcharts, sequences, ER, etc.)          | `.mmd`, `.mermaid`  |
-| [**preview-diff**](https://veelenga.github.io/preview-skills/examples/diff/feature.html)              | GitHub-style diffs with side-by-side comparison                 | `.diff`, `.patch`   |
-| [**preview-d3**](https://veelenga.github.io/preview-skills/examples/d3/sample.html)                   | Interactive 2D data visualizations with zoom and pan            | `.d3`               |
-| [**preview-threejs**](https://veelenga.github.io/preview-skills/examples/threejs/sample.html)         | Interactive 3D visualizations with orbit controls               | `.threejs`, `.3d`   |
-| [**preview-leaflet**](https://veelenga.github.io/preview-skills/examples/leaflet/longest-trails.html) | Interactive maps with markers and routes                        | `.leaflet`, `.map`  |
-| [**preview-svg**](https://veelenga.github.io/preview-skills/examples/svg/bubble-sort.html)            | Animated SVGs with play/pause, scrub, zoom — concept explainers | `.svg`              |
+| Name                                                                                                          | Description                                                     | File Types          |
+| ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | ------------------- |
+| [**preview-plan**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-plan/SKILL.md)         | Navigable plans with sidebar TOC and progress tracking          | `.plan.md`, `.plan` |
+| [**preview-csv**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-csv/SKILL.md)           | Sortable tables with search, filtering, and column statistics   | `.csv`              |
+| [**preview-json**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-json/SKILL.md)         | Syntax highlighting with collapsible tree structure             | `.json`, `.jsonl`   |
+| [**preview-markdown**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-markdown/SKILL.md) | GitHub-flavored rendering with syntax highlighting              | `.md`, `.markdown`  |
+| [**preview-mermaid**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-mermaid/SKILL.md)   | Interactive diagrams (flowcharts, sequences, ER, etc.)          | `.mmd`, `.mermaid`  |
+| [**preview-svg**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-svg/SKILL.md)           | Animated SVGs with play/pause, scrub, zoom — concept explainers | `.svg`              |
+| [**preview-diff**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-diff/SKILL.md)         | GitHub-style diffs with side-by-side comparison                 | `.diff`, `.patch`   |
+| [**preview-d3**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-d3/SKILL.md)             | Interactive 2D data visualizations with zoom and pan            | `.d3`               |
+| [**preview-threejs**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-threejs/SKILL.md)   | Interactive 3D visualizations with orbit controls               | `.threejs`, `.3d`   |
+| [**preview-leaflet**](https://github.com/veelenga/preview-skills/blob/main/skills/preview-leaflet/SKILL.md)   | Interactive maps with markers and routes                        | `.leaflet`, `.map`  |
 
 ![Demo](docs/demo.gif)
 
