@@ -14,7 +14,7 @@ SKILLS_DIR="$PROJECT_ROOT/skills"
 # Note: All skill scripts are called with --no-browser flag below
 
 # Create docs/examples directories
-mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet,plan}
+mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet,plan,svg}
 
 echo "Generating documentation examples..."
 
@@ -111,6 +111,13 @@ echo "Leaflet Examples:"
 generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/world-cities.leaflet" "$DOCS_DIR/examples/leaflet" "world-cities.html"
 generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/everest-trail.leaflet" "$DOCS_DIR/examples/leaflet" "everest-trail.html"
 generate_example "preview-leaflet" "$EXAMPLES_DIR/leaflet/longest-trails.leaflet" "$DOCS_DIR/examples/leaflet" "longest-trails.html"
+
+echo ""
+echo "SVG Examples:"
+generate_example "preview-svg" "$EXAMPLES_DIR/svg/heartbeat.svg" "$DOCS_DIR/examples/svg" "heartbeat.html"
+generate_example "preview-svg" "$EXAMPLES_DIR/svg/motion-path.svg" "$DOCS_DIR/examples/svg" "motion-path.html"
+generate_example "preview-svg" "$EXAMPLES_DIR/svg/bubble-sort.svg" "$DOCS_DIR/examples/svg" "bubble-sort.html"
+generate_example "preview-svg" "$EXAMPLES_DIR/svg/load-balancer.svg" "$DOCS_DIR/examples/svg" "load-balancer.html"
 
 echo ""
 echo "Documentation examples generated successfully!"
