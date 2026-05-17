@@ -173,7 +173,7 @@ function generateTOC() {
       const target = document.getElementById(header.id);
       if (!target) return;
 
-      history.pushState(null, '', `#${header.id}`);
+      history.pushState(null, '', `${location.pathname}${location.search}#${header.id}`);
       const planMain = document.getElementById('plan-main');
       scrollToElement(target, planMain);
       setTimeout(updateProgress, 100);
@@ -354,7 +354,7 @@ function setupAnchorScrolling() {
     if (!targetElement) return;
 
     e.preventDefault();
-    history.pushState(null, '', `#${targetId}`);
+    history.pushState(null, '', `${location.pathname}${location.search}#${targetId}`);
     scrollToElement(targetElement, planMain);
     setTimeout(updateProgress, 100);
   });
