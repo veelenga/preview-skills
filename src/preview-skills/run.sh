@@ -96,12 +96,9 @@ else
     CONTENT=$(read_with_limit "$MAX_CONTENT_SIZE") || exit 1
 fi
 
-# Default HTML_BASE_HREF to the source file's directory so relative images
-# resolve when the preview is opened locally via file://.
-# Skip for interactive tools (D3, ThreeJS, Leaflet) that load user code via relative script src.
-# If the caller already set HTML_BASE_HREF (even to ""), respect it — e.g. docs
-# generation for the web sets it empty because file:// would be a different
-# origin from the hosting site.
+# Set base href for relative path resolution (images, links, etc.)
+# Skip for interactive tools (D3, ThreeJS, Leaflet) that load user code via relative script src
+# Skip if caller pre-set HTML_BASE_HREF (including empty) — ${VAR+x} distinguishes unset from set-empty
 if [ -n "${SOURCE_FILE:-}" ] && [ "${NEEDS_USER_CODE_TEMPLATE:-0}" != "1" ] && [ -z "${HTML_BASE_HREF+x}" ]; then
     SOURCE_DIR_ABS="$(cd "$(dirname "$SOURCE_FILE")" && pwd)"
     # Encode URL-unsafe characters for file:// URI
