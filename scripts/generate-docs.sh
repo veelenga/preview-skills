@@ -11,7 +11,11 @@ DOCS_DIR="$PROJECT_ROOT/docs"
 EXAMPLES_DIR="$PROJECT_ROOT/examples"
 SKILLS_DIR="$PROJECT_ROOT/skills"
 
-# Note: All skill scripts are called with --no-browser flag below
+# Note: All skill scripts are called with --no-browser flag below.
+# Outputs are served from https://veelenga.github.io/preview-skills/, so the
+# file:// <base> tag (default for local previews) would be a different origin
+# from the hosting site. Set HTML_BASE_HREF to empty to suppress it.
+export HTML_BASE_HREF=""
 
 # Create docs/examples directories
 mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet,plan,svg}
