@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200">
+  <!-- Element following a bezier path via <animateMotion> + <mpath>. -->
+  <defs>
+    <path id="track"
+          d="M 30,100
+             C 80,20  140,180  200,100
+             S 320,20  370,100"/>
+  </defs>
+
+  <!-- Visible track -->
+  <use href="#track" stroke="#cbd5e1" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+
+  <!-- Travelling element. rotate="auto" keeps it tangent to the curve. -->
+  <g>
+    <polygon points="-10,-6 12,0 -10,6" fill="#3b82f6"/>
+    <circle r="4" fill="#fff"/>
+    <animateMotion dur="4s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#track"/>
+    </animateMotion>
+  </g>
+
+  <!-- Endpoints -->
+  <circle cx="30"  cy="100" r="5" fill="#22c55e"/>
+  <circle cx="370" cy="100" r="5" fill="#ef4444"/>
+</svg>

@@ -30,6 +30,7 @@ AVAILABLE_SKILLS=(
     "preview-d3"
     "preview-threejs"
     "preview-leaflet"
+    "preview-svg"
 )
 
 log() {
@@ -69,6 +70,7 @@ SKILLS:
   preview-d3         Preview D3.js visualizations
   preview-threejs    Preview Three.js 3D visualizations
   preview-leaflet    Preview Leaflet maps
+  preview-svg        Preview SVG animations (SMIL, CSS keyframes, JS)
 
 EXAMPLES:
   # Interactive mode - select skills

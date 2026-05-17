@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 280" font-family="-apple-system, system-ui, sans-serif">
+  <!--
+    Round-robin load balancer with 6 requests on a continuous loop.
+
+    Each request runs on its own 6s cycle (repeatCount="indefinite") with a
+    1s begin offset (so 6 staggered requests fill the 6s window):
+      • animateMotion uses keyTimes/keyPoints to traverse the full path in
+        the first 33% of the cycle (2s of motion), then "park" at the end
+        position for the remaining 4s.
+      • Opacity fades in at the start, holds during motion, fades out at the
+        end of the motion, then stays invisible while parked.
+    Round-robin distribution: req1→s1, req2→s2, req3→s3, req4→s1, …
+  -->
+  <defs>
+    <path id="path-s1" d="M 40,140 L 200,140 L 220,140 C 260,140 260,70 320,70 L 380,70"/>
+    <path id="path-s2" d="M 40,140 L 200,140 L 220,140 C 260,140 260,140 320,140 L 380,140"/>
+    <path id="path-s3" d="M 40,140 L 200,140 L 220,140 C 260,140 260,210 320,210 L 380,210"/>
+
+    <radialGradient id="serverGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="480" height="280" fill="#f8fafc"/>
+
+  <text x="240" y="26" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">
+    Round-Robin Load Balancer
+  </text>
+
+  <g>
+    <rect x="10" y="110" width="60" height="60" rx="8" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="40" y="135" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">Clients</text>
+    <circle cx="25" cy="150" r="3" fill="#64748b"/>
+    <circle cx="40" cy="155" r="3" fill="#64748b"/>
+    <circle cx="55" cy="150" r="3" fill="#64748b"/>
+  </g>
+
+  <use href="#path-s1" stroke="#cbd5e1" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+  <use href="#path-s2" stroke="#cbd5e1" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+  <use href="#path-s3" stroke="#cbd5e1" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+
+  <g>
+    <rect x="180" y="110" width="80" height="60" rx="8" fill="#1e293b" stroke="#0f172a" stroke-width="1.5"/>
+    <text x="220" y="135" text-anchor="middle" font-size="11" font-weight="600" fill="#f1f5f9">Load</text>
+    <text x="220" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#f1f5f9">Balancer</text>
+    <!-- Pulse ticks at 1s to mark each incoming request (matches stagger). -->
+    <rect x="180" y="110" width="80" height="60" rx="8" fill="none"
+          stroke="#3b82f6" stroke-width="3" opacity="0">
+      <animate attributeName="opacity" values="0;0.9;0" dur="1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <g>
+    <circle cx="410" cy="70" r="36" fill="url(#serverGlow)"/>
+    <rect x="380" y="50" width="60" height="40" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="410" y="74" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">Server 1</text>
+
+    <circle cx="410" cy="140" r="36" fill="url(#serverGlow)"/>
+    <rect x="380" y="120" width="60" height="40" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="410" y="144" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">Server 2</text>
+
+    <circle cx="410" cy="210" r="36" fill="url(#serverGlow)"/>
+    <rect x="380" y="190" width="60" height="40" rx="6" fill="#fff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="410" y="214" text-anchor="middle" font-size="11" font-weight="600" fill="#1e3a8a">Server 3</text>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#ef4444" stroke="#7f1d1d" stroke-width="1"/>
+    <animateMotion dur="6s" begin="0s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s1"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="0s" repeatCount="indefinite"/>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#22c55e" stroke="#14532d" stroke-width="1"/>
+    <animateMotion dur="6s" begin="1s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s2"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="1s" repeatCount="indefinite"/>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#a855f7" stroke="#581c87" stroke-width="1"/>
+    <animateMotion dur="6s" begin="2s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s3"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="2s" repeatCount="indefinite"/>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#f97316" stroke="#7c2d12" stroke-width="1"/>
+    <animateMotion dur="6s" begin="3s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s1"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="3s" repeatCount="indefinite"/>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#06b6d4" stroke="#164e63" stroke-width="1"/>
+    <animateMotion dur="6s" begin="4s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s2"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="4s" repeatCount="indefinite"/>
+  </g>
+
+  <g opacity="0">
+    <circle r="7" fill="#ec4899" stroke="#831843" stroke-width="1"/>
+    <animateMotion dur="6s" begin="5s" repeatCount="indefinite" rotate="auto"
+                   keyTimes="0; 0.33; 1" keyPoints="0; 1; 1" calcMode="linear">
+      <mpath href="#path-s3"/>
+    </animateMotion>
+    <animate attributeName="opacity" values="0;1;1;0;0"
+             keyTimes="0; 0.04; 0.30; 0.34; 1"
+             dur="6s" begin="5s" repeatCount="indefinite"/>
+  </g>
+</svg>
