@@ -118,6 +118,7 @@ generate_example "preview-svg" "$EXAMPLES_DIR/svg/heartbeat.svg" "$DOCS_DIR/exam
 generate_example "preview-svg" "$EXAMPLES_DIR/svg/motion-path.svg" "$DOCS_DIR/examples/svg" "motion-path.html"
 generate_example "preview-svg" "$EXAMPLES_DIR/svg/bubble-sort.svg" "$DOCS_DIR/examples/svg" "bubble-sort.html"
 generate_example "preview-svg" "$EXAMPLES_DIR/svg/load-balancer.svg" "$DOCS_DIR/examples/svg" "load-balancer.html"
+generate_example "preview-svg" "$EXAMPLES_DIR/svg/https-handshake.svg" "$DOCS_DIR/examples/svg" "https-handshake.html"
 
 echo ""
 echo "Documentation examples generated successfully!"

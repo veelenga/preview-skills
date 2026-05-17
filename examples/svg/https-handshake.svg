@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 760">
+  <!--
+    Layout grid:
+      CLIENT_X = 140    SERVER_X = 860    CA_X = 500
+      ICON_Y   = 145    CA_Y     = 95
+      Lifelines: y 235 → 720
+      Step rows (label / arrow / desc):
+        Step 1 — title 260, arrow 290, desc 312
+        Step 2 — title 340, arrow 370, desc 392
+        Step 3 — title 422, desc 444, badge 466
+        Step 4 — title 502, arrow 532, desc 554
+        Step 5 — title 582, keys 612, desc 634
+        Step 6 — title 660, arrows 690 / 710
+      Insets: 140 px from edges (≥ 5%)
+  -->
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0b1220"/>
+      <stop offset="100%" stop-color="#1a2438"/>
+    </linearGradient>
+    <linearGradient id="clientGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="serverGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="caGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <radialGradient id="glowG" cx="0.5" cy="0.5">
+      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- background -->
+  <rect width="1000" height="760" fill="url(#bg)"/>
+
+  <!-- subtle grid -->
+  <g stroke="#1e293b" stroke-width="1" opacity="0.5">
+    <line x1="0" y1="220" x2="1000" y2="220"/>
+    <line x1="0" y1="730" x2="1000" y2="730"/>
+  </g>
+
+  <!-- title -->
+  <text x="500" y="40" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="700">How HTTPS Works</text>
+  <text x="500" y="64" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="13">The TLS handshake and encrypted data exchange</text>
+
+  <!-- ===== CLIENT ===== -->
+  <g transform="translate(140, 145)">
+    <rect x="-45" y="-30" width="90" height="58" rx="5" fill="url(#clientGrad)" stroke="#93c5fd" stroke-width="1.5"/>
+    <rect x="-38" y="-23" width="76" height="44" rx="2" fill="#0f172a"/>
+    <rect x="-32" y="-16" width="50" height="2.5" fill="#60a5fa" opacity="0.8"/>
+    <rect x="-32" y="-10" width="36" height="2.5" fill="#60a5fa" opacity="0.5"/>
+    <rect x="-32" y="-4" width="44" height="2.5" fill="#60a5fa" opacity="0.5"/>
+    <rect x="-32" y="2" width="28" height="2.5" fill="#60a5fa" opacity="0.5"/>
+    <rect x="-32" y="8" width="40" height="2.5" fill="#60a5fa" opacity="0.5"/>
+    <rect x="-32" y="14" width="32" height="2.5" fill="#60a5fa" opacity="0.5"/>
+    <path d="M-58,33 L58,33 L48,42 L-48,42 Z" fill="#1e3a8a"/>
+    <text y="65" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Client</text>
+    <text y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Web browser</text>
+  </g>
+
+  <!-- ===== SERVER ===== -->
+  <g transform="translate(860, 145)">
+    <rect x="-35" y="-38" width="70" height="72" rx="5" fill="url(#serverGrad)" stroke="#6ee7b7" stroke-width="1.5"/>
+    <g>
+      <rect x="-27" y="-30" width="54" height="11" rx="1.5" fill="#0f172a"/>
+      <circle cx="-20" cy="-24.5" r="2" fill="#34d399"/>
+      <circle cx="-13" cy="-24.5" r="2" fill="#34d399" opacity="0.4"/>
+      <rect x="10" y="-26" width="14" height="3" fill="#34d399" opacity="0.6"/>
+    </g>
+    <g>
+      <rect x="-27" y="-16" width="54" height="11" rx="1.5" fill="#0f172a"/>
+      <circle cx="-20" cy="-10.5" r="2" fill="#34d399"/>
+      <circle cx="-13" cy="-10.5" r="2" fill="#34d399" opacity="0.4"/>
+      <rect x="10" y="-12" width="14" height="3" fill="#34d399" opacity="0.6"/>
+    </g>
+    <g>
+      <rect x="-27" y="-2" width="54" height="11" rx="1.5" fill="#0f172a"/>
+      <circle cx="-20" cy="3.5" r="2" fill="#34d399"/>
+      <circle cx="-13" cy="3.5" r="2" fill="#34d399" opacity="0.4"/>
+      <rect x="10" y="2" width="14" height="3" fill="#34d399" opacity="0.6"/>
+    </g>
+    <g>
+      <rect x="-27" y="12" width="54" height="11" rx="1.5" fill="#0f172a"/>
+      <circle cx="-20" cy="17.5" r="2" fill="#34d399"/>
+      <circle cx="-13" cy="17.5" r="2" fill="#34d399" opacity="0.4"/>
+      <rect x="10" y="16" width="14" height="3" fill="#34d399" opacity="0.6"/>
+    </g>
+    <text y="65" text-anchor="middle" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="15" font-weight="600">Server</text>
+    <text y="82" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">example.com</text>
+  </g>
+
+  <!-- lifelines -->
+  <line x1="140" y1="235" x2="140" y2="720" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 6"/>
+  <line x1="860" y1="235" x2="860" y2="720" stroke="#334155" stroke-width="1.5" stroke-dasharray="4 6"/>
+
+  <!-- ===== CA AUTHORITY (appears for step 3) ===== -->
+  <g transform="translate(500, 95)" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="5.6s" dur="0.5s" fill="freeze"/>
+    <animate attributeName="opacity" from="1" to="0.25" begin="7.6s" dur="0.6s" fill="freeze"/>
+    <path d="M0,-26 L22,-18 L22,5 Q22,22 0,30 Q-22,22 -22,5 L-22,-18 Z" fill="url(#caGrad)" stroke="#fcd34d" stroke-width="1.5"/>
+    <text y="3" text-anchor="middle" fill="#0f172a" font-family="system-ui, sans-serif" font-size="11" font-weight="800">CA</text>
+    <text y="48" text-anchor="middle" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Trusted Authority</text>
+  </g>
+
+  <!-- =========================================================
+       STEP 1 — ClientHello
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1s" dur="0.4s" fill="freeze"/>
+    <!-- step number badge -->
+    <g transform="translate(50, 286)">
+      <circle r="11" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#dbeafe" font-family="system-ui, sans-serif" font-size="12" font-weight="700">1</text>
+    </g>
+    <text x="500" y="260" text-anchor="middle" fill="#93c5fd" font-family="system-ui, sans-serif" font-size="14" font-weight="700">ClientHello</text>
+    <!-- arrow -->
+    <line x1="162" y1="290" x2="836" y2="290" stroke="#60a5fa" stroke-width="2" opacity="0.35"/>
+    <polygon points="844,290 832,284 832,296" fill="#60a5fa" opacity="0.5"/>
+    <text x="500" y="312" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">TLS version • Supported cipher suites • Client random number</text>
+  </g>
+  <!-- packet 1 -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="1.5s" dur="0.2s" fill="freeze"/>
+    <animate attributeName="opacity" from="1" to="0" begin="3.1s" dur="0.25s" fill="freeze"/>
+    <g>
+      <rect x="-26" y="-10" width="52" height="20" rx="3" fill="#3b82f6" stroke="#bfdbfe" stroke-width="1"/>
+      <text y="4" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="10" font-weight="700">HELLO</text>
+      <animateMotion dur="1.6s" begin="1.5s" fill="freeze" path="M162,290 L832,290"/>
+    </g>
+  </g>
+
+  <!-- =========================================================
+       STEP 2 — ServerHello + Certificate
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="3.2s" dur="0.4s" fill="freeze"/>
+    <g transform="translate(50, 366)">
+      <circle r="11" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="12" font-weight="700">2</text>
+    </g>
+    <text x="500" y="340" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="14" font-weight="700">ServerHello + Certificate</text>
+    <line x1="838" y1="370" x2="164" y2="370" stroke="#34d399" stroke-width="2" opacity="0.35"/>
+    <polygon points="156,370 168,364 168,376" fill="#34d399" opacity="0.5"/>
+    <text x="500" y="392" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Chosen cipher • Server random • Certificate containing public key</text>
+  </g>
+  <!-- packet 2 - certificate -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="3.7s" dur="0.2s" fill="freeze"/>
+    <animate attributeName="opacity" from="1" to="0" begin="5.3s" dur="0.25s" fill="freeze"/>
+    <g>
+      <!-- envelope shape -->
+      <rect x="-28" y="-12" width="56" height="24" rx="3" fill="#10b981" stroke="#a7f3d0" stroke-width="1"/>
+      <!-- ribbon seal -->
+      <circle cx="-17" cy="0" r="4" fill="#fbbf24" stroke="#fde68a" stroke-width="0.5"/>
+      <text x="6" y="3.5" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="9" font-weight="700">CERT</text>
+      <animateMotion dur="1.6s" begin="3.7s" fill="freeze" path="M838,370 L164,370"/>
+    </g>
+  </g>
+
+  <!-- =========================================================
+       STEP 3 — Verify certificate with CA
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="5.6s" dur="0.4s" fill="freeze"/>
+    <g transform="translate(50, 448)">
+      <circle r="11" fill="#78350f" stroke="#fbbf24" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">3</text>
+    </g>
+    <text x="500" y="422" text-anchor="middle" fill="#fcd34d" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Client verifies certificate</text>
+    <text x="500" y="444" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Checks the certificate is signed by a trusted Certificate Authority</text>
+    <!-- curved arrow from client up to CA -->
+    <path d="M155,225 Q300,140 478,108" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.55"/>
+    <!-- verification check on client -->
+    <g transform="translate(140, 470)" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="6.7s" dur="0.3s" fill="freeze"/>
+      <circle r="13" fill="#22c55e"/>
+      <path d="M-6,0 L-2,5 L6,-5" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <text x="170" y="474" fill="#86efac" font-family="system-ui, sans-serif" font-size="11" font-weight="600" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="6.9s" dur="0.3s" fill="freeze"/>
+      Trusted
+    </text>
+  </g>
+
+  <!-- =========================================================
+       STEP 4 — Pre-master secret (encrypted with public key)
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="7.6s" dur="0.4s" fill="freeze"/>
+    <g transform="translate(50, 528)">
+      <circle r="11" fill="#4c1d95" stroke="#a78bfa" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#ede9fe" font-family="system-ui, sans-serif" font-size="12" font-weight="700">4</text>
+    </g>
+    <text x="500" y="502" text-anchor="middle" fill="#c4b5fd" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Pre-master secret exchange</text>
+    <line x1="162" y1="532" x2="836" y2="532" stroke="#a78bfa" stroke-width="2" opacity="0.35"/>
+    <polygon points="844,532 832,526 832,538" fill="#a78bfa" opacity="0.5"/>
+    <text x="500" y="554" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Encrypted with server's public key — only the server can decrypt it</text>
+  </g>
+  <!-- packet 4 - encrypted secret -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="8.1s" dur="0.2s" fill="freeze"/>
+    <animate attributeName="opacity" from="1" to="0" begin="9.7s" dur="0.25s" fill="freeze"/>
+    <g>
+      <rect x="-28" y="-11" width="56" height="22" rx="3" fill="#7c3aed" stroke="#ddd6fe" stroke-width="1"/>
+      <!-- mini lock -->
+      <g transform="translate(-16, 0)">
+        <rect x="-3.5" y="0" width="7" height="6" rx="1" fill="#fde68a"/>
+        <path d="M-2.5,0 L-2.5,-3 Q-2.5,-5.5 0,-5.5 Q2.5,-5.5 2.5,-3 L2.5,0" fill="none" stroke="#fde68a" stroke-width="1.2"/>
+      </g>
+      <text x="6" y="3.5" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="9" font-weight="700">SECRET</text>
+      <animateMotion dur="1.6s" begin="8.1s" fill="freeze" path="M162,532 L832,532"/>
+    </g>
+  </g>
+
+  <!-- =========================================================
+       STEP 5 — Session key derived on both sides
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="9.7s" dur="0.4s" fill="freeze"/>
+    <g transform="translate(50, 608)">
+      <circle r="11" fill="#14532d" stroke="#22c55e" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#dcfce7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">5</text>
+    </g>
+    <text x="500" y="582" text-anchor="middle" fill="#86efac" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Session key derived</text>
+
+    <!-- pulse from each side -->
+    <circle cx="140" cy="145" r="40" fill="url(#glowG)" opacity="0">
+      <animate attributeName="opacity" from="0.9" to="0" begin="9.9s" dur="1.2s" fill="freeze"/>
+      <animate attributeName="r" from="30" to="75" begin="9.9s" dur="1.2s" fill="freeze"/>
+    </circle>
+    <circle cx="860" cy="145" r="40" fill="url(#glowG)" opacity="0">
+      <animate attributeName="opacity" from="0.9" to="0" begin="9.9s" dur="1.2s" fill="freeze"/>
+      <animate attributeName="r" from="30" to="75" begin="9.9s" dur="1.2s" fill="freeze"/>
+    </circle>
+
+    <!-- key on client side -->
+    <g transform="translate(190, 608)" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="10.2s" dur="0.4s" fill="freeze"/>
+      <circle cx="0" cy="0" r="6" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <circle cx="0" cy="0" r="2" fill="#fbbf24"/>
+      <line x1="6" y1="0" x2="22" y2="0" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="16" y1="0" x2="16" y2="5" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="21" y1="0" x2="21" y2="4" stroke="#fbbf24" stroke-width="2"/>
+    </g>
+    <!-- key on server side -->
+    <g transform="translate(810, 608)" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="10.2s" dur="0.4s" fill="freeze"/>
+      <line x1="-22" y1="0" x2="-6" y2="0" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="-16" y1="0" x2="-16" y2="5" stroke="#fbbf24" stroke-width="2"/>
+      <line x1="-21" y1="0" x2="-21" y2="4" stroke="#fbbf24" stroke-width="2"/>
+      <circle cx="0" cy="0" r="6" fill="none" stroke="#fbbf24" stroke-width="2"/>
+      <circle cx="0" cy="0" r="2" fill="#fbbf24"/>
+    </g>
+    <!-- equals badge in middle -->
+    <g transform="translate(500, 608)" opacity="0">
+      <animate attributeName="opacity" from="0" to="1" begin="10.4s" dur="0.4s" fill="freeze"/>
+      <rect x="-46" y="-13" width="92" height="26" rx="13" fill="#15803d" stroke="#86efac" stroke-width="1"/>
+      <text y="4" text-anchor="middle" fill="#f0fdf4" font-family="system-ui, sans-serif" font-size="11" font-weight="700">SAME KEY</text>
+    </g>
+
+    <text x="500" y="640" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Both sides derive the same symmetric session key — fast and secret</text>
+  </g>
+
+  <!-- =========================================================
+       STEP 6 — Encrypted application data
+       ========================================================= -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="11.2s" dur="0.5s" fill="freeze"/>
+    <g transform="translate(50, 690)">
+      <circle r="11" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+      <text y="4" text-anchor="middle" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="12" font-weight="700">6</text>
+    </g>
+    <text x="500" y="668" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="15" font-weight="700">Secure encrypted communication</text>
+    <text x="500" y="688" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">All application data is now encrypted with the shared session key</text>
+
+    <!-- channel lines -->
+    <line x1="162" y1="708" x2="838" y2="708" stroke="#10b981" stroke-width="1" opacity="0.25" stroke-dasharray="6 4"/>
+    <line x1="162" y1="724" x2="838" y2="724" stroke="#10b981" stroke-width="1" opacity="0.25" stroke-dasharray="6 4"/>
+  </g>
+
+  <!-- encrypted packets looping (start after handshake completes) -->
+  <g opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="11.7s" dur="0.4s" fill="freeze"/>
+    <!-- request from client to server -->
+    <g>
+      <g>
+        <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#059669" stroke="#a7f3d0" stroke-width="1"/>
+        <!-- tiny lock -->
+        <g transform="translate(-15, 0)">
+          <rect x="-3" y="-1" width="6" height="5" rx="0.8" fill="white"/>
+          <path d="M-2.2,-1 L-2.2,-3.5 Q-2.2,-5.5 0,-5.5 Q2.2,-5.5 2.2,-3.5 L2.2,-1" fill="none" stroke="white" stroke-width="1.2"/>
+        </g>
+        <text x="6" y="3" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="9" font-weight="700">DATA</text>
+        <animateMotion dur="2.4s" begin="11.7s" repeatCount="indefinite" path="M162,708 L838,708"/>
+      </g>
+    </g>
+    <!-- response from server to client (delayed) -->
+    <g>
+      <g>
+        <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#059669" stroke="#a7f3d0" stroke-width="1"/>
+        <g transform="translate(-15, 0)">
+          <rect x="-3" y="-1" width="6" height="5" rx="0.8" fill="white"/>
+          <path d="M-2.2,-1 L-2.2,-3.5 Q-2.2,-5.5 0,-5.5 Q2.2,-5.5 2.2,-3.5 L2.2,-1" fill="none" stroke="white" stroke-width="1.2"/>
+        </g>
+        <text x="6" y="3" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="9" font-weight="700">DATA</text>
+        <animateMotion dur="2.4s" begin="12.9s" repeatCount="indefinite" path="M838,724 L162,724"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- Final "secure" badge near client -->
+  <g transform="translate(140, 105)" opacity="0">
+    <animate attributeName="opacity" from="0" to="1" begin="11.5s" dur="0.5s" fill="freeze"/>
+    <circle r="13" fill="#16a34a" stroke="#bbf7d0" stroke-width="1.5"/>
+    <g transform="translate(0, 1)">
+      <rect x="-4" y="-1" width="8" height="7" rx="1" fill="white"/>
+      <path d="M-3,-1 L-3,-4 Q-3,-7 0,-7 Q3,-7 3,-4 L3,-1" fill="none" stroke="white" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

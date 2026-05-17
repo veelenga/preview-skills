@@ -105,6 +105,7 @@ Or use natural language:
 # Animated SVG (concept explainers)
 /preview-svg examples/svg/bubble-sort.svg
 /preview-svg examples/svg/load-balancer.svg
+/preview-svg examples/svg/https-handshake.svg
 ```
 
 ### Running tests
