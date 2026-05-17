@@ -180,7 +180,7 @@ function generateTOC() {
       const target = document.getElementById(header.id);
       if (!target) return;
 
-      history.pushState(null, '', `#${header.id}`);
+      history.pushState(null, '', `${location.pathname}${location.search}#${header.id}`);
       const markdownMain = document.getElementById('markdown-main');
       scrollToElement(target, markdownMain);
       setTimeout(updateProgress, 100);
@@ -305,7 +305,7 @@ function setupAnchorScrolling() {
     if (!targetElement) return;
 
     e.preventDefault();
-    history.pushState(null, '', `#${targetId}`);
+    history.pushState(null, '', `${location.pathname}${location.search}#${targetId}`);
     scrollToElement(targetElement, markdownMain);
     setTimeout(updateProgress, 100);
   }
