@@ -106,7 +106,8 @@ fi
 
 # Set base href for relative path resolution (images, links, etc.)
 # Skip for interactive tools (D3, ThreeJS, Leaflet) that load user code via relative script src
-if [ -n "${SOURCE_FILE:-}" ] && [ "${NEEDS_USER_CODE_TEMPLATE:-0}" != "1" ]; then
+# Skip if caller pre-set HTML_BASE_HREF (including empty) — ${VAR+x} distinguishes unset from set-empty
+if [ -n "${SOURCE_FILE:-}" ] && [ "${NEEDS_USER_CODE_TEMPLATE:-0}" != "1" ] && [ -z "${HTML_BASE_HREF+x}" ]; then
     SOURCE_DIR_ABS="$(cd "$(dirname "$SOURCE_FILE")" && pwd)"
     # Encode URL-unsafe characters for file:// URI
     SOURCE_DIR_URL="${SOURCE_DIR_ABS//%/%25}"

@@ -13,6 +13,9 @@ SKILLS_DIR="$PROJECT_ROOT/skills"
 
 # Note: All skill scripts are called with --no-browser flag below
 
+# Output is served via https://, so the file:// <base> default would be cross-origin.
+export HTML_BASE_HREF=""
+
 # Create docs/examples directories
 mkdir -p "$DOCS_DIR/examples"/{csv,json,markdown,mermaid,diff,d3,threejs,leaflet,plan,svg}
 

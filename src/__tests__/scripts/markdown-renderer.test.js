@@ -547,7 +547,7 @@ describe('markdown-renderer.js', () => {
       const clickEvent = new MouseEvent('click', { bubbles: true });
       anchor.dispatchEvent(clickEvent);
 
-      expect(pushStateSpy).toHaveBeenCalledWith(null, '', expect.stringMatching(/#test-section$/));
+      expect(pushStateSpy).toHaveBeenCalledWith(null, '', '#test-section');
       pushStateSpy.mockRestore();
     });
 
